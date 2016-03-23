@@ -1,0 +1,26 @@
+extends layout
+
+block container
+	.col-sm-6.col-sm-offset-3
+		-if(message.length){
+			.alert.alert-danger 
+				p= message
+		-}
+		h1 Signup
+			span.fa.fa-sign-in
+		form(action='/signup' method='post')
+			div.form-group
+				label Логин
+				input.form-control(type='text' name='username')
+			div.form-group
+				label Электронная почта
+				input.form-control(type='text' name='email')
+			div.form-group
+				label Пароль
+				input.form-control(type='password', name='password')
+			button.btn.btn-warning.btn-lg(type='submit') Login
+		hr
+		p Уже есть аккаунт? 
+			a(href='/login') Войти
+		p
+			a(href='/') Домой
