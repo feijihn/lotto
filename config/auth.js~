@@ -6,7 +6,7 @@ module.exports = {
     'facebookAuth' : {
         'clientID'      : '1145158655497308', // your App ID
         'clientSecret'  : '4cb769c8572857ba175aec1c9a5da13e', // your App Secret
-        'callbackURL'   : 'http://localhost:3000/auth/facebook/callback'
+        'callbackURL'   : 'http://31.13.130.81:3000/auth/facebook/callback'
     },
 
     'vkAuth' : {

@@ -55,7 +55,10 @@ export default class Main extends React.Component {
 								Facebook name: { this.state.userinfo.facebook.name }
 							</ListItem>
 							<ListItem disabled>
-								email: { this.state.userinfo.email }
+								Facebook token: { this.state.userinfo.facebook.token }
+							</ListItem>
+							<ListItem disabled>
+								Facebook id: { this.state.userinfo.facebook.id}
 							</ListItem>
 						</List>
 						</Tile>
