@@ -170,7 +170,7 @@ module.exports = function(passport) {
 	passport.use(new VKontakteStrategy({
 		clientID:     configAuth.vkAuth.appID, // VK.com docs call it 'API ID'
 		clientSecret: configAuth.vkAuth.clientSecret,
-		callbackURL:  "http://31.13.130.81:3000/auth/vkontakte/callback",
+		callbackURL:  "http://31.13.130.81:3030/auth/vkontakte/callback",
 		profileFields: ['email', 'city']
 	},
 	function(accessToken, refreshToken,params , profile, done) {
