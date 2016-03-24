@@ -19703,8 +19703,11 @@
 
 			_this.state = {
 				userinfo: {
-					username: '',
-					email: ''
+					local: {
+						username: ' '
+					},
+					facebook: {},
+					vk: {}
 				}
 			};
 			$.ajax({
@@ -19753,13 +19756,43 @@
 											leftAvatar: _react2.default.createElement(
 												_materialUi.Avatar,
 												null,
-												this.state.userinfo.username.substr(0, 1)
+												this.state.userinfo.local.username.substr(0, 1)
 											)
 										},
-										this.state.userinfo.username,
+										this.state.userinfo.local.username,
 										_react2.default.createElement(_materialUi.FlatButton, { label: 'Выйти', style: { position: 'absolute', top: 10, right: 10 }, linkButton: true, href: '/logout', backgroundColor: Colors.indigo700 })
 									),
-									_react2.default.createElement(_materialUi.Divider, null)
+									_react2.default.createElement(_materialUi.Divider, null),
+									_react2.default.createElement(
+										_materialUi.ListItem,
+										{ disabled: true },
+										'email: ',
+										this.state.userinfo.local.email || 'none'
+									),
+									_react2.default.createElement(
+										_materialUi.ListItem,
+										{ disabled: true },
+										'Facebook name: ',
+										this.state.userinfo.facebook.fullname || 'not linked'
+									),
+									_react2.default.createElement(
+										_materialUi.ListItem,
+										{ disabled: true },
+										'Facebook id: ',
+										this.state.userinfo.facebook.id || 'not linked'
+									),
+									_react2.default.createElement(
+										_materialUi.ListItem,
+										{ disabled: true },
+										'Vk name: ',
+										this.state.userinfo.vk.fullname || 'not linked'
+									),
+									_react2.default.createElement(
+										_materialUi.ListItem,
+										{ disabled: true },
+										'Vk id: ',
+										this.state.userinfo.vk.id || 'not linked'
+									)
 								)
 							),
 							_react2.default.createElement(Tile, {

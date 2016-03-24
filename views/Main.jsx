@@ -8,8 +8,15 @@ export default class Main extends React.Component {
 		super(props);
 		this.state={
 			userinfo:{
-				username: '',
-				email: '',
+				local:{
+					username: ' ',
+				},
+				facebook:{
+
+				},
+				vk:{
+
+				}
 			},
 		}
 		$.ajax({
@@ -41,24 +48,27 @@ export default class Main extends React.Component {
 							<ListItem
 								disabled
 								leftAvatar={
-									<Avatar >{this.state.userinfo.username.substr(0,1)}</Avatar>
+									<Avatar >{this.state.userinfo.local.username.substr(0,1)}</Avatar>
 								}
 							>
-								{this.state.userinfo.username}
+								{this.state.userinfo.local.username}
 								<FlatButton label="Выйти" style={{position:'absolute', top: 10, right: 10}} linkButton href={'/logout'} backgroundColor={Colors.indigo700}/>
 							</ListItem>
 							<Divider/>
 							<ListItem disabled>
-								email: { this.state.userinfo.local.email }
+								email: { this.state.userinfo.local.email || 'none'}
 							</ListItem>
 							<ListItem disabled>
-								Facebook name: { this.state.userinfo.facebook.name }
+								Facebook name: { this.state.userinfo.facebook.fullname || 'not linked' }
 							</ListItem>
 							<ListItem disabled>
-								Facebook token: { this.state.userinfo.facebook.token }
+								Facebook id: { this.state.userinfo.facebook.id || 'not linked'}
 							</ListItem>
 							<ListItem disabled>
-								Facebook id: { this.state.userinfo.facebook.id}
+								Vk name: { this.state.userinfo.vk.fullname || 'not linked' }
+							</ListItem>
+							<ListItem disabled>
+								Vk id: { this.state.userinfo.vk.id || 'not linked' }
 							</ListItem>
 						</List>
 						</Tile>

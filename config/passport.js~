@@ -154,7 +154,7 @@ module.exports = function(passport) {
 					newUser.facebook.token = token; // we will save the token that facebook provides to the user
 					newUser.facebook.fullname  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
 					newUser.local.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
-					newUser.local.username = newUser.facebook.name;
+					newUser.local.username = newUser.facebook.fullname;
 					// save our user to the database
 					newUser.save(function(err) {
 						if (err)
@@ -170,7 +170,7 @@ module.exports = function(passport) {
 	passport.use(new VKontakteStrategy({
 		clientID:     configAuth.vkAuth.appID, // VK.com docs call it 'API ID'
 		clientSecret: configAuth.vkAuth.clientSecret,
-		callbackURL:  "http://31.13.130.81:3030/auth/vkontakte/callback",
+		callbackURL: configAuth.vkAuth.callbackURL ,
 		profileFields: ['email', 'city']
 	},
 	function(accessToken, refreshToken,params , profile, done) {
@@ -200,6 +200,7 @@ module.exports = function(passport) {
 					newUser.local.email = params.email || profile.name.givenName + '-' + profile.name.familyName + '@vk.com' 
 					newUser.vk.id    = profile.id; // set the users facebook id
 					newUser.vk.fullname  = profile.name.givenName + ' ' + profile.name.familyName; 
+					newUser.local.username = newUser.vk.fullname;
 					// save our user to the database
 					newUser.save(function(err) {
 						if (err)
