@@ -9,7 +9,7 @@ export default class Main extends React.Component {
 		this.state={
 			userinfo:{
 				local:{
-					username: '',
+					username: ' ',
 				},
 				facebook:{
 

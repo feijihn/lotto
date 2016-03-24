@@ -1,7 +1,7 @@
 // config/auth.js
 
 // expose our config directly to our application using module.exports
-var ip = 'localhost'
+var ip = '31.13.130.81'
 var port = 3000
 module.exports = {
 
