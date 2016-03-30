@@ -1,2 +1,0 @@
-
-export const FETCH_USERINFO = 'FETCH_USERINFO';
