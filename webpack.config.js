@@ -6,11 +6,12 @@ var BUILD_DIR = path.resolve(__dirname, './public/build');
 
 var config = {
 	entry: {
-		client: APP_DIR + '/views/Index.jsx',
+		client: APP_DIR + '/app/index.js',
+    admin: APP_DIR + '/app/admin/index.js'
 	},
 	output: {
 		path: BUILD_DIR,
-		filename: 'bundle.js'
+		filename: '[name].bundle.js'
 	},
 	resolve: {
 		modulesDirectories: ['node_modules'],

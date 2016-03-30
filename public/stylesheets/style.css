@@ -1,12 +1,18 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  width: 100%;
+  height: 100%;
 }
 
 a {
   color: #00B7FF;
 }
 
-.main {
+.main span{
+	font-family: 'Roboto', sans-serif;
 	color: white;
+}
+
+.panel h1 {
+  text-align: center;
 }

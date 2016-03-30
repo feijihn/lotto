@@ -1,3 +1,4 @@
+'use strict';
 // config/passport.js
 
 // load all the things we need
@@ -46,7 +47,7 @@ module.exports = function(passport) {
 
 		// asynchronous
 		// User.findOne wont fire unless data is sent back
-		process.nextTick(function() {
+		process.nextTick(() => {
 
 			// find a user whose email is the same as the forms email
 			// we are checking to see if the user trying to login already exists
@@ -155,11 +156,10 @@ module.exports = function(passport) {
 					newUser.facebook.fullname  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
 					newUser.local.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
 					newUser.local.username = profile.name.givenName + ' ' + profile.name.familyName;
-					// save our user to the database
-					newUser.save(function(err) {
-						if (err)
-							throw err;
 
+					// save our user to the database
+					newUser.save((err) => {
+						if (err) throw err;
 						// if successful, return the new user
 						return done(null, newUser);
 					});
@@ -188,7 +188,7 @@ module.exports = function(passport) {
 				if (user) {
 					user.vk.id		   = profile.id;
 					user.vk.fullname = profile.name.givenName + ' ' + profile.name.familyName;
-					user.save((err)=>{
+					user.save((err) => {
 						if ( err ) throw err;
 						return done(null, user); // user found, return that user
 					})
@@ -202,10 +202,8 @@ module.exports = function(passport) {
 					newUser.vk.fullname  = profile.name.givenName + ' ' + profile.name.familyName; 
 					newUser.local.username = profile.name.givenName + ' ' + profile.name.familyName;
 					// save our user to the database
-					newUser.save(function(err) {
-						if (err)
-							throw err;
-
+					newUser.save((err) => {
+						if (err) throw err;
 						// if successful, return the new user
 						return done(null, newUser);
 					});
@@ -213,4 +211,32 @@ module.exports = function(passport) {
 			});
 		});
 	}));
+  passport.use('local-admin-login', new LocalStrategy({
+		// by default, local strategy uses username and password, we will override with email
+		usernameField : 'username',
+		passwordField : 'password',
+		passReqToCallback : true // allows us to pass back the entire request to the callback
+	},
+	function(req, username, password, done) { // callback with email and password from our form
+
+		// find a user whose email is the same as the forms email
+		// we are checking to see if the user trying to login already exists
+		User.findOne({ 'local.accessLevel' :  9 }, function(err, user) {
+			// if there are any errors, return the error before anything else
+			if (err)
+				return done(err);
+
+			// if no user is found, return the message
+			if (!user)
+				return done(null, false, req.flash('loginMessage', 'No admin found.')); // req.flash is the way to set flashdata using connect-flash
+
+			// if the user is found but the password is wrong
+			if (!user.validPassword(password))
+				return done(null, false, req.flash('loginMessage', 'Wrong password.')); // create the loginMessage and save it to session as flashdata
+
+			// all is well, return successful user
+			return done(null, user);
+		});
+
+	}))
 }
