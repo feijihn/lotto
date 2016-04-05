@@ -1,9 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AdminApp from './components/Main.jsx';
+import { Provider } from 'react-redux';
+import thunkMiddleware from 'redux-thunk';  
+import { createStore, applyMiddleware } from 'redux';
+import App from './reducers/reducers.js';
+import AppContainer from './container.jsx';
+
+let store = createStore(
+  App,
+  applyMiddleware(
+    thunkMiddleware
+  )
+);
 
 ReactDOM.render(
-  <AdminApp/>,
+  <Provider store={store}>
+    <AppContainer/>
+  </Provider>,
   document.getElementById('container')
 );
 

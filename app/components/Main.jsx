@@ -6,58 +6,52 @@ var Colors = require('material-ui/lib/styles/colors');
 import {Grid, Row, Col} from 'react-bootstrap';
 import Tile from './Tile.jsx';
 import App from '../reducers/reducers.js';
-import { fetchUserInfo } from '../actions/actions.js';
+import Products from './Products.jsx';
+import Content from './Content.jsx';
+import Header from './Header.jsx';
+import {fetchUserInfo} from '../actions/actions.js';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
+injectTapEventPlugin();
 
 export default class Main extends React.Component {
   constructor(props) {
     super(props);
     this.props.fetchUserInfo();
+    this.props.fetchProducts();
+    setInterval(() => {
+      this.ticketFetch();
+    }, 5000);
+  }
+  handleTicketClick = value => {
+    this.props.claimTicket(value);
+  };
+  deselectTicket = value => {
+    this.props.deselectTicket(value);
+  };
+  handleProductClick = id => {
+    this.props.viewingProduct(id);
+    this.props.fetchRounds(id);
+    this.ticketFetch();
+  };
+  ticketFetch = () => {
+    if (this.props.state.viewingRound._id) {
+      this.props.fetchTickets(this.props.state.viewingRound._id);
+    }
+  };
+  handleBuyClick = () => {
+    this.props.ownTickets(this.props.state.markedTickets, this.props.state.viewingRound._id);
+    this.props.fetchTickets(this.props.state.viewingRound._id);
   }
   render() {
     return (
-      <div className="main" style={{backgroundColor: '#512da8', height: '100%'}}>
-      <Grid style={{padding: 20}}>
-      <Row >
-      <Tile
-      lg={6}
-      md={6}
-      sm={12}
-      bgColor={Colors.indigo500}
-      >
-      <List>
-      <ListItem
-      disabled
-      leftAvatar={
-        <Avatar >{ this.props.state.userinfo.local.username.substr(0,1) }</Avatar>
-      }
-      >
-      { this.props.state.userinfo.local.username }
-      <FlatButton label="Выйти" style={{position: 'absolute', top: 10, right: 10}} linkButton href={'/logout'} backgroundColor={Colors.indigo700}/>
-      </ListItem>
-      </List>
-      </Tile>
-      <Tile
-      lg={3}
-      md={4}
-      sm={12}
-      bgColor={Colors.purple500}
-      >
-      </Tile>
-      <Tile
-      lg={3}
-      md={4}
-      sm={12}
-      bgColor={Colors.amber500}
-      />
-      <Tile
-      lg={12}
-      md={12}
-      sm={12}
-      height={800}
-      bgColor={Colors.limeA400}
-      />
-      </Row>
-      </Grid>
+      <div className="main" style={{backgroundColor: Colors.grey50, height: '100%'}}>
+        <Header userinfo={this.props.state.userinfo || {}} />
+          <Grid style={{padding: 20}}>
+            <Row>
+              <Content state={this.props.state} handleProductClick={this.handleProductClick} handleTicketClick={this.handleTicketClick} hanleBuyClick={this.handleBuyClick} deselectTicket={this.deselectTicket}/>
+            </Row>
+          </Grid>
       </div>
     );
   }

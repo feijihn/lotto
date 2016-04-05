@@ -1,20 +1,13 @@
 var mongoose = require('mongoose');
 
 var ticketSchema = mongoose.Schema({
-	user_id: {type: mongoose.Types.objectId(), ref: 'User'},
-	//product_id: {type: mogoose.Types.objectId(), ref: 'Product'},
-	count: Number,
-}); 
-
-var activatedTicketSchema = mongoose.Schema({
-	value: Number,
-	user_id = {type: mongoose.Types.objectId(),ref : 'User'},
-	round_id = {type: mongoose.Types.objectId(), res: 'Round'}
-})
+  user_id: {type: mongoose.Schema.ObjectId, ref: 'User'},
+  round_id: {type: mongoose.Schema.ObjectId, res: 'Round'},
+  value: Number
+});
 
 ticketSchema.methods.activate = () => {
-	//activation method placeholder
+  // activation method placeholder
 };
 
-module.exports = mogoose.model('Ticket', ticketSchema);
-module.exports = mogoose.model('ActivatedTicket', activatedTicketSchema);
+module.exports = mongoose.model('Ticket', ticketSchema);

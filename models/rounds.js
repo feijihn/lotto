@@ -1,13 +1,13 @@
 
-var mogoose = require('mongoose');
+var mongoose = require('mongoose');
 
 var roundSchema = mongoose.Schema({
-	product_id : {type: mogoose.Types.objectId(), ref: 'Product'},
-	purchase_id : mongoose.Types.objectId(),
-	description: String,
-	image: mongoose.Types.binData(),
-})
+  product_id: {type: mongoose.Schema.ObjectId, ref: 'Product'},
+  purchase_id: mongoose.Schema.ObjectId,
+  description: String,
+  image: String,
+  startTime: Date,
+  tickets: [{type: mongoose.Schema.ObjectId, ref: 'Ticket'}]
+});
 
-//TODO methods
-
-module.exports = mogoose.model('Round', roundSchema);
+module.exports = mongoose.model('Round', roundSchema);
