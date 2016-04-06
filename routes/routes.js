@@ -116,7 +116,7 @@ module.exports = function(app, passport) {
   });
   app.get('/rounds', isLoggedIn, (req, res) => {
     console.log('requesting rounds for product_id: ' + req.query.prodId);
-    Round.find({product_id: req.query.prodId}, (err, round) => {
+    Round.find({product_id: req.query.prodId, running: true}, (err, round) => {
       console.log('found round ' + round + ' sending...');
       if (err) {
         throw err;
@@ -155,7 +155,7 @@ module.exports = function(app, passport) {
         });
       });
     }
-    res.status(20);
+    res.status(200);
   });
   // =====================================
   // FACEBOOK ROUTES =====================

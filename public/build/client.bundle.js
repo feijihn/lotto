@@ -70,7 +70,7 @@
 
 	var _Main2 = _interopRequireDefault(_Main);
 
-	var _container = __webpack_require__(707);
+	var _container = __webpack_require__(708);
 
 	var _container2 = _interopRequireDefault(_container);
 
@@ -85425,15 +85425,15 @@
 
 	var _Products2 = _interopRequireDefault(_Products);
 
-	var _Content = __webpack_require__(704);
+	var _Content = __webpack_require__(705);
 
 	var _Content2 = _interopRequireDefault(_Content);
 
-	var _Header = __webpack_require__(705);
+	var _Header = __webpack_require__(706);
 
 	var _Header2 = _interopRequireDefault(_Header);
 
-	var _actions = __webpack_require__(706);
+	var _actions = __webpack_require__(707);
 
 	var _reactTapEventPlugin = __webpack_require__(689);
 
@@ -86026,7 +86026,7 @@
 
 	var _materialUi = __webpack_require__(181);
 
-	var _Ticket = __webpack_require__(708);
+	var _Ticket = __webpack_require__(704);
 
 	var _Ticket2 = _interopRequireDefault(_Ticket);
 
@@ -86188,6 +86188,91 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _materialUi = __webpack_require__(181);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Ticket = function (_React$Component) {
+	  _inherits(Ticket, _React$Component);
+
+	  function Ticket(props) {
+	    _classCallCheck(this, Ticket);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Ticket).call(this, props));
+
+	    _this.handleMouseLeave = function () {
+	      _this.setState({
+	        zDepth: 1,
+	        zIndex: '0'
+	      });
+	    };
+
+	    _this.handleMouseEnter = function () {
+	      _this.setState({
+	        zDepth: 3,
+	        zIndex: '999'
+	      });
+	    };
+
+	    _this.handleClick = function () {
+	      _this.props.handleClick(_this.props.id);
+	    };
+
+	    _this.state = {
+	      zDepth: 1,
+	      zIndex: '0'
+	    };
+	    return _this;
+	  }
+
+	  _createClass(Ticket, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'col-lg-10-12 col-md-10-12 col-sm-5-12 col-xs-4 ticket' },
+	        _react2.default.createElement(
+	          _materialUi.Paper,
+	          {
+	            zDepth: this.state.zDepth,
+	            style: { height: this.props.height || 100, zIndex: this.state.zIndex, backgroundImage: 'url(' + this.props.bgImageLink + ')' || 'none', backgroundSize: 'cover', cursor: 'pointer', backgroundColor: this.props.bgColor },
+	            onMouseEnter: this.handleMouseEnter,
+	            onMouseLeave: this.handleMouseLeave,
+	            onTouchTap: this.handleClick
+	          },
+	          this.props.children
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Ticket;
+	}(_react2.default.Component);
+
+	exports.default = Ticket;
+
+/***/ },
+/* 705 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
 	var _Products = __webpack_require__(699);
 
 	var _Products2 = _interopRequireDefault(_Products);
@@ -86233,7 +86318,7 @@
 	exports.default = Content;
 
 /***/ },
-/* 705 */
+/* 706 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -86316,7 +86401,7 @@
 	;
 
 /***/ },
-/* 706 */
+/* 707 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -86585,7 +86670,7 @@
 	}
 
 /***/ },
-/* 707 */
+/* 708 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -86604,7 +86689,7 @@
 
 	var _Main2 = _interopRequireDefault(_Main);
 
-	var _actions = __webpack_require__(706);
+	var _actions = __webpack_require__(707);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -86646,91 +86731,6 @@
 	var AppContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Main2.default);
 
 	exports.default = AppContainer;
-
-/***/ },
-/* 708 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _materialUi = __webpack_require__(181);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Ticket = function (_React$Component) {
-	  _inherits(Ticket, _React$Component);
-
-	  function Ticket(props) {
-	    _classCallCheck(this, Ticket);
-
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Ticket).call(this, props));
-
-	    _this.handleMouseLeave = function () {
-	      _this.setState({
-	        zDepth: 1,
-	        zIndex: '0'
-	      });
-	    };
-
-	    _this.handleMouseEnter = function () {
-	      _this.setState({
-	        zDepth: 3,
-	        zIndex: '999'
-	      });
-	    };
-
-	    _this.handleClick = function () {
-	      _this.props.handleClick(_this.props.id);
-	    };
-
-	    _this.state = {
-	      zDepth: 1,
-	      zIndex: '0'
-	    };
-	    return _this;
-	  }
-
-	  _createClass(Ticket, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'col-lg-10-12 col-md-10-12 col-sm-5-12 col-xs-4 ticket' },
-	        _react2.default.createElement(
-	          _materialUi.Paper,
-	          {
-	            zDepth: this.state.zDepth,
-	            style: { height: this.props.height || 100, zIndex: this.state.zIndex, backgroundImage: 'url(' + this.props.bgImageLink + ')' || 'none', backgroundSize: 'cover', cursor: 'pointer', backgroundColor: this.props.bgColor },
-	            onMouseEnter: this.handleMouseEnter,
-	            onMouseLeave: this.handleMouseLeave,
-	            onTouchTap: this.handleClick
-	          },
-	          this.props.children
-	        )
-	      );
-	    }
-	  }]);
-
-	  return Ticket;
-	}(_react2.default.Component);
-
-	exports.default = Ticket;
 
 /***/ }
 /******/ ]);
