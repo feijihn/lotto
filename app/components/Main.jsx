@@ -19,8 +19,8 @@ export default class Main extends React.Component {
     super(props);
     this.props.fetchUserInfo();
     this.props.fetchProducts();
-    setInterval(() => {
-      this.ticketFetch();
+    var handle = setInterval(handle => {
+      this.ticketFetch(handle);
     }, 5000);
   }
   handleTicketClick = value => {
@@ -34,9 +34,15 @@ export default class Main extends React.Component {
     this.props.fetchRounds(id);
     this.ticketFetch();
   };
-  ticketFetch = () => {
-    if (this.props.state.viewingRound._id) {
+  ticketFetch = handle => {
+    if (this.props.state.viewingRound._id && !this.props.state.roundFinished) {
       this.props.fetchTickets(this.props.state.viewingRound._id);
+    }
+    if (this.props.state.roundFinished) {
+      clearInterval(handle);
+      setTimeout(() => {
+        window.location = '/profile';
+      }, 10000);
     }
   };
   handleBuyClick = () => {

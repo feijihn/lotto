@@ -18,6 +18,8 @@ const initialState = {
   viewingRound: {},
   markedTickets: [],
   ownedTickets: [],
+  roundFinished: false,
+  winner: -1,
   numberTicketsMarked: 0,
   viewingTickets: new Array(100 + 1).join('0').split('').map(parseFloat),
   nav: 'index'
@@ -70,6 +72,8 @@ function App(state = initialState, action) {
       action.data.forEach(ticket => {
         if (ticket.user_id === state.userinfo._id) {
           temp[ticket.value] = 2;
+        } else if (ticket.value === state.winner) {
+          temp[ticket.value] = 4;
         } else {
           temp[ticket.value] = 1;
         }
@@ -90,6 +94,16 @@ function App(state = initialState, action) {
     case 'TICKETS_OWNED':
       return Object.assign({}, state, {
         markedTickets: []
+      });
+    case 'ROUND_FINISH':
+      var wtckts = state.viewingTickets;
+      console.log(action.winner + ' = 4');
+      wtckts[action.winner] = 4;
+      return Object.assign({}, state, {
+        viewingTickets: wtckts,
+        markedTickets: [],
+        roundFinished: true,
+        winner: action.winner
       });
     default:
       return state;

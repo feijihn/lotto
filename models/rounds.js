@@ -8,12 +8,13 @@ var roundSchema = mongoose.Schema({
   image: String,
   running: {type: Boolean, default: true},
   startTime: Date,
+  endTime: Date,
   tickets: [{type: mongoose.Schema.ObjectId, ref: 'Ticket'}],
   ticketsOwned: {type: Number, default: 0}
 });
 
-roundSchema.method.incTickets = () => {
-  this.ticketsOwned++;
+roundSchema.methods.getWinner = function() {
+  return Math.floor(Math.random() * (100));
 };
 
 module.exports = mongoose.model('Round', roundSchema);

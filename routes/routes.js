@@ -115,9 +115,7 @@ module.exports = function(app, passport) {
     });
   });
   app.get('/rounds', isLoggedIn, (req, res) => {
-    console.log('requesting rounds for product_id: ' + req.query.prodId);
     Round.find({product_id: req.query.prodId, running: true}, (err, round) => {
-      console.log('found round ' + round + ' sending...');
       if (err) {
         throw err;
       }
@@ -126,7 +124,6 @@ module.exports = function(app, passport) {
     });
   });
   app.get('/tickets', isLoggedIn, (req, res) => {
-    console.log('requesting tickets for round_id: ' + req.query.rndId);
     Ticket.find({round_id: req.query.rndId}, (err, ticket) => {
       if (err) {
         throw err;
@@ -136,8 +133,9 @@ module.exports = function(app, passport) {
     });
   });
   app.post('/owntickets', isLoggedIn, (req, res) => {
+    let resFlag = true;
     if (req.body.values) {
-      req.body.values.forEach(value => {
+      req.body.values.forEach((value, i) => {
         let newTicket = new Ticket();
         newTicket.round_id = req.body.rndId;
         newTicket.user_id = req.user._id;
@@ -147,15 +145,54 @@ module.exports = function(app, passport) {
             throw err;
           }
         });
-        Round.find({_id: req.body.rndId}, (err, round) => {
+        Round.findByIdAndUpdate({_id: req.body.rndId, ticketsOwned: {$lt: 100}}, {$inc: {ticketsOwned: 1}}, (err, round) => {
           if (err) {
             throw err;
           }
-          round.ticketsOwned++;
+          if (round.ticketsOwned === 99) {
+            resFlag = false;
+            console.log('round ' + round._id + 'finished');
+            let winner = Math.floor(Math.random() * 100);
+            console.log('ticket #' + winner + ' winning the round!');
+            res.status(200).json({
+              status: 'FINISH',
+              winnum: winner
+            });
+            let newRound = new Round();
+            console.log('creating new same round...');
+            newRound.product_id = round.product_id;
+            newRound.description = round.description;
+            newRound.image = round.image;
+            newRound.startTime = Date.now();
+            console.log('old round closing and new starting in 10 seconds...');
+            setTimeout(() => {
+              Round.remove({_id: req.body.rndId}, err => {
+                if (err) {
+                  throw err;
+                }
+                console.log('removed round ' + req.body.rndId);
+                newRound.save(err => {
+                  if (err) {
+                    throw err;
+                  }
+                  console.log('new round saved');
+                });
+              });
+            }, 10000);
+          }
+          if (resFlag && i === req.body.values.length - 1) {
+            res.status(200).json({
+              status: 'OK'
+            });
+            resFlag = !resFlag;
+          }
         });
       });
+    } else {
+      res.status(304).json({
+        status: 'NOT MODIFIED'
+      });
     }
-    res.status(200);
   });
   // =====================================
   // FACEBOOK ROUTES =====================
@@ -192,13 +229,13 @@ module.exports = function(app, passport) {
 };
 /** @namespace Middleware */
 /**
-* middleware to ensure requesting user is logged in
-* @param {Object} req request
-* @param {Object} res response
-* @param {Function} next fucntion for processing to next middleware
-* @return {Function} next()
-* @memberof Middleware
-*/
+ * middleware to ensure requesting user is logged in
+ * @param {Object} req request
+ * @param {Object} res response
+ * @param {Function} next fucntion for processing to next middleware
+ * @return {Function} next()
+ * @memberof Middleware
+ */
 function isLoggedIn(req, res, next) {
   // if user is authenticated in the session, carry on
   if (req.isAuthenticated()) {
@@ -208,13 +245,13 @@ function isLoggedIn(req, res, next) {
   res.redirect('/');
 }
 /**
-* middleware to ensure requesting user has administrative rights
-* @param {Object} req request
-* @param {Object} res response
-* @param {Function} next fucntion for processing to next middleware
-* @return {Function} next()
-* @memberof Middleware
-*/
+ * middleware to ensure requesting user has administrative rights
+ * @param {Object} req request
+ * @param {Object} res response
+ * @param {Function} next fucntion for processing to next middleware
+ * @return {Function} next()
+ * @memberof Middleware
+ */
 function isAdmin(req, res, next) {
   if (!req.user && !(req.user.local.accessLevel === 9)) {
     res.status(401).send('Unauthorized');

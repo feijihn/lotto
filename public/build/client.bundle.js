@@ -85304,6 +85304,8 @@
 	  viewingRound: {},
 	  markedTickets: [],
 	  ownedTickets: [],
+	  roundFinished: false,
+	  winner: -1,
 	  numberTicketsMarked: 0,
 	  viewingTickets: new Array(100 + 1).join('0').split('').map(parseFloat),
 	  nav: 'index'
@@ -85359,6 +85361,8 @@
 	      action.data.forEach(function (ticket) {
 	        if (ticket.user_id === state.userinfo._id) {
 	          temp[ticket.value] = 2;
+	        } else if (ticket.value === state.winner) {
+	          temp[ticket.value] = 4;
 	        } else {
 	          temp[ticket.value] = 1;
 	        }
@@ -85379,6 +85383,16 @@
 	    case 'TICKETS_OWNED':
 	      return Object.assign({}, state, {
 	        markedTickets: []
+	      });
+	    case 'ROUND_FINISH':
+	      var wtckts = state.viewingTickets;
+	      console.log(action.winner + ' = 4');
+	      wtckts[action.winner] = 4;
+	      return Object.assign({}, state, {
+	        viewingTickets: wtckts,
+	        markedTickets: [],
+	        roundFinished: true,
+	        winner: action.winner
 	      });
 	    default:
 	      return state;
@@ -85460,35 +85474,12 @@
 
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Main).call(this, props));
 
-	    _this.handleTicketClick = function (value) {
-	      _this.props.claimTicket(value);
-	    };
-
-	    _this.deselectTicket = function (value) {
-	      _this.props.deselectTicket(value);
-	    };
-
-	    _this.handleProductClick = function (id) {
-	      _this.props.viewingProduct(id);
-	      _this.props.fetchRounds(id);
-	      _this.ticketFetch();
-	    };
-
-	    _this.ticketFetch = function () {
-	      if (_this.props.state.viewingRound._id) {
-	        _this.props.fetchTickets(_this.props.state.viewingRound._id);
-	      }
-	    };
-
-	    _this.handleBuyClick = function () {
-	      _this.props.ownTickets(_this.props.state.markedTickets, _this.props.state.viewingRound._id);
-	      _this.props.fetchTickets(_this.props.state.viewingRound._id);
-	    };
+	    _initialiseProps.call(_this);
 
 	    _this.props.fetchUserInfo();
 	    _this.props.fetchProducts();
-	    setInterval(function () {
-	      _this.ticketFetch();
+	    var handle = setInterval(function (handle) {
+	      _this.ticketFetch(handle);
 	    }, 5000);
 	    return _this;
 	  }
@@ -85532,6 +85523,41 @@
 	// Vk id: { this.state.userinfo.vk.id || 'not linked' }
 	// </ListItem>
 
+
+	var _initialiseProps = function _initialiseProps() {
+	  var _this2 = this;
+
+	  this.handleTicketClick = function (value) {
+	    _this2.props.claimTicket(value);
+	  };
+
+	  this.deselectTicket = function (value) {
+	    _this2.props.deselectTicket(value);
+	  };
+
+	  this.handleProductClick = function (id) {
+	    _this2.props.viewingProduct(id);
+	    _this2.props.fetchRounds(id);
+	    _this2.ticketFetch();
+	  };
+
+	  this.ticketFetch = function (handle) {
+	    if (_this2.props.state.viewingRound._id && !_this2.props.state.roundFinished) {
+	      _this2.props.fetchTickets(_this2.props.state.viewingRound._id);
+	    }
+	    if (_this2.props.state.roundFinished) {
+	      clearInterval(handle);
+	      setTimeout(function () {
+	        window.location = '/profile';
+	      }, 10000);
+	    }
+	  };
+
+	  this.handleBuyClick = function () {
+	    _this2.props.ownTickets(_this2.props.state.markedTickets, _this2.props.state.viewingRound._id);
+	    _this2.props.fetchTickets(_this2.props.state.viewingRound._id);
+	  };
+	};
 
 	exports.default = Main;
 
@@ -86047,10 +86073,21 @@
 	var RoundPage = function (_React$Component) {
 	  _inherits(RoundPage, _React$Component);
 
-	  function RoundPage() {
+	  function RoundPage(props) {
 	    _classCallCheck(this, RoundPage);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(RoundPage).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(RoundPage).call(this, props));
+
+	    _this.handleClose = function () {
+	      _this.setState({
+	        open: false
+	      });
+	    };
+
+	    _this.state = {
+	      open: true
+	    };
+	    return _this;
 	  }
 
 	  _createClass(RoundPage, [{
@@ -86059,6 +86096,24 @@
 	      var _this2 = this;
 
 	      var tickets = this.props.state.viewingTickets.map(function (value, i) {
+	        if (i === _this2.props.state.winner) {
+	          return _react2.default.createElement(
+	            _Ticket2.default,
+	            {
+	              lg: 2,
+	              md: 1,
+	              sm: 1,
+	              height: 75,
+	              bgColor: Colors.amberA400,
+	              id: i
+	            },
+	            _react2.default.createElement(
+	              'h2',
+	              { style: { textAlign: 'center' } },
+	              '!WIN!'
+	            )
+	          );
+	        }
 	        if (value === 0) {
 	          return _react2.default.createElement(
 	            _Ticket2.default,
@@ -86137,33 +86192,74 @@
 	            )
 	          );
 	        }
+	        if (value === 4) {}
+
 	        return undefined;
 	      });
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'roundPage' },
-	        _react2.default.createElement(
-	          _Tile2.default,
-	          {
-	            bgColor: Colors.grey500
-	          },
+	      if (!this.props.state.roundFinished) {
+	        return _react2.default.createElement(
+	          'div',
+	          { className: 'roundPage' },
 	          _react2.default.createElement(
-	            'h1',
-	            { style: { textAlign: 'center' } },
-	            'Розыгрыш'
-	          ),
-	          tickets,
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'buyTickets' },
-	            'Вы выбрали ',
-	            this.props.state.markedTickets.length,
-	            ' билетов.',
-	            _react2.default.createElement('br', null),
-	            _react2.default.createElement(_materialUi.FlatButton, { label: 'Купить', backgroundColor: Colors.grey50, onTouchTap: this.props.handleBuyClick })
+	            _Tile2.default,
+	            {
+	              bgColor: Colors.grey500
+	            },
+	            _react2.default.createElement(
+	              'h1',
+	              { style: { textAlign: 'center' } },
+	              'Розыгрыш'
+	            ),
+	            tickets,
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'buyTickets' },
+	              'Вы выбрали ',
+	              this.props.state.markedTickets.length,
+	              ' билетов.',
+	              _react2.default.createElement('br', null),
+	              _react2.default.createElement(_materialUi.FlatButton, { label: 'Купить', backgroundColor: Colors.grey50, onTouchTap: this.props.handleBuyClick })
+	            )
 	          )
-	        )
-	      );
+	        );
+	      }
+	      if (this.props.state.roundFinished) {
+	        var actions = [_react2.default.createElement(_materialUi.FlatButton, {
+	          label: 'Хорошо',
+	          primary: true,
+	          onTouchTap: this.handleClose
+	        })];
+	        return _react2.default.createElement(
+	          'div',
+	          { className: 'roundPage' },
+	          _react2.default.createElement(
+	            _Tile2.default,
+	            {
+	              bgColor: Colors.grey500
+	            },
+	            _react2.default.createElement(
+	              'h1',
+	              { style: { textAlign: 'center' } },
+	              'Розыгрыш'
+	            ),
+	            tickets,
+	            _react2.default.createElement(
+	              _materialUi.Dialog,
+	              {
+	                title: 'Розыгрыш завершен!',
+	                actions: actions,
+	                modal: true,
+	                open: this.state.open
+	              },
+	              'Розыгрыш завершен. Выйгрышный билет: ',
+	              this.props.state.winner,
+	              '!',
+	              _react2.default.createElement('br', null),
+	              'Вы будете перенаправлены на главную через некоторое время.'
+	            )
+	          )
+	        );
+	      }
 	    }
 	  }]);
 
@@ -86516,6 +86612,13 @@
 	    data: data
 	  };
 	}
+
+	function roundFinished(winnum) {
+	  return {
+	    type: 'ROUND_FINISH',
+	    winner: winnum
+	  };
+	}
 	/**
 	 * Fetches products from server
 	 * @function fetchProducts
@@ -86651,10 +86754,16 @@
 	  return function (dispatch) {
 	    _jquery2.default.ajax({
 	      url: '/owntickets',
+	      dataType: 'json',
 	      method: 'post',
 	      data: { rndId: rndId, values: values },
 	      success: function success(data) {
-	        dispatch(ticketsOwned());
+	        if (data.status === 'OK') {
+	          dispatch(ticketsOwned());
+	        }
+	        if (data.status === 'FINISH') {
+	          dispatch(roundFinished(data.winnum));
+	        }
 	      },
 	      error: function error(xhr, status, err) {
 	        console.error(status, err.toString());

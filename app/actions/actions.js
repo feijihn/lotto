@@ -92,6 +92,13 @@ function viewingTickets(data) {
     data: data
   };
 }
+
+function roundFinished(winnum) {
+  return {
+    type: 'ROUND_FINISH',
+    winner: winnum
+  };
+}
 /**
  * Fetches products from server
  * @function fetchProducts
@@ -190,6 +197,7 @@ export function viewingProduct(product) {
   };
 }
 
+
 /**
  * fetch ticket for specified round
  * @function fetchRounds
@@ -225,10 +233,16 @@ export function ownTickets(values, rndId) {
   return function(dispatch) {
     $.ajax({
       url: '/owntickets',
+      dataType: 'json',
       method: 'post',
       data: {rndId: rndId, values: values},
       success: data => {
-        dispatch(ticketsOwned());
+        if (data.status === 'OK') {
+          dispatch(ticketsOwned());
+        }
+        if (data.status === 'FINISH') {
+          dispatch(roundFinished(data.winnum));
+        }
       },
       error: (xhr, status, err) => {
         console.error(status, err.toString());
