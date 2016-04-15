@@ -66,12 +66,23 @@ function markTicket(value) {
   };
 }
 
+/**
+ * Action representing that some tickets are owned to reducer
+ * @return {Object} object to update the current store state
+ * @memberof Actions
+ */
 function ticketsOwned() {
   return {
     type: 'TICKETS_OWNED'
   };
 }
 
+/**
+ * Action representing that ticket is unmarked to reducer
+ * @param {Number} value value of ticket to unmark
+ * @return {Object} object to update the current store state
+ * @memberof Actions
+ */
 function ticketDeselected(value) {
   return {
     type: 'TICKET_DESELECT',
@@ -83,6 +94,12 @@ function ownedTicket(value) {
   return {
     type: 'OWN_TICKET',
     value: value
+  };
+}
+
+function viewingAlerts() {
+  return {
+    type: 'VIEW_ALERTS'
   };
 }
 
@@ -197,7 +214,6 @@ export function viewingProduct(product) {
   };
 }
 
-
 /**
  * fetch ticket for specified round
  * @function fetchRounds
@@ -254,5 +270,11 @@ export function ownTickets(values, rndId) {
 export function deselectTicket(value) {
   return function(dispatch) {
     dispatch(ticketDeselected(value));
+  };
+}
+
+export function viewAlerts(value) {
+  return function(dispatch) {
+    dispatch(viewingAlerts());
   };
 }

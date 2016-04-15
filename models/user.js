@@ -2,9 +2,11 @@
 // load the things we need
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
+var Message = require('./message.js');
 
+var schema = mongoose.Schema;
 // define the schema for our user model
-var userSchema = mongoose.Schema({
+var userSchema = schema({
   local: {
     username: {type: String, default: ''},
     email: {type: String, default: ''},
@@ -20,7 +22,8 @@ var userSchema = mongoose.Schema({
     id: {type: String, default: ''},
     token: {type: String, default: ''},
     fullname: {type: String, default: ''}
-  }
+  },
+  messages: [Message.schema]
 });
 
 // methods ======================

@@ -24,11 +24,14 @@ export default class RoundPage extends React.Component {
           lg={2}
           md={1}
           sm={1}
-          height={75}
-          bgColor={Colors.amberA400}
+          bgImage={'../../public/images/ballAmber.png'}
           id={i}
           >
-          <h2 style={{textAlign: 'center'}}>
+          <h2 style={{
+            textAlign: 'center',
+            position: 'absolute',
+            width: '100%'
+          }}>
           !WIN!
           </h2>
           </Ticket>
@@ -40,12 +43,20 @@ export default class RoundPage extends React.Component {
           lg={1}
           md={2}
           sm={3}
-          height={75}
-          bgColor={Colors.white}
+          bgImage={'../../public/images/ballBlue.png'}
           id={i}
           handleClick={ value => this.props.handleTicketClick(value) }
           >
-          <h2 style={{textAlign: 'center'}}>
+          <h2 style={{
+            textAlign: 'center',
+            position: 'absolute',
+            width: '100%',
+            top: '50%',
+            transform: 'translate(-8%, -180%)',
+            fontFamily: 'Flagship Slab',
+            fontSize: 15,
+            fontWeight: 400
+          }}>
           {i}
           </h2>
           </Ticket>
@@ -57,11 +68,19 @@ export default class RoundPage extends React.Component {
           lg={1}
           md={2}
           sm={3}
-          height={75}
-          bgColor={Colors.red100}
+          bgImage={'../../public/images/ballRed.png'}
           id={i}
           >
-          <h2 style={{textAlign: 'center'}}>
+          <h2 style={{
+            textAlign: 'center',
+            position: 'absolute',
+            width: '100%',
+            top: '50%',
+            transform: 'translate(-8%, -180%)',
+            fontFamily: 'Flagship Slab',
+            fontSize: 15,
+            fontWeight: 400
+          }}>
           {i}
           </h2>
           </Ticket>
@@ -73,11 +92,19 @@ export default class RoundPage extends React.Component {
           lg={1}
           md={2}
           sm={3}
-          height={75}
-          bgColor={Colors.green100}
+          bgImage={'../../public/images/ballGreen.png'}
           id={i}
           >
-          <h2 style={{textAlign: 'center'}}>
+          <h2 style={{
+            textAlign: 'center',
+            position: 'absolute',
+            width: '100%',
+            top: '50%',
+            transform: 'translate(-8%, -180%)',
+            fontFamily: 'Flagship Slab',
+            fontSize: 15,
+            fontWeight: 400
+          }}>
           {i}
           </h2>
           </Ticket>
@@ -89,37 +116,31 @@ export default class RoundPage extends React.Component {
           lg={2}
           md={1}
           sm={1}
-          height={75}
-          bgColor={Colors.amber100}
+          bgImage={'../../public/images/ballPurple.png'}
           id={i}
           handleClick={ value => this.props.deselectTicket(value) }
           >
-          <h2 style={{textAlign: 'center'}}>
+          <h2 style={{
+            textAlign: 'center',
+            position: 'absolute',
+            width: '100%',
+            top: '50%',
+            transform: 'translate(-8%, -180%)',
+            fontFamily: 'Flagship Slab',
+            fontSize: 15,
+            fontWeight: 400
+          }}>
           {i}
           </h2>
           </Ticket>
         );
       }
-      if (value === 4) {
-      }
-
       return undefined;
     });
     if (!this.props.state.roundFinished) {
       return (
         <div className={'roundPage'}>
-        <Tile
-        bgColor={Colors.grey500}
-        >
-        <h1 style={{textAlign: 'center'}}>
-        Розыгрыш
-        </h1>
-        {tickets}
-        <div className={'buyTickets'}>
-        Вы выбрали {this.props.state.markedTickets.length} билетов.<br/>
-        <FlatButton label={'Купить'} backgroundColor={Colors.grey50} onTouchTap={this.props.handleBuyClick}/>
-        </div>
-        </Tile>
+              {tickets}
         </div>
       );
     }
@@ -133,9 +154,6 @@ export default class RoundPage extends React.Component {
       ];
       return (
         <div className={'roundPage'}>
-        <Tile
-        bgColor={Colors.grey500}
-        >
         <h1 style={{textAlign: 'center'}}>
         Розыгрыш
         </h1>
@@ -149,7 +167,6 @@ export default class RoundPage extends React.Component {
         Розыгрыш завершен. Выйгрышный билет: {this.props.state.winner}!<br />
         Вы будете перенаправлены на главную через некоторое время.
         </Dialog>
-        </Tile>
         </div>
       );
     }

@@ -38,10 +38,10 @@ export default class Products extends React.Component {
       md={12}
       sm={12}
       height={800}
-      bgColor={Colors.grey200}
+      bgColor={Colors.lightBlue50}
       >
-      <h1 style={{textAlign: 'center', backgroundColor: Colors.blueGrey200, padding: 10, color: 'white'}}>
-      Продукты
+      <h1 style={{textAlign: 'center', backgroundColor: Colors.blueGrey400, padding: 10, color: 'white'}}>
+      Лоты
       </h1>
       { products }
       </Tile>

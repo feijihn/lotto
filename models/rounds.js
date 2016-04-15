@@ -1,16 +1,19 @@
-
+'use strict';
 var mongoose = require('mongoose');
 
-var roundSchema = mongoose.Schema({
-  product_id: {type: mongoose.Schema.ObjectId, ref: 'Product'},
-  purchase_id: mongoose.Schema.ObjectId,
+var schema = mongoose.Schema;
+
+var roundSchema = schema({
+  product_id: {type: schema.ObjectId, ref: 'Product'},
+  purchase_id: schema.ObjectId,
   description: String,
   image: String,
   running: {type: Boolean, default: true},
   startTime: Date,
   endTime: Date,
-  tickets: [{type: mongoose.Schema.ObjectId, ref: 'Ticket'}],
-  ticketsOwned: {type: Number, default: 0}
+  tickets: [{type: schema.ObjectId, ref: 'Ticket'}],
+  ticketsOwned: {type: Number, default: 0},
+  participants: [{type: schema.ObjectId, ref: 'User'}]
 });
 
 roundSchema.methods.getWinner = function() {

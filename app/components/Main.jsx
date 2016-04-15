@@ -33,6 +33,7 @@ export default class Main extends React.Component {
     this.props.viewingProduct(id);
     this.props.fetchRounds(id);
     this.ticketFetch();
+    window.location.hash = 'round';
   };
   ticketFetch = handle => {
     if (this.props.state.viewingRound._id && !this.props.state.roundFinished) {
@@ -49,10 +50,13 @@ export default class Main extends React.Component {
     this.props.ownTickets(this.props.state.markedTickets, this.props.state.viewingRound._id);
     this.props.fetchTickets(this.props.state.viewingRound._id);
   }
+  handleAlertsClick = () => {
+    this.props.viewAlerts();
+  }
   render() {
     return (
-      <div className="main" style={{backgroundColor: Colors.grey50, height: '100%'}}>
-        <Header userinfo={this.props.state.userinfo || {}} />
+      <div className="main" style={{backgroundColor: '#23314F', height: '100%'}}>
+        <Header userinfo={this.props.state.userinfo || {}} handleAlertsClick={this.handleAlertsClick} />
           <Grid style={{padding: 20}}>
             <Row>
               <Content state={this.props.state} handleProductClick={this.handleProductClick} handleTicketClick={this.handleTicketClick} hanleBuyClick={this.handleBuyClick} deselectTicket={this.deselectTicket}/>

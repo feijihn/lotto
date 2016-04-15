@@ -4,6 +4,7 @@ var Product = require('../models/product.js');
 var Round = require('../models/rounds.js');
 var Ticket = require('../models/tickets.js');
 var mongoose = require('mongoose');
+var roundLogic = require('../roundLogic.js');
 
 module.exports = function(app, passport) {
   // =====================================
@@ -22,7 +23,7 @@ module.exports = function(app, passport) {
   });
   // process the login form
   app.post('/login', passport.authenticate('local-login', {
-    successRedirect: '/profile', // redirect to the secure profile section
+    successRedirect: '/main', // redirect to the secure profile section
     failureRedirect: '/login', // redirect back to the signup page if there is an error
     failureFlash: true // allow flash messages
   }));
@@ -37,7 +38,7 @@ module.exports = function(app, passport) {
   // process the signup form
   // app.post('/signup', do all our passport stuff here);
   app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect: '/profile', // redirect to the secure profile section
+    successRedirect: '/main', // redirect to the secure profile section
     failureRedirect: '/signup', // redirect back to the signup page if there is an error
     failureFlash: true // allow flash messages
   }));
@@ -46,11 +47,11 @@ module.exports = function(app, passport) {
   // =====================================
   // we will want this protected so you have to be logged in to visit
   // we will use route middleware to verify this (the isLoggedIn function)
-  app.get('/profile', isLoggedIn, (req, res) => {
-    res.render('profile.pug');
+  app.get('/main', isLoggedIn, (req, res) => {
+    res.render('main.pug');
   });
   app.get('/product', isLoggedIn, (req, res) => {
-    res.render('profile.pug');
+    res.render('main.pug');
   });
   app.get('/userinfo', isLoggedIn, (req, res) => {
     res.send(req.user);
@@ -135,6 +136,11 @@ module.exports = function(app, passport) {
   app.post('/owntickets', isLoggedIn, (req, res) => {
     let resFlag = true;
     if (req.body.values) {
+      Round.findOneAndUpdate({_id: req.body.rndId, participants: {$nin: [String(req.user._id)]}}, {$push: {participants: String(req.user._id)}}, (err, round) => {
+        if (err) {
+          throw err;
+        }
+      });
       req.body.values.forEach((value, i) => {
         let newTicket = new Ticket();
         newTicket.round_id = req.body.rndId;
@@ -152,33 +158,19 @@ module.exports = function(app, passport) {
           if (round.ticketsOwned === 99) {
             resFlag = false;
             console.log('round ' + round._id + 'finished');
-            let winner = Math.floor(Math.random() * 100);
-            console.log('ticket #' + winner + ' winning the round!');
+            let winningTicket = Math.floor(Math.random() * 100);
+            console.log('ticket #' + winningTicket + ' winning the round!');
             res.status(200).json({
               status: 'FINISH',
-              winnum: winner
+              winnum: winningTicket
             });
-            let newRound = new Round();
-            console.log('creating new same round...');
-            newRound.product_id = round.product_id;
-            newRound.description = round.description;
-            newRound.image = round.image;
-            newRound.startTime = Date.now();
-            console.log('old round closing and new starting in 10 seconds...');
-            setTimeout(() => {
-              Round.remove({_id: req.body.rndId}, err => {
-                if (err) {
-                  throw err;
-                }
-                console.log('removed round ' + req.body.rndId);
-                newRound.save(err => {
-                  if (err) {
-                    throw err;
-                  }
-                  console.log('new round saved');
-                });
-              });
-            }, 10000);
+            roundLogic.restartRoundWithDelay(round._id, round, 10000);
+            Ticket.findOne({round_id: round._id, value: winningTicket}, (err, ticket) => {
+              if (err) {
+                throw err;
+              }
+              roundLogic.sendAlertsToParticipants(round._id, ticket.user_id);
+            });
           }
           if (resFlag && i === req.body.values.length - 1) {
             res.status(200).json({
@@ -202,7 +194,7 @@ module.exports = function(app, passport) {
 
   // handle the callback after facebook has authenticated the user
   app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-    successRedirect: '/profile',
+    successRedirect: '/main',
     failureRedirect: '/'
   }));
   // =====================================
@@ -217,7 +209,7 @@ module.exports = function(app, passport) {
     failureRedirect: '/'
   }), (req, res) => {
     // Successful authentication, redirect home.
-    res.redirect('/profile');
+    res.redirect('/main');
   });
   // =====================================
   // LOGOUT ==============================
