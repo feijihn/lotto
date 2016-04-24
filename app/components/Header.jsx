@@ -1,7 +1,6 @@
 import React from 'react';
-import {FlatButton, List, ListItem, Avatar, Paper, Divider, Badge, Dialog} from 'material-ui';
+import {FlatButton, List, ListItem, Avatar, Paper, Divider, Badge, Dialog, Colors} from 'material-ui';
 import Tile from './Tile.jsx';
-var Colors = require('material-ui/lib/styles/colors');
 
 export default class Header extends React.Component {
   constructor(props) {

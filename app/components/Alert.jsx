@@ -1,6 +1,5 @@
 import React from 'react';
-import {ListItem, Avatar} from 'material-ui';
-var Colors = require('material-ui/lib/styles/colors');
+import {ListItem, Avatar, Colors} from 'material-ui';
 
 export default class Alert extends React.Component {
   constructor(props) {

@@ -1,8 +1,7 @@
 import React from 'react';
 import thunkMiddleware from 'redux-thunk';
 import {createStore, applyMiddleware} from 'redux';
-import {Paper, Avatar, List, ListItem, FlatButton, Divider} from 'material-ui';
-var Colors = require('material-ui/lib/styles/colors');
+import {Paper, Avatar, List, ListItem, FlatButton, Divider, Colors} from 'material-ui';
 import {Grid, Row, Col} from 'react-bootstrap';
 import Tile from './Tile.jsx';
 import App from '../reducers/reducers.js';

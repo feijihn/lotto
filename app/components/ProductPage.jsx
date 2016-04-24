@@ -4,8 +4,7 @@ import Rounds from './Rounds.jsx';
 import RoundPage from './RoundPage.jsx';
 import {Col} from 'react-bootstrap';
 import {Image, Thumbnail} from 'react-bootstrap';
-import {FlatButton, List, ListItem} from 'material-ui';
-var Colors = require('material-ui/lib/styles/colors');
+import {FlatButton, List, ListItem, Colors} from 'material-ui';
 
 export default class ProductPage extends React.Component {
   render() {

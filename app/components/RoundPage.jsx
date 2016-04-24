@@ -1,8 +1,7 @@
 import React from 'react';
-import {FlatButton, Dialog} from 'material-ui';
+import {FlatButton, Dialog, Colors} from 'material-ui';
 import Ticket from './Ticket.jsx';
 import Tile from './Tile.jsx';
-var Colors = require('material-ui/lib/styles/colors');
 
 export default class RoundPage extends React.Component {
   constructor(props) {

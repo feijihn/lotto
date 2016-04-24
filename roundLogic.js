@@ -38,8 +38,14 @@ function createNewRound(prodId) {
   });
 }
 
-function runNextRound(prodId) {
+function runNextRound(prodId, seqId) {
   console.log('running closest round');
+  Round.update({product_id: prodId, seq_id: seqId}, {$set: {running: true}}, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    console.log(result);
+  });
 }
 
 module.exports.restartRoundWithDelay = function(id, round, delay) {
