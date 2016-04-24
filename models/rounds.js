@@ -5,15 +5,16 @@ var schema = mongoose.Schema;
 
 var roundSchema = schema({
   product_id: {type: schema.ObjectId, ref: 'Product'},
-  purchase_id: schema.ObjectId,
   description: String,
   image: String,
-  running: {type: Boolean, default: true},
+  running: {type: Boolean, default: false},
   startTime: Date,
   endTime: Date,
   tickets: [{type: schema.ObjectId, ref: 'Ticket'}],
   ticketsOwned: {type: Number, default: 0},
-  participants: [{type: schema.ObjectId, ref: 'User'}]
+  seq_id: {type: Number, default: 0},
+  participants: [{type: schema.ObjectId, ref: 'User'}],
+  winnum: Number
 });
 
 roundSchema.methods.getWinner = function() {

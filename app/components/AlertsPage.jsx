@@ -1,16 +1,21 @@
 import React from 'react';
+import Alert from './Alert.jsx';
 import Tile from './Tile.jsx';
 import {List, ListItem, Avatar} from 'material-ui';
 var Colors = require('material-ui/lib/styles/colors');
 
 export default class AlertsPage extends React.Component {
   render() {
-    let alerts = this.props.state.userinfo.messages.map(message => {
+    let rawAlerts = this.context.store.userinfo.messages;
+    let alerts = rawAlerts.reverse().map(message => {
+      let time = new Date(message.time);
       return (
-        <ListItem
-        leftAvatar={<Avatar>{message.sender[0]}</Avatar>}
-        primaryText={message.sender}
-        secondaryText={message.body}
+        <Alert
+          message={message}
+          time={time}
+          id={message._id}
+          status={message.status}
+          handleAlertRead={this.props.handleAlertRead}
         />
       );
     });

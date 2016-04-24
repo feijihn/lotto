@@ -6,7 +6,7 @@ function recieveProducts(data) {
     type: 'RECIEVE_PRODUCTS',
     products: data,
     category: 'products'
-  }
+  };
 }
 
 function recieveRounds(data) {
@@ -14,42 +14,41 @@ function recieveRounds(data) {
     type: 'RECIEVE_ROUNDS',
     rounds: data,
     category: 'rounds'
-  }
+  };
 }
 
 export function fetchProducts() {
   return function(dispatch) {
-      console.log('requesting products...')
-    return(
+    return (
       $.ajax({
         url: '/products',
         dataType: 'json',
         success: data => {
-          dispatch(recieveProducts(data))
+          dispatch(recieveProducts(data));
         },
         error: (xhr, status, err) => {
           console.error(this.props.url, status, err.toString());
         }
       })
-    )
-  }
+    );
+  };
 }
 
 export function fetchRounds() {
   return function(dispatch) {
-      console.log('requesting products...')
-    return(
+    return (
       $.ajax({
         url: '/rounds',
         dataType: 'json',
         success: data => {
-          dispatch(recieveRounds(data))
+          dispatch(recieveRounds(data));
         },
         error: (xhr, status, err) => {
           console.error(this.props.url, status, err.toString());
         }
       })
-    )
-  }
+    );
+  };
 }
+
 

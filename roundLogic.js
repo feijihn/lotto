@@ -4,6 +4,7 @@ var Ticket = require('./models/tickets.js');
 var Round = require('./models/rounds.js');
 var User = require('./models/user.js');
 var Message = require('./models/message.js');
+var Product = require('./models/product.js');
 
 function generateWinnerMessage(rndId) {
   return 'Greetings!\n Your ticket was the winner\'s one in the round id ' + rndId + '! Please contact round maintainer to claim your prize.';
@@ -13,26 +14,49 @@ function generateRoundEndMessage(rndId) {
   return 'Hello.\nRound with id ' + rndId + ' y in has ended. You are not the winner today, better luck next time!';
 }
 
-module.exports.restartRoundWithDelay = function(id, round, delay) {
+function createNewRound(prodId) {
   let newRound = new Round();
   console.log('creating new same round...');
-  newRound.product_id = round.product_id;
-  newRound.description = round.description;
-  newRound.image = round.image;
+  newRound.product_id = prodId;
   newRound.startTime = Date.now();
-  console.log('old round closing and new starting in 10 seconds...');
-  setTimeout(() => {
-    Round.remove({_id: id}, err => {
+  Product.findOne({_id: prodId}, (err, prod) => {
+    if (err) {
+      throw err;
+    }
+    prod.update({$inc: {roundsCount: 1}}, err => {
       if (err) {
         throw err;
       }
-      console.log('removed round ' + id);
+      newRound.seq_id = prod.roundsCount;
       newRound.save(err => {
         if (err) {
           throw err;
         }
-        console.log('new round saved');
+        return newRound;
       });
+    });
+  });
+}
+
+function runNextRound(prodId, seqId) {
+  console.log('running closest round');
+  Round.update({product_id: prodId, seq_id: seqId}, {$set: {running: true}}, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    console.log(result);
+  });
+}
+
+module.exports.restartRoundWithDelay = function(id, round, delay) {
+  setTimeout(() => {
+    Round.update({_id: id}, {$set: {running: false}}, err => {
+      if (err) {
+        throw err;
+      }
+      console.log('closed round ' + id);
+      createNewRound(round.product_id);
+      runNextRound(round.product_id, round.seq_id + 1);
     });
   }, delay);
 };
@@ -45,18 +69,57 @@ module.exports.sendAlertsToParticipants = function(rndId, winner) {
     round.participants.forEach(participant => {
       console.log(String(participant) + 'and' + String(winner) + ' === ' + String(participant) === String(winner));
       if (String(participant) === String(winner)) {
-        User.findByIdAndUpdate(participant, {$push: {messages: {sender: 'System', body: generateWinnerMessage(rndId)}}}, err => {
+        let alert = new Message();
+        alert.sender = 'System';
+        alert.body = generateWinnerMessage(rndId);
+        alert.time = Date.now();
+        alert.save((err, alert) => {
           if (err) {
             throw err;
           }
+          User.findByIdAndUpdate(participant, {$push: {messages: alert}}, err => {
+            if (err) {
+              throw err;
+            }
+          });
         });
       } else {
-        User.findByIdAndUpdate(participant, {$push: {messages: {sender: 'System', body: generateRoundEndMessage(rndId)}}}, err => {
+        let alert = new Message();
+        alert.sender = 'System';
+        alert.body = generateWinnerMessage(rndId);
+        alert.time = Date.now();
+        alert.save((err, alert) => {
           if (err) {
             throw err;
           }
+          User.findByIdAndUpdate(participant, {$push: {messages: alert}}, err => {
+            if (err) {
+              throw err;
+            }
+          });
         });
       }
     });
+  });
+};
+
+module.exports.ownTicket = function(rndId, userId, value) {
+  Ticket.find({round_id: rndId, value: value}, (err, ticket) => {
+    if (err) {
+      throw err;
+    }
+    if (ticket.length === 0) {
+      let newTicket = new Ticket();
+      newTicket.round_id = rndId;
+      newTicket.user_id = userId;
+      newTicket.value = value;
+      newTicket.save(err => {
+        if (err) {
+          throw err;
+        }
+      });
+    } else {
+      console.log('Ticket was already owned; TODO');
+    }
   });
 };

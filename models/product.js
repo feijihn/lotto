@@ -7,7 +7,8 @@ var productSchema = schema({
   name: String,
   price: Number,
   description: String,
-  image: String
+  image: String,
+  roundsCount: {type: Number, default: 0}
 });
 
 module.exports = mongoose.model('Product', productSchema);

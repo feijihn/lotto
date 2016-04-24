@@ -1,7 +1,7 @@
 import {connect} from 'react-redux';
 import React from 'react';
 import Main from './components/Main.jsx';
-import {fetchUserInfo, fetchProducts, fetchRounds, fetchTickets, claimTicket, viewingProduct, ownTickets, deselectTicket} from './actions/actions.js';
+import {fetchUserInfo, fetchProducts, fetchRounds, fetchTickets, claimTicket, viewingProduct, ownTickets, deselectTicket, markAlertAsRead, fetchRoundsArchive, clearTickets} from './actions/actions.js';
 
 const mapStateToProps = state => {
   return {
@@ -34,6 +34,15 @@ const mapDispatchToProps = dispatch => {
     },
     deselectTicket: value => {
       dispatch(deselectTicket(value));
+    },
+    markAlertAsRead: alertId => {
+      dispatch(markAlertAsRead(alertId));
+    },
+    fetchRoundsArchive: () => {
+      dispatch(fetchRoundsArchive());
+    },
+    clearTickets: () => {
+      dispatch(clearTickets());
     }
   };
 };

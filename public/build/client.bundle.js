@@ -70,7 +70,7 @@
 
 	var _Main2 = _interopRequireDefault(_Main);
 
-	var _container = __webpack_require__(733);
+	var _container = __webpack_require__(736);
 
 	var _container2 = _interopRequireDefault(_container);
 
@@ -85290,6 +85290,10 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function zeroArray(len) {
+	  return new Array(len + 1).join('0').split('').map(parseFloat);
+	}
+
 	var initialState = {
 	  userinfo: {
 	    local: {
@@ -85298,12 +85302,14 @@
 	    facebook: {},
 	    vk: {}
 	  },
+	  loggedIn: false,
 	  products: [],
 	  rounds: [],
 	  viewingProduct: {},
 	  viewingRound: {},
 	  markedTickets: [],
 	  ownedTickets: [],
+	  roundHistory: [],
 	  roundFinished: false,
 	  winner: -1,
 	  numberTicketsMarked: 0,
@@ -85324,7 +85330,8 @@
 	  switch (action.type) {
 	    case 'RECIEVE_USERINFO':
 	      return Object.assign({}, state, {
-	        userinfo: action.userinfo
+	        userinfo: action.userinfo,
+	        loggedIn: true
 	      });
 	    case 'RECIEVE_PRODUCTS':
 	      return Object.assign({}, state, {
@@ -85332,8 +85339,7 @@
 	      });
 	    case 'RECIEVE_ROUNDS':
 	      return Object.assign({}, state, {
-	        rounds: action.rounds,
-	        viewingRound: action.rounds[0] // take 0th round for now
+	        round: action.round
 	      });
 	    case 'VIEW_PRODUCT':
 	      var prod = _jquery2.default.grep(state.products, function (el) {
@@ -85343,9 +85349,7 @@
 	        return el.product_id === action.product;
 	      });
 	      return Object.assign({}, state, {
-	        viewingProduct: prod,
-	        viewingRound: round,
-	        nav: 'productpage'
+	        product: prod
 	      });
 	    case 'MARK_TICKET':
 	      var tckts = state.viewingTickets;
@@ -85359,6 +85363,7 @@
 	    case 'VIEWING_TICKETS':
 	      var temp = state.viewingTickets;
 	      action.data.forEach(function (ticket) {
+	        console.log(ticket);
 	        if (ticket.user_id === state.userinfo._id) {
 	          temp[ticket.value] = 2;
 	        } else if (ticket.value === state.winner) {
@@ -85386,13 +85391,24 @@
 	      });
 	    case 'ROUND_FINISH':
 	      var wtckts = state.viewingTickets;
-	      console.log(action.winner + ' = 4');
 	      wtckts[action.winner] = 4;
 	      return Object.assign({}, state, {
 	        viewingTickets: wtckts,
 	        markedTickets: [],
 	        roundFinished: true,
 	        winner: action.winner
+	      });
+	    case 'LOGGED_IN':
+	      return Object.assign({}, state, {
+	        loggedIn: action.bool
+	      });
+	    case 'ROUNDS_ARCHIVE_FETCHED':
+	      return Object.assign({}, state, {
+	        roundHistory: action.data
+	      });
+	    case 'CLEAR_TICKETS':
+	      return Object.assign({}, state, {
+	        viewingTickets: zeroArray(100)
 	      });
 	    default:
 	      return state;
@@ -85443,11 +85459,15 @@
 
 	var _Content2 = _interopRequireDefault(_Content);
 
-	var _Header = __webpack_require__(731);
+	var _Header = __webpack_require__(733);
 
 	var _Header2 = _interopRequireDefault(_Header);
 
-	var _actions = __webpack_require__(732);
+	var _AboutUs = __webpack_require__(734);
+
+	var _AboutUs2 = _interopRequireDefault(_AboutUs);
+
+	var _actions = __webpack_require__(735);
 
 	var _reactTapEventPlugin = __webpack_require__(689);
 
@@ -85469,19 +85489,45 @@
 	var Main = function (_React$Component) {
 	  _inherits(Main, _React$Component);
 
-	  function Main(props) {
+	  function Main() {
+	    var _Object$getPrototypeO;
+
+	    var _temp, _this, _ret;
+
 	    _classCallCheck(this, Main);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Main).call(this, props));
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
 
-	    _initialiseProps.call(_this);
-
-	    _this.props.fetchUserInfo();
-	    _this.props.fetchProducts();
-	    var handle = setInterval(function (handle) {
-	      _this.ticketFetch(handle);
-	    }, 5000);
-	    return _this;
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Main)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.getChildContext = function () {
+	      return {
+	        store: _this.props.state,
+	        fetchRounds: _this.props.fetchRounds,
+	        fetchUserInfo: _this.props.fetchUserInfo,
+	        fetchTickets: _this.props.fetchTickets,
+	        clearTickets: _this.props.clearTickets
+	      };
+	    }, _this.componentDidMount = function () {
+	      _this.props.fetchUserInfo();
+	      _this.props.fetchProducts();
+	      if (window.location.hash === '_=_') {
+	        window.location.hash = '';
+	      }
+	    }, _this.handleTicketClick = function (value) {
+	      _this.props.claimTicket(value);
+	    }, _this.deselectTicket = function (value) {
+	      _this.props.deselectTicket(value);
+	    }, _this.handleProductClick = function (id) {
+	      _this.props.fetchRounds(id);
+	      _this.props.viewingProduct(id);
+	      window.location.hash = 'round';
+	    }, _this.handleBuyClick = function () {
+	      _this.props.ownTickets(_this.props.state.markedTickets, _this.props.state.round[0]._id);
+	      _this.props.fetchTickets(_this.props.state.round[0]._id);
+	    }, _this.handleAlertRead = function (alertId) {
+	      _this.props.markAlertAsRead(alertId);
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
 	  _createClass(Main, [{
@@ -85497,7 +85543,7 @@
 	          _react2.default.createElement(
 	            _reactBootstrap.Row,
 	            null,
-	            _react2.default.createElement(_Content2.default, { state: this.props.state, handleProductClick: this.handleProductClick, handleTicketClick: this.handleTicketClick, hanleBuyClick: this.handleBuyClick, deselectTicket: this.deselectTicket })
+	            _react2.default.createElement(_Content2.default, { fetchTickets: this.props.fetchTickets, handleProductClick: this.handleProductClick, handleTicketClick: this.handleTicketClick, hanleBuyClick: this.handleBuyClick, deselectTicket: this.deselectTicket, handleAlertRead: this.handleAlertRead })
 	          )
 	        )
 	      );
@@ -85506,6 +85552,26 @@
 
 	  return Main;
 	}(_react2.default.Component);
+
+	exports.default = Main;
+
+
+	Main.childContextTypes = {
+	  store: _react2.default.PropTypes.object,
+	  fetchRounds: _react2.default.PropTypes.func,
+	  fetchTickets: _react2.default.PropTypes.func,
+	  fetchUserInfo: _react2.default.PropTypes.func,
+	  clearTickets: _react2.default.PropTypes.func,
+	  handleBuyAllClick: _react2.default.PropTypes.func
+	};
+
+	_react2.default.Component.contextTypes = {
+	  store: _react2.default.PropTypes.object,
+	  fetchRounds: _react2.default.PropTypes.func,
+	  fetchTickets: _react2.default.PropTypes.func,
+	  fetchUserInfo: _react2.default.PropTypes.func,
+	  clearTickets: _react2.default.PropTypes.func
+	};
 
 	// <ListItem disabled>
 	// email: { this.state.userinfo.local.email || 'none'}
@@ -85522,49 +85588,6 @@
 	// <ListItem disabled>
 	// Vk id: { this.state.userinfo.vk.id || 'not linked' }
 	// </ListItem>
-
-
-	var _initialiseProps = function _initialiseProps() {
-	  var _this2 = this;
-
-	  this.handleTicketClick = function (value) {
-	    _this2.props.claimTicket(value);
-	  };
-
-	  this.deselectTicket = function (value) {
-	    _this2.props.deselectTicket(value);
-	  };
-
-	  this.handleProductClick = function (id) {
-	    _this2.props.viewingProduct(id);
-	    _this2.props.fetchRounds(id);
-	    _this2.ticketFetch();
-	    window.location.hash = 'round';
-	  };
-
-	  this.ticketFetch = function (handle) {
-	    if (_this2.props.state.viewingRound._id && !_this2.props.state.roundFinished) {
-	      _this2.props.fetchTickets(_this2.props.state.viewingRound._id);
-	    }
-	    if (_this2.props.state.roundFinished) {
-	      clearInterval(handle);
-	      setTimeout(function () {
-	        window.location = '/profile';
-	      }, 10000);
-	    }
-	  };
-
-	  this.handleBuyClick = function () {
-	    _this2.props.ownTickets(_this2.props.state.markedTickets, _this2.props.state.viewingRound._id);
-	    _this2.props.fetchTickets(_this2.props.state.viewingRound._id);
-	  };
-
-	  this.handleAlertsClick = function () {
-	    _this2.props.viewAlerts();
-	  };
-	};
-
-	exports.default = Main;
 
 /***/ },
 /* 698 */
@@ -85670,9 +85693,9 @@
 
 	var _Tile2 = _interopRequireDefault(_Tile);
 
-	var _ImageTile = __webpack_require__(700);
+	var _Product = __webpack_require__(700);
 
-	var _ImageTile2 = _interopRequireDefault(_ImageTile);
+	var _Product2 = _interopRequireDefault(_Product);
 
 	var _ProductPage = __webpack_require__(701);
 
@@ -85716,17 +85739,17 @@
 	    value: function render() {
 	      var _this2 = this;
 
-	      var products = this.props.state.products.map(function (product) {
+	      var products = this.context.store.products.map(function (product) {
 	        var imageLink = product.image;
 	        var imageLabel = product.name;
 	        return _react2.default.createElement(
-	          _ImageTile2.default,
+	          _Product2.default,
 	          {
 	            lg: 3,
 	            md: 4,
 	            sm: 6,
 	            xs: 12,
-	            height: 200,
+	            height: 250,
 	            bgImageLink: imageLink,
 	            handleClick: _this2.handleProductClick,
 	            id: product._id
@@ -85748,7 +85771,7 @@
 	            md: 12,
 	            sm: 12,
 	            height: 800,
-	            bgColor: Colors.lightBlue50
+	            bgColor: Colors.purple50
 	          },
 	          _react2.default.createElement(
 	            'h1',
@@ -85794,13 +85817,13 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var ImageTile = function (_React$Component) {
-	  _inherits(ImageTile, _React$Component);
+	var Product = function (_React$Component) {
+	  _inherits(Product, _React$Component);
 
-	  function ImageTile(props) {
-	    _classCallCheck(this, ImageTile);
+	  function Product(props) {
+	    _classCallCheck(this, Product);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ImageTile).call(this, props));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Product).call(this, props));
 
 	    _this.handleMouseLeave = function () {
 	      _this.setState({
@@ -85827,7 +85850,7 @@
 	    return _this;
 	  }
 
-	  _createClass(ImageTile, [{
+	  _createClass(Product, [{
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -85840,7 +85863,8 @@
 	            style: { height: this.props.height || 100, zIndex: this.state.zIndex, backgroundImage: 'url(' + this.props.bgImageLink + ')' || 'none', backgroundSize: 'cover', cursor: 'pointer', backgroundColor: this.props.bgColor },
 	            onMouseEnter: this.handleMouseEnter,
 	            onMouseLeave: this.handleMouseLeave,
-	            onTouchTap: this.handleClick
+	            onTouchTap: this.handleClick,
+	            circle: true
 	          },
 	          this.props.children
 	        )
@@ -85848,10 +85872,10 @@
 	    }
 	  }]);
 
-	  return ImageTile;
+	  return Product;
 	}(_react2.default.Component);
 
-	exports.default = ImageTile;
+	exports.default = Product;
 
 /***/ },
 /* 701 */
@@ -85898,13 +85922,10 @@
 	var ProductPage = function (_React$Component) {
 	  _inherits(ProductPage, _React$Component);
 
-	  function ProductPage(props) {
+	  function ProductPage() {
 	    _classCallCheck(this, ProductPage);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ProductPage).call(this, props));
-
-	    window.location.hash = 'round';
-	    return _this;
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ProductPage).apply(this, arguments));
 	  }
 
 	  _createClass(ProductPage, [{
@@ -85913,55 +85934,104 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'productsBlock' },
+	        _react2.default.createElement('h1', { style: { textAlign: 'center', color: '#FFFFFF', backgroundColor: Colors.purple100 } }),
 	        _react2.default.createElement(
 	          _Tile2.default,
 	          {
-	            lg: 12,
-	            md: 12,
-	            sm: 12,
-	            bgColor: Colors.lightBlue50
+	            lg: 3,
+	            md: 3,
+	            height: 500,
+	            bgColor: Colors.purple50
 	          },
 	          _react2.default.createElement(
-	            'h1',
-	            { style: { textAlign: 'center' } },
-	            this.props.state.viewingProduct[0].name
-	          ),
-	          _react2.default.createElement(_reactBootstrap.Image, { src: this.props.state.viewingProduct[0].image, circle: true, style: { width: 300, marginLeft: 10 }, responsive: true }),
-	          _react2.default.createElement(
-	            'p',
-	            { style: { marginLeft: 10, marginTop: 10, color: 'white' } },
-	            'Описание: ',
-	            this.props.state.viewingProduct[0].description
+	            _materialUi.List,
+	            null,
+	            _react2.default.createElement(
+	              _materialUi.ListItem,
+	              null,
+	              _react2.default.createElement(
+	                'h2',
+	                { style: { textAlign: 'center' } },
+	                ' Легенда '
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _materialUi.ListItem,
+	              null,
+	              _react2.default.createElement('img', { src: '../../public/images/ballBlue.png', style: { width: 64, height: 64 } }),
+	              _react2.default.createElement(
+	                'p',
+	                { style: { color: Colors.blueA200, display: 'inline-block', backgroundColor: Colors.lightBlack, marginLeft: 5 } },
+	                ' СВОБОДНЫЙ '
+	              ),
+	              ' шар.'
+	            ),
+	            _react2.default.createElement(
+	              _materialUi.ListItem,
+	              null,
+	              _react2.default.createElement('img', { src: '../../public/images/ballPurple.png', style: { width: 64, height: 64 } }),
+	              _react2.default.createElement(
+	                'p',
+	                { style: { color: Colors.purpleA200, display: 'inline-block', backgroundColor: Colors.lightBlack, marginLeft: 5 } },
+	                ' ВЫБРАННЫЙ '
+	              ),
+	              ' шар.'
+	            ),
+	            _react2.default.createElement(
+	              _materialUi.ListItem,
+	              null,
+	              _react2.default.createElement('img', { src: '../../public/images/ballGreen.png', style: { width: 64, height: 64 } }),
+	              _react2.default.createElement(
+	                'p',
+	                { style: { color: Colors.greenA200, display: 'inline-block', backgroundColor: Colors.lightBlack, marginLeft: 5 } },
+	                ' ВАШ '
+	              ),
+	              ' шар.'
+	            ),
+	            _react2.default.createElement(
+	              _materialUi.ListItem,
+	              null,
+	              _react2.default.createElement('img', { src: '../../public/images/ballRed.png', style: { width: 64, height: 64 } }),
+	              _react2.default.createElement(
+	                'p',
+	                { style: { color: Colors.redA200, display: 'inline-block', backgroundColor: Colors.lightBlack, marginLeft: 5 } },
+	                ' ЧУЖОЙ '
+	              ),
+	              ' шар.'
+	            )
 	          )
-	        ),
-	        _react2.default.createElement(
-	          'h1',
-	          { style: { textAlign: 'center', color: '#FFFFFF' } },
-	          'Розыгрыш'
 	        ),
 	        _react2.default.createElement(
 	          _reactBootstrap.Col,
 	          { lg: 6, md: 6 },
-	          _react2.default.createElement(_RoundPage2.default, { handleTicketClick: this.props.handleTicketClick, state: this.props.state, handleBuyClick: this.props.handleBuyClick, deselectTicket: this.props.deselectTicket })
+	          _react2.default.createElement(_RoundPage2.default, { handleTicketClick: this.props.handleTicketClick, handleBuyClick: this.props.handleBuyClick, deselectTicket: this.props.deselectTicket })
 	        ),
 	        _react2.default.createElement(
 	          _Tile2.default,
 	          {
-	            lg: 6,
-	            md: 6,
-	            sm: 6,
+	            lg: 3,
+	            md: 3,
+	            sm: 3,
 	            height: 500,
-	            bgColor: Colors.lightBlue100
+	            bgColor: Colors.purple50
 	          },
 	          _react2.default.createElement(
 	            'h1',
-	            { style: { textAlign: 'center', fontWeight: 900 } },
+	            { style: { textAlign: 'center', fontWeight: 900, marginTop: '52.5%' } },
 	            'Вы выбрали ',
-	            this.props.state.markedTickets.length,
-	            ' билетов.',
+	            _react2.default.createElement('br', null),
+	            ' ',
+	            _react2.default.createElement(
+	              'span',
+	              { style: { border: '1px solid black', padding: 3 } },
+	              this.context.store.markedTickets.length
+	            ),
+	            ' ',
+	            _react2.default.createElement('br', null),
+	            ' билетов ',
 	            _react2.default.createElement('br', null)
 	          ),
-	          _react2.default.createElement(_materialUi.FlatButton, { label: 'Купить', backgroundColor: Colors.grey50, onTouchTap: this.props.handleBuyClick, style: { marginLeft: '40%' } })
+	          _react2.default.createElement(_materialUi.FlatButton, { label: 'Купить', backgroundColor: Colors.grey50, onTouchTap: this.props.handleBuyClick, style: { display: 'block', margin: '0 auto' } })
 	        )
 	      );
 	    }
@@ -85991,10 +86061,6 @@
 	var _Tile = __webpack_require__(698);
 
 	var _Tile2 = _interopRequireDefault(_Tile);
-
-	var _ImageTile = __webpack_require__(700);
-
-	var _ImageTile2 = _interopRequireDefault(_ImageTile);
 
 	var _RoundPage = __webpack_require__(703);
 
@@ -86039,31 +86105,7 @@
 	  _createClass(Rounds, [{
 	    key: 'render',
 	    value: function render() {
-	      var _this2 = this;
-
-	      var rounds = this.props.rounds.map(function (round) {
-	        if (round.product_id === _this2.props.prodId) {
-	          return _react2.default.createElement(
-	            _ImageTile2.default,
-	            {
-	              lg: 3,
-	              md: 4,
-	              sm: 6,
-	              xs: 12,
-	              height: 200,
-	              handleClick: _this2.handleRoundClick,
-	              id: round._id
-	            },
-	            _react2.default.createElement(
-	              'p',
-	              { className: 'tileLabel' },
-	              'Розыгрыш #1'
-	            )
-	          );
-	        }
-	        return undefined;
-	      });
-	      return { rounds: rounds };
+	      return false;
 	    }
 	  }]);
 
@@ -86122,6 +86164,21 @@
 	      });
 	    };
 
+	    _this.componentWillMount = function () {
+	      _this.context.clearTickets();
+	      _this.context.fetchRounds(_this.context.store.product[0]._id);
+	      var handle = setInterval(function () {
+	        _this.context.fetchTickets(_this.context.store.round[0]._id);
+	      }, 5000);
+	      _this.setState({
+	        fetchTicketsHandle: handle
+	      });
+	    };
+
+	    _this.componentWillUnmount = function () {
+	      clearInterval(_this.state.fetchTicketsHandle);
+	    };
+
 	    _this.state = {
 	      open: true
 	    };
@@ -86133,8 +86190,8 @@
 	    value: function render() {
 	      var _this2 = this;
 
-	      var tickets = this.props.state.viewingTickets.map(function (value, i) {
-	        if (i === _this2.props.state.winner) {
+	      var tickets = this.context.store.viewingTickets.map(function (value, i) {
+	        if (i === _this2.context.store.winner) {
 	          return _react2.default.createElement(
 	            _Ticket2.default,
 	            {
@@ -86267,14 +86324,14 @@
 	        }
 	        return undefined;
 	      });
-	      if (!this.props.state.roundFinished) {
+	      if (!this.context.store.roundFinished) {
 	        return _react2.default.createElement(
 	          'div',
 	          { className: 'roundPage' },
 	          tickets
 	        );
 	      }
-	      if (this.props.state.roundFinished) {
+	      if (this.context.store.roundFinished) {
 	        var actions = [_react2.default.createElement(_materialUi.FlatButton, {
 	          label: 'Хорошо',
 	          primary: true,
@@ -86283,11 +86340,6 @@
 	        return _react2.default.createElement(
 	          'div',
 	          { className: 'roundPage' },
-	          _react2.default.createElement(
-	            'h1',
-	            { style: { textAlign: 'center' } },
-	            'Розыгрыш'
-	          ),
 	          tickets,
 	          _react2.default.createElement(
 	            _materialUi.Dialog,
@@ -86298,7 +86350,7 @@
 	              open: this.state.open
 	            },
 	            'Розыгрыш завершен. Выйгрышный билет: ',
-	            this.props.state.winner,
+	            this.context.store.winner,
 	            '!',
 	            _react2.default.createElement('br', null),
 	            'Вы будете перенаправлены на главную через некоторое время.'
@@ -86381,7 +86433,8 @@
 	          className: 'col-lg-10-12 col-md-10-12 col-sm-5-12 col-xs-4 ticket',
 	          onClick: this.handleClick,
 	          style: {
-	            cursor: 'pointer'
+	            cursor: 'pointer',
+	            borderRadius: '50%'
 	          }
 	        },
 	        this.props.children,
@@ -86389,7 +86442,8 @@
 	          src: this.props.bgImage,
 	          style: {
 	            height: 50,
-	            width: 50
+	            width: 50,
+	            borderRadius: '50%'
 	          }
 	        })
 	      );
@@ -86441,11 +86495,11 @@
 
 	var _AlertsPage2 = _interopRequireDefault(_AlertsPage);
 
-	var _Profile = __webpack_require__(734);
+	var _Profile = __webpack_require__(708);
 
 	var _Profile2 = _interopRequireDefault(_Profile);
 
-	var _reactRouterComponent = __webpack_require__(707);
+	var _reactRouterComponent = __webpack_require__(709);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -86458,10 +86512,16 @@
 	var Content = function (_React$Component) {
 	  _inherits(Content, _React$Component);
 
-	  function Content() {
+	  function Content(props) {
 	    _classCallCheck(this, Content);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Content).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Content).call(this, props));
+
+	    console.log(window.location.hash);
+	    if (window.location.hash === '#_=_') {
+	      window.location.hash = '';
+	    }
+	    return _this;
 	  }
 
 	  _createClass(Content, [{
@@ -86471,8 +86531,11 @@
 	        _reactRouterComponent.Locations,
 	        { hash: true },
 	        _react2.default.createElement(_reactRouterComponent.Location, { path: '/', handler: _react2.default.createElement(_Products2.default, { state: this.props.state, handleProductClick: this.props.handleProductClick }) }),
-	        _react2.default.createElement(_reactRouterComponent.Location, { path: '/round', handler: _react2.default.createElement(_ProductPage2.default, { state: this.props.state, handleTicketClick: this.props.handleTicketClick, handleBuyClick: this.props.hanleBuyClick, deselectTicket: this.props.deselectTicket }) }),
-	        _react2.default.createElement(_reactRouterComponent.Location, { path: 'alerts', handler: _react2.default.createElement(_AlertsPage2.default, { state: this.props.state }) }),
+	        _react2.default.createElement(_reactRouterComponent.Location, { path: '#_=_', handler: _react2.default.createElement(_Products2.default, { state: this.props.state, handleProductClick: this.props.handleProductClick }) }),
+	        _react2.default.createElement(_reactRouterComponent.Location, { path: '/round', handler: _react2.default.createElement(_ProductPage2.default, { state: this.props.state, handleTicketClick: this.props.handleTicketClick, handleBuyClick: this.props.hanleBuyClick, deselectTicket: this.props.deselectTicket, fetchTickets: this.props.fetchTickets }) }),
+	        _react2.default.createElement(_reactRouterComponent.Location, { path: '/alerts', handler: _react2.default.createElement(_AlertsPage2.default, { handleAlertRead: this.props.handleAlertRead }) }),
+	        _react2.default.createElement(_reactRouterComponent.Location, { path: 'alerts', handler: _react2.default.createElement(_AlertsPage2.default, { handleAlertRead: this.props.handleAlertRead }) }),
+	        _react2.default.createElement(_reactRouterComponent.Location, { path: '/profile', handler: _react2.default.createElement(_Profile2.default, { state: this.props.state }) }),
 	        _react2.default.createElement(_reactRouterComponent.Location, { path: 'profile', handler: _react2.default.createElement(_Profile2.default, { state: this.props.state }) })
 	      );
 	    }
@@ -86485,6 +86548,185 @@
 
 /***/ },
 /* 706 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Alert = __webpack_require__(707);
+
+	var _Alert2 = _interopRequireDefault(_Alert);
+
+	var _Tile = __webpack_require__(698);
+
+	var _Tile2 = _interopRequireDefault(_Tile);
+
+	var _materialUi = __webpack_require__(181);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Colors = __webpack_require__(214);
+
+	var AlertsPage = function (_React$Component) {
+	  _inherits(AlertsPage, _React$Component);
+
+	  function AlertsPage() {
+	    _classCallCheck(this, AlertsPage);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(AlertsPage).apply(this, arguments));
+	  }
+
+	  _createClass(AlertsPage, [{
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var rawAlerts = this.context.store.userinfo.messages;
+	      var alerts = rawAlerts.reverse().map(function (message) {
+	        var time = new Date(message.time);
+	        return _react2.default.createElement(_Alert2.default, {
+	          message: message,
+	          time: time,
+	          id: message._id,
+	          status: message.status,
+	          handleAlertRead: _this2.props.handleAlertRead
+	        });
+	      });
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'alertsPage' },
+	        _react2.default.createElement(
+	          _Tile2.default,
+	          {
+	            lg: 12,
+	            md: 12,
+	            sm: 12,
+	            bgColor: Colors.lightBlue50
+	          },
+	          _react2.default.createElement(
+	            'h1',
+	            { style: { textAlign: 'center' } },
+	            'Уведомления'
+	          ),
+	          _react2.default.createElement(
+	            _materialUi.List,
+	            null,
+	            alerts
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return AlertsPage;
+	}(_react2.default.Component);
+
+	exports.default = AlertsPage;
+
+/***/ },
+/* 707 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _materialUi = __webpack_require__(181);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Colors = __webpack_require__(214);
+
+	var Alert = function (_React$Component) {
+	  _inherits(Alert, _React$Component);
+
+	  function Alert(props) {
+	    _classCallCheck(this, Alert);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Alert).call(this, props));
+
+	    if (_this.props.status === 'unread') {
+	      _this.state = {
+	        status: 'unread',
+	        bgColor: Colors.blue100
+	      };
+	    } else {
+	      _this.state = {
+	        status: 'read',
+	        bgColor: Colors.white
+	      };
+	    }
+	    setTimeout(function () {
+	      _this.setState({
+	        status: 'read'
+	      });
+	      _this.props.handleAlertRead(_this.props.id);
+	    }, 1500);
+	    return _this;
+	  }
+
+	  _createClass(Alert, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        _materialUi.ListItem,
+	        {
+	          leftAvatar: _react2.default.createElement(
+	            _materialUi.Avatar,
+	            null,
+	            this.props.message.sender[0]
+	          ),
+	          primaryText: this.props.message.sender,
+	          secondaryText: this.props.message.body,
+	          style: {
+	            backgroundColor: this.state.bgColor
+	          }
+	        },
+	        _react2.default.createElement(
+	          'p',
+	          { style: { position: 'absolute', color: Colors.darkBlack, top: '5%', right: '5%', fontWeight: 600 } },
+	          this.props.time.getFullYear() + '/' + this.props.time.getMonth() + '/' + this.props.time.getDay() + ' ' + this.props.time.getHours() + ':' + this.props.time.getMinutes()
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Alert;
+	}(_react2.default.Component);
+
+	exports.default = Alert;
+
+/***/ },
+/* 708 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -86527,20 +86769,9 @@
 	  _createClass(AlertsPage, [{
 	    key: 'render',
 	    value: function render() {
-	      var alerts = this.props.state.userinfo.messages.map(function (message) {
-	        return _react2.default.createElement(_materialUi.ListItem, {
-	          leftAvatar: _react2.default.createElement(
-	            _materialUi.Avatar,
-	            null,
-	            message.sender[0]
-	          ),
-	          primaryText: message.sender,
-	          secondaryText: message.body
-	        });
-	      });
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'alertsPage' },
+	        { className: 'profilePage' },
 	        _react2.default.createElement(
 	          _Tile2.default,
 	          {
@@ -86552,12 +86783,29 @@
 	          _react2.default.createElement(
 	            'h1',
 	            { style: { textAlign: 'center' } },
-	            'Уведомления'
+	            'Профиль'
 	          ),
+	          _react2.default.createElement(
+	            _materialUi.Avatar,
+	            { size: 128, style: { margin: 10 } },
+	            this.props.state.userinfo.local.username[0]
+	          ),
+	          _react2.default.createElement(_materialUi.Divider, null),
 	          _react2.default.createElement(
 	            _materialUi.List,
 	            null,
-	            alerts
+	            _react2.default.createElement(
+	              _materialUi.ListItem,
+	              null,
+	              'Имя пользователя: ',
+	              this.props.state.userinfo.local.username
+	            ),
+	            _react2.default.createElement(
+	              _materialUi.ListItem,
+	              null,
+	              'Email: ',
+	              this.props.state.userinfo.local.email
+	            )
 	          )
 	        )
 	      );
@@ -86570,25 +86818,25 @@
 	exports.default = AlertsPage;
 
 /***/ },
-/* 707 */
+/* 709 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var Router                    = __webpack_require__(708);
-	var Route                     = __webpack_require__(726);
-	var Link                      = __webpack_require__(727);
+	var Router                    = __webpack_require__(710);
+	var Route                     = __webpack_require__(728);
+	var Link                      = __webpack_require__(729);
 
-	var RouterMixin               = __webpack_require__(709);
-	var RouteRenderingMixin       = __webpack_require__(725);
+	var RouterMixin               = __webpack_require__(711);
+	var RouteRenderingMixin       = __webpack_require__(727);
 
-	var NavigatableMixin          = __webpack_require__(728);
+	var NavigatableMixin          = __webpack_require__(730);
 
-	var environment               = __webpack_require__(720);
+	var environment               = __webpack_require__(722);
 
-	var CaptureClicks             = __webpack_require__(729);
+	var CaptureClicks             = __webpack_require__(731);
 
-	var URLPattern                = __webpack_require__(713);
+	var URLPattern                = __webpack_require__(715);
 
 	var exportsObject = {
 	  Locations: Router.Locations,
@@ -86613,15 +86861,15 @@
 
 
 /***/ },
-/* 708 */
+/* 710 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React                     = __webpack_require__(1);
-	var RouterMixin               = __webpack_require__(709);
-	var RouteRenderingMixin       = __webpack_require__(725);
-	var assign                    = Object.assign || __webpack_require__(711);
+	var RouterMixin               = __webpack_require__(711);
+	var RouteRenderingMixin       = __webpack_require__(727);
+	var assign                    = Object.assign || __webpack_require__(713);
 
 	/**
 	 * Create a new router class
@@ -86674,16 +86922,16 @@
 
 
 /***/ },
-/* 709 */
+/* 711 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React         = __webpack_require__(1);
-	var invariant     = __webpack_require__(710);
-	var assign        = Object.assign || __webpack_require__(711);
-	var matchRoutes   = __webpack_require__(712);
-	var Environment   = __webpack_require__(720);
+	var invariant     = __webpack_require__(712);
+	var assign        = Object.assign || __webpack_require__(713);
+	var matchRoutes   = __webpack_require__(714);
+	var Environment   = __webpack_require__(722);
 
 	var RouterMixin = {
 	  mixins: [Environment.Mixin],
@@ -86907,7 +87155,7 @@
 
 
 /***/ },
-/* 710 */
+/* 712 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -86964,7 +87212,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 711 */
+/* 713 */
 /***/ function(module, exports) {
 
 	/* eslint-disable no-unused-vars */
@@ -87009,17 +87257,17 @@
 
 
 /***/ },
-/* 712 */
+/* 714 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var URLPattern = __webpack_require__(713);
-	var invariant = __webpack_require__(710);
-	var warning = __webpack_require__(715);
+	var URLPattern = __webpack_require__(715);
+	var invariant = __webpack_require__(712);
+	var warning = __webpack_require__(717);
 	var React = __webpack_require__(1);
-	var assign = Object.assign || __webpack_require__(711);
-	var qs = __webpack_require__(716);
+	var assign = Object.assign || __webpack_require__(713);
+	var qs = __webpack_require__(718);
 
 	var patternCache = {};
 
@@ -87157,14 +87405,14 @@
 
 
 /***/ },
-/* 713 */
+/* 715 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// Generated by CoffeeScript 1.10.0
 	var slice = [].slice;
 
 	(function(root, factory) {
-	  if (('function' === "function") && (__webpack_require__(714) != null)) {
+	  if (('function' === "function") && (__webpack_require__(716) != null)) {
 	    return !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if (typeof exports !== "undefined" && exports !== null) {
 	    return module.exports = factory();
@@ -87599,7 +87847,7 @@
 
 
 /***/ },
-/* 714 */
+/* 716 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
@@ -87607,7 +87855,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, {}))
 
 /***/ },
-/* 715 */
+/* 717 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -87661,13 +87909,13 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 716 */
+/* 718 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Load modules
 
-	var Stringify = __webpack_require__(717);
-	var Parse = __webpack_require__(719);
+	var Stringify = __webpack_require__(719);
+	var Parse = __webpack_require__(721);
 
 
 	// Declare internals
@@ -87682,12 +87930,12 @@
 
 
 /***/ },
-/* 717 */
+/* 719 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Load modules
 
-	var Utils = __webpack_require__(718);
+	var Utils = __webpack_require__(720);
 
 
 	// Declare internals
@@ -87842,7 +88090,7 @@
 
 
 /***/ },
-/* 718 */
+/* 720 */
 /***/ function(module, exports) {
 
 	// Load modules
@@ -88038,12 +88286,12 @@
 
 
 /***/ },
-/* 719 */
+/* 721 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Load modules
 
-	var Utils = __webpack_require__(718);
+	var Utils = __webpack_require__(720);
 
 
 	// Declare internals
@@ -88231,7 +88479,7 @@
 
 
 /***/ },
-/* 720 */
+/* 722 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -88242,8 +88490,8 @@
 	 */
 
 	var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
-	var DummyEnvironment      = __webpack_require__(721);
-	var Environment           = __webpack_require__(722);
+	var DummyEnvironment      = __webpack_require__(723);
+	var Environment           = __webpack_require__(724);
 
 	/**
 	 * Mixin for routes to keep attached to an environment.
@@ -88271,8 +88519,8 @@
 
 	if (canUseDOM) {
 
-	  PathnameEnvironment = __webpack_require__(723);
-	  HashEnvironment     = __webpack_require__(724);
+	  PathnameEnvironment = __webpack_require__(725);
+	  HashEnvironment     = __webpack_require__(726);
 
 	  pathnameEnvironment = new PathnameEnvironment();
 	  hashEnvironment     = new HashEnvironment();
@@ -88305,12 +88553,12 @@
 
 
 /***/ },
-/* 721 */
+/* 723 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var Environment   = __webpack_require__(722);
+	var Environment   = __webpack_require__(724);
 	var emptyFunction = function() {};
 
 	/**
@@ -88345,7 +88593,7 @@
 
 
 /***/ },
-/* 722 */
+/* 724 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -88448,12 +88696,12 @@
 
 
 /***/ },
-/* 723 */
+/* 725 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var Environment = __webpack_require__(722);
+	var Environment = __webpack_require__(724);
 
 	/**
 	 * Routing environment which routes by `location.pathname`.
@@ -88513,12 +88761,12 @@
 
 
 /***/ },
-/* 724 */
+/* 726 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var Environment = __webpack_require__(722);
+	var Environment = __webpack_require__(724);
 
 	/**
 	 * Routing environment which routes by `location.hash`.
@@ -88572,13 +88820,13 @@
 
 
 /***/ },
-/* 725 */
+/* 727 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React = __webpack_require__(1);
-	var assign = Object.assign || __webpack_require__(711);
+	var assign = Object.assign || __webpack_require__(713);
 
 
 	/**
@@ -88620,7 +88868,7 @@
 
 
 /***/ },
-/* 726 */
+/* 728 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -88679,15 +88927,15 @@
 
 
 /***/ },
-/* 727 */
+/* 729 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React             = __webpack_require__(1);
-	var NavigatableMixin  = __webpack_require__(728);
-	var Environment       = __webpack_require__(720);
-	var assign            = Object.assign || __webpack_require__(711);
+	var NavigatableMixin  = __webpack_require__(730);
+	var Environment       = __webpack_require__(722);
+	var assign            = Object.assign || __webpack_require__(713);
 
 	/**
 	 * Link.
@@ -88770,13 +89018,13 @@
 
 
 /***/ },
-/* 728 */
+/* 730 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React       = __webpack_require__(1);
-	var Environment = __webpack_require__(720);
+	var Environment = __webpack_require__(722);
 
 
 	/**
@@ -88815,16 +89063,16 @@
 
 
 /***/ },
-/* 729 */
+/* 731 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React       = __webpack_require__(1);
-	var urllite     = __webpack_require__(730);
-	var Environment = __webpack_require__(720);
-	var HashEnvironment = __webpack_require__(724);
-	var assign      = Object.assign || __webpack_require__(711);
+	var urllite     = __webpack_require__(732);
+	var Environment = __webpack_require__(722);
+	var HashEnvironment = __webpack_require__(726);
+	var assign      = Object.assign || __webpack_require__(713);
 
 	/**
 	 * A container component which captures <a> clicks and, if there's a matching
@@ -88951,7 +89199,7 @@
 
 
 /***/ },
-/* 730 */
+/* 732 */
 /***/ function(module, exports) {
 
 	(function() {
@@ -89022,7 +89270,7 @@
 
 
 /***/ },
-/* 731 */
+/* 733 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -89056,63 +89304,261 @@
 	var Header = function (_React$Component) {
 	  _inherits(Header, _React$Component);
 
-	  function Header() {
+	  function Header(props) {
 	    _classCallCheck(this, Header);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Header).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Header).call(this, props));
+
+	    _this.componentWillMount = function () {
+	      _this.context.fetchUserInfo();
+	    };
+
+	    _this.toggleLoginForm = function () {
+	      _this.setState({
+	        loginFormOpened: !_this.state.loginFormOpened,
+	        signupFormOpened: false
+	      });
+	    };
+
+	    _this.toggleSingupForm = function () {
+	      _this.setState({
+	        signupFormOpened: !_this.state.signupFormOpened,
+	        loginFormOpened: false
+	      });
+	    };
+
+	    _this.state = {
+	      loginFormOpened: false,
+	      signupFormOpened: false
+	    };
+	    return _this;
 	  }
 
 	  _createClass(Header, [{
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'header' },
-	        _react2.default.createElement(
-	          _materialUi.Paper,
-	          {
-	            style: {
-	              backgroundColor: Colors.lightBlue100,
-	              width: '100vw',
-	              padding: 10
-	            }
-	          },
-	          _react2.default.createElement(
-	            _materialUi.Avatar,
-	            null,
-	            this.props.userinfo.local.username.substr(0, 1)
-	          ),
-	          _react2.default.createElement(
-	            'span',
-	            { className: 'username', style: { marginLeft: 20 } },
-	            this.props.userinfo.local.username
-	          ),
-	          _react2.default.createElement(_materialUi.FlatButton, {
-	            label: 'Выйти',
-	            linkButton: true, href: '/logout',
-	            backgroundColor: Colors.white,
-	            style: { float: 'right', marginRight: 20 }
-	          }),
-	          _react2.default.createElement(_materialUi.FlatButton, {
-	            label: 'Уведомления',
-	            linkButton: true, href: '#alerts',
-	            backgroundColor: Colors.white,
-	            style: { float: 'right', marginRight: 20 }
-	          }),
-	          _react2.default.createElement(_materialUi.FlatButton, {
-	            label: 'Профиль',
-	            linkButton: true, href: '#profile',
-	            backgroundColor: Colors.white,
-	            style: { float: 'right', marginRight: 20 }
-	          }),
-	          _react2.default.createElement(_materialUi.FlatButton, {
-	            label: 'Главная',
-	            linkButton: true, href: '#',
-	            backgroundColor: Colors.white,
-	            style: { float: 'right', marginRight: 20 }
-	          })
-	        )
-	      );
+	      var content = _react2.default.createElement('div', null);
+	      switch (this.context.store.loggedIn) {
+	        case true:
+	          return _react2.default.createElement(
+	            'div',
+	            { className: 'header' },
+	            _react2.default.createElement(
+	              _materialUi.Paper,
+	              {
+	                style: {
+	                  backgroundColor: Colors.deepPurple100,
+	                  width: '100vw',
+	                  padding: 10
+	                }
+	              },
+	              _react2.default.createElement(
+	                _materialUi.Avatar,
+	                null,
+	                this.props.userinfo.local.username.substr(0, 1)
+	              ),
+	              _react2.default.createElement(
+	                'span',
+	                { className: 'username', style: { marginLeft: 20 } },
+	                this.props.userinfo.local.username
+	              ),
+	              _react2.default.createElement(_materialUi.FlatButton, {
+	                label: 'Выйти',
+	                linkButton: true, href: '/logout',
+	                backgroundColor: Colors.white,
+	                style: { float: 'right', marginRight: 20 }
+	              }),
+	              _react2.default.createElement(_materialUi.FlatButton, {
+	                label: 'Уведомления',
+	                linkButton: true, href: '#alerts',
+	                backgroundColor: Colors.white,
+	                style: { float: 'right', marginRight: 20 }
+	              }),
+	              _react2.default.createElement(_materialUi.FlatButton, {
+	                label: 'Профиль',
+	                linkButton: true, href: '#profile',
+	                backgroundColor: Colors.white,
+	                style: { float: 'right', marginRight: 20 }
+	              }),
+	              _react2.default.createElement(_materialUi.FlatButton, {
+	                label: 'Главная',
+	                linkButton: true, href: '#',
+	                backgroundColor: Colors.white,
+	                style: { float: 'right', marginRight: 20 }
+	              })
+	            )
+	          );
+	        case false:
+	          var loginActions = [_react2.default.createElement(_materialUi.FlatButton, {
+	            label: 'Закрыть',
+	            onTouchTap: this.toggleLoginForm
+	          })];
+	          var signUpActions = [_react2.default.createElement(_materialUi.FlatButton, {
+	            label: 'Закрыть',
+	            onTouchTap: this.toggleSingupForm
+	          })];
+	          return _react2.default.createElement(
+	            'div',
+	            { className: 'header' },
+	            _react2.default.createElement(
+	              _materialUi.Dialog,
+	              {
+	                title: 'Регистрация',
+	                actions: signUpActions,
+	                open: this.state.signupFormOpened,
+	                bodyStyle: {
+	                  maxHeight: 'auto'
+	                }
+	              },
+	              _react2.default.createElement(
+	                'form',
+	                { action: '/signup', method: 'post' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'form-group' },
+	                  _react2.default.createElement(
+	                    'label',
+	                    null,
+	                    'Логин '
+	                  ),
+	                  _react2.default.createElement('input', { className: 'form-control', type: 'text', name: 'username' }),
+	                  _react2.default.createElement('br', null)
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'form-group' },
+	                  _react2.default.createElement(
+	                    'label',
+	                    null,
+	                    'Email '
+	                  ),
+	                  _react2.default.createElement('input', { className: 'form-control', type: 'text', name: 'email' }),
+	                  _react2.default.createElement('br', null)
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'form-group' },
+	                  _react2.default.createElement(
+	                    'label',
+	                    null,
+	                    'Пароль '
+	                  ),
+	                  _react2.default.createElement('input', { className: 'form-control', type: 'password', name: 'password' }),
+	                  _react2.default.createElement('br', null)
+	                ),
+	                _react2.default.createElement(
+	                  'button',
+	                  { className: 'btn btn-lg text-center', type: 'submit' },
+	                  'Зарегистрироваться'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _materialUi.Dialog,
+	              {
+	                title: 'Вход',
+	                actions: loginActions,
+	                open: this.state.loginFormOpened,
+	                bodyStyle: {
+	                  maxHeight: 'auto'
+	                }
+	              },
+	              _react2.default.createElement(
+	                'h1',
+	                { className: 'text-center' },
+	                'Используйте аккаунт на сайте'
+	              ),
+	              _react2.default.createElement(
+	                'form',
+	                { action: '/login', method: 'post' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'form-group' },
+	                  _react2.default.createElement(
+	                    'label',
+	                    null,
+	                    'Email '
+	                  ),
+	                  _react2.default.createElement('input', { className: 'form-control', type: 'text', name: 'username' }),
+	                  _react2.default.createElement('br', null)
+	                ),
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'form-group' },
+	                  _react2.default.createElement(
+	                    'label',
+	                    null,
+	                    'Пароль '
+	                  ),
+	                  _react2.default.createElement('input', { className: 'form-control', type: 'password', name: 'password' }),
+	                  _react2.default.createElement('br', null)
+	                ),
+	                _react2.default.createElement(
+	                  'button',
+	                  { className: 'btn btn-lg text-center', type: 'submit' },
+	                  'Войти'
+	                )
+	              ),
+	              _react2.default.createElement(_materialUi.Divider, null),
+	              _react2.default.createElement(
+	                'h1',
+	                { className: 'text-center' },
+	                ' ...или войдите, используя '
+	              ),
+	              _react2.default.createElement('br', null),
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'text-center' },
+	                _react2.default.createElement(
+	                  'a',
+	                  { className: 'btn btn-primary', href: '/auth/facebook' },
+	                  'Facebook'
+	                ),
+	                _react2.default.createElement(
+	                  'span',
+	                  null,
+	                  ' '
+	                ),
+	                _react2.default.createElement(
+	                  'a',
+	                  { className: 'btn btn-primary', href: '/auth/vkontakte' },
+	                  'Вконтакте'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _materialUi.Paper,
+	              {
+	                style: {
+	                  backgroundColor: Colors.deepPurple100,
+	                  width: '100vw',
+	                  height: 50,
+	                  paddingTop: 8
+	                }
+	              },
+	              _react2.default.createElement(_materialUi.FlatButton, {
+	                label: 'Войти',
+	                backgroundColor: Colors.white,
+	                style: { float: 'right', marginRight: 20 },
+	                onTouchTap: this.toggleLoginForm
+	              }),
+	              _react2.default.createElement(_materialUi.FlatButton, {
+	                label: 'Зарегистрироваться',
+	                onTouchTap: this.toggleSingupForm,
+	                backgroundColor: Colors.white,
+	                style: { float: 'right', marginRight: 20 }
+	              }),
+	              _react2.default.createElement(_materialUi.FlatButton, {
+	                label: 'Главная',
+	                linkButton: true, href: '#',
+	                backgroundColor: Colors.white,
+	                style: { float: 'right', marginRight: 20 }
+	              })
+	            )
+	          );
+	        default:
+	          return false;
+	      }
 	    }
 	  }]);
 
@@ -89122,7 +89568,70 @@
 	exports.default = Header;
 
 /***/ },
-/* 732 */
+/* 734 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Tile = __webpack_require__(698);
+
+	var _Tile2 = _interopRequireDefault(_Tile);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Colors = __webpack_require__(214);
+
+	var AboutUs = function (_React$Component) {
+	  _inherits(AboutUs, _React$Component);
+
+	  function AboutUs() {
+	    _classCallCheck(this, AboutUs);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(AboutUs).apply(this, arguments));
+	  }
+
+	  _createClass(AboutUs, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        _Tile2.default,
+	        {
+	          lg: 12,
+	          height: 400,
+	          bgColor: Colors.lime300
+	        },
+	        _react2.default.createElement(
+	          'h1',
+	          { style: { textAlign: 'center', backgroundColor: Colors.deepOrange300, padding: 10, color: 'white' } },
+	          'О нас'
+	        )
+	      );
+	    }
+	  }]);
+
+	  return AboutUs;
+	}(_react2.default.Component);
+
+	exports.default = AboutUs;
+
+/***/ },
+/* 735 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -89131,6 +89640,7 @@
 	  value: true
 	});
 	exports.fetchProducts = fetchProducts;
+	exports.fetchRoundsArchive = fetchRoundsArchive;
 	exports.fetchUserInfo = fetchUserInfo;
 	exports.fetchRounds = fetchRounds;
 	exports.claimTicket = claimTicket;
@@ -89138,7 +89648,8 @@
 	exports.fetchTickets = fetchTickets;
 	exports.ownTickets = ownTickets;
 	exports.deselectTicket = deselectTicket;
-	exports.viewAlerts = viewAlerts;
+	exports.markAlertAsRead = markAlertAsRead;
+	exports.clearTickets = clearTickets;
 
 	var _jquery = __webpack_require__(694);
 
@@ -89157,6 +89668,26 @@
 	  return {
 	    type: 'RECIEVE_USERINFO',
 	    userinfo: data
+	  };
+	}
+
+	function clearedTickets() {
+	  return {
+	    type: 'CLEAR_TICKETS'
+	  };
+	}
+
+	function roundsArchiveFetched(data) {
+	  return {
+	    type: 'ROUNDS_ARCHIVE_FETCHED',
+	    data: data
+	  };
+	}
+
+	function loggedIn(bool) {
+	  return {
+	    type: 'LOGGED_IN',
+	    bool: bool
 	  };
 	}
 
@@ -89179,6 +89710,7 @@
 	 * @return {Object} object to update the current store state
 	 * @memberof Actions
 	 */
+
 	function viewProduct(product) {
 	  return {
 	    type: 'VIEW_PRODUCT',
@@ -89195,7 +89727,7 @@
 	function recieveRounds(data) {
 	  return {
 	    type: 'RECIEVE_ROUNDS',
-	    rounds: data
+	    round: data
 	  };
 	}
 
@@ -89243,12 +89775,6 @@
 	  };
 	}
 
-	function viewingAlerts() {
-	  return {
-	    type: 'VIEW_ALERTS'
-	  };
-	}
-
 	function viewingTickets(data) {
 	  return {
 	    type: 'VIEWING_TICKETS',
@@ -89270,8 +89796,6 @@
 	 */
 	function fetchProducts() {
 	  return function (dispatch) {
-	    var _this = this;
-
 	    return _jquery2.default.ajax({
 	      url: '/products',
 	      dataType: 'json',
@@ -89279,7 +89803,7 @@
 	        dispatch(recieveProducts(data));
 	      },
 	      error: function error(xhr, status, err) {
-	        console.error(_this.props.url, status, err.toString());
+	        console.error(status, err.toString());
 	      }
 	    });
 	  };
@@ -89291,18 +89815,37 @@
 	 * @return {Function} dispatcher fucntion which emits action
 	 * @memberof Actions
 	 */
+
+	function fetchRoundsArchive() {
+	  return function (dispatch) {
+	    return _jquery2.default.ajax({
+	      url: '/roundsarchive',
+	      dataType: 'json',
+	      data: {},
+	      success: function success(data) {
+	        dispatch(roundsArchiveFetched(data));
+	      },
+	      error: function error(xhr, status, err) {
+	        console.error(status, err.toString());
+	      }
+	    });
+	  };
+	}
+
 	function fetchUserInfo() {
 	  return function (dispatch) {
-	    var _this2 = this;
-
 	    return _jquery2.default.ajax({
 	      url: '/userinfo',
 	      dataType: 'json',
 	      success: function success(data) {
+	        console.log('USERINFO RECIEVED');
 	        dispatch(recieveUserInfo(data));
+	        dispatch(loggedIn(true));
 	      },
 	      error: function error(xhr, status, err) {
-	        console.error(_this2.props.url, status, err.toString());
+	        console.log('USERINFO NOt RECIEVED');
+	        dispatch(loggedIn(false));
+	        console.error(status, err.toString());
 	      }
 	    });
 	  };
@@ -89317,18 +89860,29 @@
 	 */
 	function fetchRounds(prodId) {
 	  return function (dispatch) {
-	    var _this3 = this;
-
 	    return _jquery2.default.ajax({
 	      url: '/rounds',
 	      dataType: 'json',
 	      data: { prodId: prodId },
 	      success: function success(data) {
-	        dispatch(fetchTickets(data[0]._id));
+	        _jquery2.default.ajax({
+	          url: '/tickets',
+	          dataType: 'json',
+	          data: { rndId: data[0]._id },
+	          success: function success(data) {
+	            if (data.state === 'FINISH') {
+	              dispatch(roundFinished(data.winnum || 0));
+	            }
+	            dispatch(viewingTickets(data.tickets));
+	          },
+	          error: function error(xhr, status, err) {
+	            console.error(status, err.toString());
+	          }
+	        });
 	        dispatch(recieveRounds(data));
 	      },
 	      error: function error(xhr, status, err) {
-	        console.error(_this3.props.url, status, err.toString());
+	        console.error(status, err.toString());
 	      }
 	    });
 	  };
@@ -89369,17 +89923,18 @@
 	 */
 	function fetchTickets(rndId) {
 	  return function (dispatch) {
-	    var _this4 = this;
-
 	    _jquery2.default.ajax({
 	      url: '/tickets',
 	      dataType: 'json',
 	      data: { rndId: rndId },
 	      success: function success(data) {
-	        dispatch(viewingTickets(data));
+	        if (data.state === 'FINISH') {
+	          dispatch(roundFinished(data.winnum || 0));
+	        }
+	        dispatch(viewingTickets(data.tickets));
 	      },
 	      error: function error(xhr, status, err) {
-	        console.error(_this4.props.url, status, err.toString());
+	        console.error(status, err.toString());
 	      }
 	    });
 	  };
@@ -89421,14 +89976,30 @@
 	  };
 	}
 
-	function viewAlerts(value) {
+	function markAlertAsRead(alertId) {
 	  return function (dispatch) {
-	    dispatch(viewingAlerts());
+	    _jquery2.default.ajax({
+	      url: '/alertread',
+	      method: 'post',
+	      data: { alertId: alertId },
+	      success: function success(data) {
+	        recieveUserInfo(data);
+	      },
+	      error: function error(xhr, status, err) {
+	        console.error(status, err.toString());
+	      }
+	    });
+	  };
+	}
+
+	function clearTickets() {
+	  return function (dispatch) {
+	    dispatch(clearedTickets());
 	  };
 	}
 
 /***/ },
-/* 733 */
+/* 736 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -89447,7 +90018,7 @@
 
 	var _Main2 = _interopRequireDefault(_Main);
 
-	var _actions = __webpack_require__(732);
+	var _actions = __webpack_require__(735);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -89482,6 +90053,15 @@
 	    },
 	    deselectTicket: function deselectTicket(value) {
 	      dispatch((0, _actions.deselectTicket)(value));
+	    },
+	    markAlertAsRead: function markAlertAsRead(alertId) {
+	      dispatch((0, _actions.markAlertAsRead)(alertId));
+	    },
+	    fetchRoundsArchive: function fetchRoundsArchive() {
+	      dispatch((0, _actions.fetchRoundsArchive)());
+	    },
+	    clearTickets: function clearTickets() {
+	      dispatch((0, _actions.clearTickets)());
 	    }
 	  };
 	};
@@ -89489,98 +90069,6 @@
 	var AppContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Main2.default);
 
 	exports.default = AppContainer;
-
-/***/ },
-/* 734 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _Tile = __webpack_require__(698);
-
-	var _Tile2 = _interopRequireDefault(_Tile);
-
-	var _materialUi = __webpack_require__(181);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Colors = __webpack_require__(214);
-
-	var AlertsPage = function (_React$Component) {
-	  _inherits(AlertsPage, _React$Component);
-
-	  function AlertsPage() {
-	    _classCallCheck(this, AlertsPage);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(AlertsPage).apply(this, arguments));
-	  }
-
-	  _createClass(AlertsPage, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'profilePage' },
-	        _react2.default.createElement(
-	          _Tile2.default,
-	          {
-	            lg: 12,
-	            md: 12,
-	            sm: 12,
-	            bgColor: Colors.lightBlue50
-	          },
-	          _react2.default.createElement(
-	            'h1',
-	            { style: { textAlign: 'center' } },
-	            'Профиль'
-	          ),
-	          _react2.default.createElement(
-	            _materialUi.Avatar,
-	            { size: 128, style: { margin: 10 } },
-	            this.props.state.userinfo.local.username[0]
-	          ),
-	          _react2.default.createElement(_materialUi.Divider, null),
-	          _react2.default.createElement(
-	            _materialUi.List,
-	            null,
-	            _react2.default.createElement(
-	              _materialUi.ListItem,
-	              null,
-	              'Имя пользователя: ',
-	              this.props.state.userinfo.local.username
-	            ),
-	            _react2.default.createElement(
-	              _materialUi.ListItem,
-	              null,
-	              'Email: ',
-	              this.props.state.userinfo.local.email
-	            )
-	          )
-	        )
-	      );
-	    }
-	  }]);
-
-	  return AlertsPage;
-	}(_react2.default.Component);
-
-	exports.default = AlertsPage;
 
 /***/ }
 /******/ ]);

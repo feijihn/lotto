@@ -75347,10 +75347,10 @@
 	var Panel = function (_React$Component) {
 	  _inherits(Panel, _React$Component);
 
-	  function Panel(props) {
+	  function Panel() {
 	    _classCallCheck(this, Panel);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Panel).call(this, props));
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Panel).apply(this, arguments));
 	  }
 
 	  _createClass(Panel, [{
@@ -75399,7 +75399,7 @@
 	            { className: 'adminPanel' },
 	            _react2.default.createElement(
 	              'h1',
-	              null,
+	              { style: { color: 'rgb(255,255,255)' } },
 	              'Products'
 	            ),
 	            _react2.default.createElement(
@@ -75444,25 +75444,25 @@
 	              { action: '/addproduct', method: 'post' },
 	              _react2.default.createElement(
 	                'label',
-	                null,
+	                { style: { color: 'rgb(255,255,255)' } },
 	                ' Название '
 	              ),
 	              _react2.default.createElement('input', { className: 'form-control', type: 'text', name: 'name' }),
 	              _react2.default.createElement(
 	                'label',
-	                null,
+	                { style: { color: 'rgb(255,255,255)' } },
 	                ' Цена '
 	              ),
 	              _react2.default.createElement('input', { className: 'form-control', type: 'text', name: 'price' }),
 	              _react2.default.createElement(
 	                'label',
-	                null,
+	                { style: { color: 'rgb(255,255,255)' } },
 	                ' Описание '
 	              ),
 	              _react2.default.createElement('input', { className: 'form-control', type: 'text', name: 'description' }),
 	              _react2.default.createElement(
 	                'label',
-	                null,
+	                { style: { color: 'rgb(255,255,255)' } },
 	                ' Ссылка на изображение '
 	              ),
 	              _react2.default.createElement('input', { className: 'form-control', type: 'text', name: 'imagelink' }),
@@ -85770,7 +85770,6 @@
 	  return function (dispatch) {
 	    var _this = this;
 
-	    console.log('requesting products...');
 	    return _jquery2.default.ajax({
 	      url: '/products',
 	      dataType: 'json',
@@ -85788,7 +85787,6 @@
 	  return function (dispatch) {
 	    var _this2 = this;
 
-	    console.log('requesting products...');
 	    return _jquery2.default.ajax({
 	      url: '/rounds',
 	      dataType: 'json',

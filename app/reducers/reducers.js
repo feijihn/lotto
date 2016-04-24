@@ -1,5 +1,9 @@
 import $ from 'jquery';
 
+function zeroArray(len) {
+  return new Array(len + 1).join('0').split('').map(parseFloat);
+}
+
 const initialState = {
   userinfo: {
     local: {
@@ -12,12 +16,14 @@ const initialState = {
 
     }
   },
+  loggedIn: false,
   products: [],
   rounds: [],
   viewingProduct: {},
   viewingRound: {},
   markedTickets: [],
   ownedTickets: [],
+  roundHistory: [],
   roundFinished: false,
   winner: -1,
   numberTicketsMarked: 0,
@@ -35,7 +41,8 @@ function App(state = initialState, action) {
   switch (action.type) {
     case 'RECIEVE_USERINFO':
       return Object.assign({}, state, {
-        userinfo: action.userinfo
+        userinfo: action.userinfo,
+        loggedIn: true
       });
     case 'RECIEVE_PRODUCTS':
       return Object.assign({}, state, {
@@ -43,8 +50,7 @@ function App(state = initialState, action) {
       });
     case 'RECIEVE_ROUNDS':
       return Object.assign({}, state, {
-        rounds: action.rounds,
-        viewingRound: action.rounds[0] // take 0th round for now
+        round: action.round
       });
     case 'VIEW_PRODUCT':
       var prod = $.grep(state.products, el => {
@@ -54,9 +60,7 @@ function App(state = initialState, action) {
         return el.product_id === action.product;
       });
       return Object.assign({}, state, {
-        viewingProduct: prod,
-        viewingRound: round,
-        nav: 'productpage'
+        product: prod
       });
     case 'MARK_TICKET':
       var tckts = state.viewingTickets;
@@ -70,6 +74,7 @@ function App(state = initialState, action) {
     case 'VIEWING_TICKETS':
       var temp = state.viewingTickets;
       action.data.forEach(ticket => {
+        console.log(ticket);
         if (ticket.user_id === state.userinfo._id) {
           temp[ticket.value] = 2;
         } else if (ticket.value === state.winner) {
@@ -97,13 +102,24 @@ function App(state = initialState, action) {
       });
     case 'ROUND_FINISH':
       var wtckts = state.viewingTickets;
-      console.log(action.winner + ' = 4');
       wtckts[action.winner] = 4;
       return Object.assign({}, state, {
         viewingTickets: wtckts,
         markedTickets: [],
         roundFinished: true,
         winner: action.winner
+      });
+    case 'LOGGED_IN':
+      return Object.assign({}, state, {
+        loggedIn: action.bool
+      });
+    case 'ROUNDS_ARCHIVE_FETCHED':
+      return Object.assign({}, state, {
+        roundHistory: action.data
+      });
+    case 'CLEAR_TICKETS':
+      return Object.assign({}, state, {
+        viewingTickets: zeroArray(100)
       });
     default:
       return state;

@@ -15,14 +15,11 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 
 var configDB = require('./config/database.js');
-var passportConf = require('./config/passport'); // pass passport for configuration
-var routes = require('./routes/routes.js');
-
-passportConf(passport);
 
 // configuration ===============================================================
 mongoose.connect(configDB.url); // connect to our database
 
+require('./config/passport')(passport); // pass passport for configuration
 app.set('view engine', 'pug');
 
 // set up our express application
@@ -38,7 +35,7 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
-routes(app, passport); // load our routes and pass in our app and fully configured passport
+require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 // launch ======================================================================
 app.listen(port);

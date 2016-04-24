@@ -16,9 +16,22 @@ export default class RoundPage extends React.Component {
       open: false
     });
   }
+  componentWillMount = () => {
+    this.context.clearTickets();
+    this.context.fetchRounds(this.context.store.product[0]._id);
+    let handle = setInterval(() => {
+      this.context.fetchTickets(this.context.store.round[0]._id);
+    }, 5000);
+    this.setState({
+      fetchTicketsHandle: handle
+    });
+  }
+  componentWillUnmount = () => {
+    clearInterval(this.state.fetchTicketsHandle);
+  }
   render() {
-    let tickets = this.props.state.viewingTickets.map((value, i) => {
-      if (i === this.props.state.winner) {
+    let tickets = this.context.store.viewingTickets.map((value, i) => {
+      if (i === this.context.store.winner) {
         return (
           <Ticket
           lg={2}
@@ -137,14 +150,14 @@ export default class RoundPage extends React.Component {
       }
       return undefined;
     });
-    if (!this.props.state.roundFinished) {
+    if (!this.context.store.roundFinished) {
       return (
         <div className={'roundPage'}>
               {tickets}
         </div>
       );
     }
-    if (this.props.state.roundFinished) {
+    if (this.context.store.roundFinished) {
       let actions = [
         <FlatButton
         label="Хорошо"
@@ -154,9 +167,6 @@ export default class RoundPage extends React.Component {
       ];
       return (
         <div className={'roundPage'}>
-        <h1 style={{textAlign: 'center'}}>
-        Розыгрыш
-        </h1>
         {tickets}
         <Dialog
         title="Розыгрыш завершен!"
@@ -164,7 +174,7 @@ export default class RoundPage extends React.Component {
         modal={true}
         open={this.state.open}
         >
-        Розыгрыш завершен. Выйгрышный билет: {this.props.state.winner}!<br />
+        Розыгрыш завершен. Выйгрышный билет: {this.context.store.winner}!<br />
         Вы будете перенаправлены на главную через некоторое время.
         </Dialog>
         </div>

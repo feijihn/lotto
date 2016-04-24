@@ -14,6 +14,26 @@ function recieveUserInfo(data) {
   };
 }
 
+function clearedTickets() {
+  return {
+    type: 'CLEAR_TICKETS'
+  };
+}
+
+function roundsArchiveFetched(data) {
+  return {
+    type: 'ROUNDS_ARCHIVE_FETCHED',
+    data: data
+  };
+}
+
+function loggedIn(bool) {
+  return {
+    type: 'LOGGED_IN',
+    bool: bool
+  };
+}
+
 /**
  * Action representing products to reducer
  * @param {Object} data products fetched from server
@@ -33,6 +53,7 @@ function recieveProducts(data) {
  * @return {Object} object to update the current store state
  * @memberof Actions
  */
+
 function viewProduct(product) {
   return {
     type: 'VIEW_PRODUCT',
@@ -49,7 +70,7 @@ function viewProduct(product) {
 function recieveRounds(data) {
   return {
     type: 'RECIEVE_ROUNDS',
-    rounds: data
+    round: data
   };
 }
 
@@ -97,12 +118,6 @@ function ownedTicket(value) {
   };
 }
 
-function viewingAlerts() {
-  return {
-    type: 'VIEW_ALERTS'
-  };
-}
-
 function viewingTickets(data) {
   return {
     type: 'VIEWING_TICKETS',
@@ -132,7 +147,7 @@ export function fetchProducts() {
           dispatch(recieveProducts(data));
         },
         error: (xhr, status, err) => {
-          console.error(this.props.url, status, err.toString());
+          console.error(status, err.toString());
         }
       })
     );
@@ -145,6 +160,25 @@ export function fetchProducts() {
  * @return {Function} dispatcher fucntion which emits action
  * @memberof Actions
  */
+
+export function fetchRoundsArchive() {
+  return function(dispatch) {
+    return (
+      $.ajax({
+        url: '/roundsarchive',
+        dataType: 'json',
+        data: {},
+        success: data => {
+          dispatch(roundsArchiveFetched(data));
+        },
+        error: (xhr, status, err) => {
+          console.error(status, err.toString());
+        }
+      })
+    );
+  };
+}
+
 export function fetchUserInfo() {
   return function(dispatch) {
     return (
@@ -152,10 +186,14 @@ export function fetchUserInfo() {
         url: '/userinfo',
         dataType: 'json',
         success: data => {
+          console.log('USERINFO RECIEVED');
           dispatch(recieveUserInfo(data));
+          dispatch(loggedIn(true));
         },
         error: (xhr, status, err) => {
-          console.error(this.props.url, status, err.toString());
+          console.log('USERINFO NOt RECIEVED');
+          dispatch(loggedIn(false));
+          console.error(status, err.toString());
         }
       })
     );
@@ -177,11 +215,24 @@ export function fetchRounds(prodId) {
         dataType: 'json',
         data: {prodId: prodId},
         success: data => {
-          dispatch(fetchTickets(data[0]._id));
+          $.ajax({
+            url: '/tickets',
+            dataType: 'json',
+            data: {rndId: data[0]._id},
+            success: data => {
+              if (data.state === 'FINISH') {
+                dispatch(roundFinished(data.winnum || 0));
+              }
+              dispatch(viewingTickets(data.tickets));
+            },
+            error: (xhr, status, err) => {
+              console.error(status, err.toString());
+            }
+          });
           dispatch(recieveRounds(data));
         },
         error: (xhr, status, err) => {
-          console.error(this.props.url, status, err.toString());
+          console.error(status, err.toString());
         }
       })
     );
@@ -228,10 +279,13 @@ export function fetchTickets(rndId) {
       dataType: 'json',
       data: {rndId: rndId},
       success: data => {
-        dispatch(viewingTickets(data));
+        if (data.state === 'FINISH') {
+          dispatch(roundFinished(data.winnum || 0));
+        }
+        dispatch(viewingTickets(data.tickets));
       },
       error: (xhr, status, err) => {
-        console.error(this.props.url, status, err.toString());
+        console.error(status, err.toString());
       }
     });
   };
@@ -273,8 +327,24 @@ export function deselectTicket(value) {
   };
 }
 
-export function viewAlerts(value) {
+export function markAlertAsRead(alertId) {
   return function(dispatch) {
-    dispatch(viewingAlerts());
+    $.ajax({
+      url: '/alertread',
+      method: 'post',
+      data: {alertId: alertId},
+      success: data => {
+        recieveUserInfo(data);
+      },
+      error: (xhr, status, err) => {
+        console.error(status, err.toString());
+      }
+    });
+  };
+}
+
+export function clearTickets() {
+  return function(dispatch) {
+    dispatch(clearedTickets());
   };
 }

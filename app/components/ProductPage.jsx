@@ -4,46 +4,57 @@ import Rounds from './Rounds.jsx';
 import RoundPage from './RoundPage.jsx';
 import {Col} from 'react-bootstrap';
 import {Image, Thumbnail} from 'react-bootstrap';
-import {FlatButton} from 'material-ui';
+import {FlatButton, List, ListItem} from 'material-ui';
 var Colors = require('material-ui/lib/styles/colors');
 
 export default class ProductPage extends React.Component {
-  constructor(props) {
-    super(props);
-    window.location.hash = 'round';
-  }
   render() {
     return (
       <div className={'productsBlock'}>
+        <h1 style={{textAlign: 'center', color: '#FFFFFF', backgroundColor: Colors.purple100}}>
+        </h1>
         <Tile
-        lg={12}
-        md={12}
-        sm={12}
-        bgColor={Colors.lightBlue50}
+          lg={3}
+          md={3}
+          height={500}
+          bgColor={Colors.purple50}
         >
-        <h1 style={{textAlign: 'center'}}>
-          {this.props.state.viewingProduct[0].name}
-        </h1>
-          <Image src={this.props.state.viewingProduct[0].image} circle style={{width: 300, marginLeft: 10}} responsive />
-          <p style={{marginLeft: 10, marginTop: 10, color: 'white'}}>Описание: {this.props.state.viewingProduct[0].description}</p>
+        <List>
+          <ListItem>
+            <h2 style={{textAlign: 'center'}}> Легенда </h2>
+          </ListItem>
+          <ListItem>
+            <img src="../../public/images/ballBlue.png" style={{width: 64, height: 64}}/>
+            <p style={{color: Colors.blueA200, display: 'inline-block', backgroundColor: Colors.lightBlack, marginLeft: 5}}> СВОБОДНЫЙ </p> шар.
+          </ListItem>
+          <ListItem>
+            <img src="../../public/images/ballPurple.png" style={{width: 64, height: 64}}/>
+            <p style={{color: Colors.purpleA200, display: 'inline-block', backgroundColor: Colors.lightBlack, marginLeft: 5}}> ВЫБРАННЫЙ </p> шар.
+          </ListItem>
+          <ListItem>
+            <img src="../../public/images/ballGreen.png" style={{width: 64, height: 64}}/>
+            <p style={{color: Colors.greenA200, display: 'inline-block', backgroundColor: Colors.lightBlack, marginLeft: 5}}> ВАШ </p> шар.
+          </ListItem>
+          <ListItem>
+            <img src="../../public/images/ballRed.png" style={{width: 64, height: 64}}/>
+            <p style={{color: Colors.redA200, display: 'inline-block', backgroundColor: Colors.lightBlack, marginLeft: 5}}> ЧУЖОЙ </p> шар.
+          </ListItem>
+        </List>
         </Tile>
-        <h1 style={{textAlign: 'center', color: '#FFFFFF'}}>
-        Розыгрыш
-        </h1>
         <Col lg={6} md={6}>
-          <RoundPage handleTicketClick={this.props.handleTicketClick} state={this.props.state} handleBuyClick={this.props.handleBuyClick} deselectTicket={this.props.deselectTicket}/>
+          <RoundPage handleTicketClick={this.props.handleTicketClick} handleBuyClick={this.props.handleBuyClick} deselectTicket={this.props.deselectTicket} />
         </Col>
           <Tile
-          lg={6}
-          md={6}
-          sm={6}
+          lg={3}
+          md={3}
+          sm={3}
           height={500}
-          bgColor={Colors.lightBlue100}
+          bgColor={Colors.purple50}
           >
-          <h1 style={{textAlign: 'center', fontWeight: 900}}>
-            Вы выбрали {this.props.state.markedTickets.length} билетов.<br/>
+          <h1 style={{textAlign: 'center', fontWeight: 900, marginTop: '52.5%'}}>
+            Вы выбрали <br/> <span style={{border: '1px solid black', padding: 3}}>{this.context.store.markedTickets.length}</span> <br/> билетов <br/>
           </h1>
-            <FlatButton label={'Купить'} backgroundColor={Colors.grey50} onTouchTap={this.props.handleBuyClick} style={{marginLeft: '40%'}}/>
+            <FlatButton label={'Купить'} backgroundColor={Colors.grey50} onTouchTap={this.props.handleBuyClick} style={{display: 'block', margin: '0 auto'}}/>
           </Tile>
       </div>
     );

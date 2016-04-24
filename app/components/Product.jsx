@@ -2,7 +2,7 @@ import React from 'react';
 import {Col} from 'react-bootstrap';
 import {Paper} from 'material-ui';
 
-export default class ImageTile extends React.Component {
+export default class Product extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,6 +34,7 @@ export default class ImageTile extends React.Component {
       onMouseEnter={this.handleMouseEnter}
       onMouseLeave={this.handleMouseLeave}
       onTouchTap={this.handleClick}
+      circle
       >
       {this.props.children}
       </Paper>

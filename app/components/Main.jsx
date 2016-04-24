@@ -9,20 +9,29 @@ import App from '../reducers/reducers.js';
 import Products from './Products.jsx';
 import Content from './Content.jsx';
 import Header from './Header.jsx';
+import AboutUs from './AboutUs.jsx';
 import {fetchUserInfo} from '../actions/actions.js';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 injectTapEventPlugin();
 
 export default class Main extends React.Component {
-  constructor(props) {
-    super(props);
+  getChildContext = () => {
+    return {
+      store: this.props.state,
+      fetchRounds: this.props.fetchRounds,
+      fetchUserInfo: this.props.fetchUserInfo,
+      fetchTickets: this.props.fetchTickets,
+      clearTickets: this.props.clearTickets
+    };
+  };
+  componentDidMount = () => {
     this.props.fetchUserInfo();
     this.props.fetchProducts();
-    var handle = setInterval(handle => {
-      this.ticketFetch(handle);
-    }, 5000);
-  }
+    if (window.location.hash === '_=_') {
+      window.location.hash = '';
+    }
+  };
   handleTicketClick = value => {
     this.props.claimTicket(value);
   };
@@ -30,28 +39,16 @@ export default class Main extends React.Component {
     this.props.deselectTicket(value);
   };
   handleProductClick = id => {
-    this.props.viewingProduct(id);
     this.props.fetchRounds(id);
-    this.ticketFetch();
+    this.props.viewingProduct(id);
     window.location.hash = 'round';
   };
-  ticketFetch = handle => {
-    if (this.props.state.viewingRound._id && !this.props.state.roundFinished) {
-      this.props.fetchTickets(this.props.state.viewingRound._id);
-    }
-    if (this.props.state.roundFinished) {
-      clearInterval(handle);
-      setTimeout(() => {
-        window.location = '/profile';
-      }, 10000);
-    }
-  };
   handleBuyClick = () => {
-    this.props.ownTickets(this.props.state.markedTickets, this.props.state.viewingRound._id);
-    this.props.fetchTickets(this.props.state.viewingRound._id);
+    this.props.ownTickets(this.props.state.markedTickets, this.props.state.round[0]._id);
+    this.props.fetchTickets(this.props.state.round[0]._id);
   }
-  handleAlertsClick = () => {
-    this.props.viewAlerts();
+  handleAlertRead = alertId => {
+    this.props.markAlertAsRead(alertId);
   }
   render() {
     return (
@@ -59,13 +56,30 @@ export default class Main extends React.Component {
         <Header userinfo={this.props.state.userinfo || {}} handleAlertsClick={this.handleAlertsClick} />
           <Grid style={{padding: 20}}>
             <Row>
-              <Content state={this.props.state} handleProductClick={this.handleProductClick} handleTicketClick={this.handleTicketClick} hanleBuyClick={this.handleBuyClick} deselectTicket={this.deselectTicket}/>
+              <Content fetchTickets={this.props.fetchTickets} handleProductClick={this.handleProductClick} handleTicketClick={this.handleTicketClick} hanleBuyClick={this.handleBuyClick} deselectTicket={this.deselectTicket} handleAlertRead={this.handleAlertRead}/>
             </Row>
           </Grid>
       </div>
     );
   }
 }
+
+Main.childContextTypes = {
+  store: React.PropTypes.object,
+  fetchRounds: React.PropTypes.func,
+  fetchTickets: React.PropTypes.func,
+  fetchUserInfo: React.PropTypes.func,
+  clearTickets: React.PropTypes.func,
+  handleBuyAllClick: React.PropTypes.func
+};
+
+React.Component.contextTypes = {
+  store: React.PropTypes.object,
+  fetchRounds: React.PropTypes.func,
+  fetchTickets: React.PropTypes.func,
+  fetchUserInfo: React.PropTypes.func,
+  clearTickets: React.PropTypes.func
+};
 
 // <ListItem disabled>
 // email: { this.state.userinfo.local.email || 'none'}

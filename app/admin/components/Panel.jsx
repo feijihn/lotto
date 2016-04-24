@@ -1,23 +1,20 @@
 'use strict';
 import React from 'react';
-import { FlatButton } from 'material-ui';
-import { Table, TableRow, TableRowColumn, TableHeader, TableHeaderColumn, TableBody, TableFooter } from 'material-ui';
+import {FlatButton} from 'material-ui';
+import {Table, TableRow, TableRowColumn, TableHeader, TableHeaderColumn, TableBody, TableFooter} from 'material-ui';
 
 export default class Panel extends React.Component {
-  constructor(props) {
-    super(props);
-  };
   render() {
     switch (this.props.category) {
       case 'index':
-        return(
+        return (
           <div className={'panel'}>
              <h1>This is Admin Panel</h1>
           </div>
-        )
+        );
       case 'products':
-        let products = this.props.state.products.map((prod) => {
-          return(
+        var products = this.props.state.products.map(prod => {
+          return (
             <TableRow>
               <TableRowColumn>
                 { prod._id }
@@ -32,14 +29,14 @@ export default class Panel extends React.Component {
                 { prod.description }
               </TableRowColumn>
             </TableRow>
-          ) 
-        })
-        return(
+          );
+        });
+        return (
           <div className={'adminPanel'}>
-            <h1>Products</h1>
+            <h1 style={{color: 'rgb(255,255,255)'}}>Products</h1>
             <Table>
               <TableHeader>
-                <TableRow> 
+                <TableRow>
                   <TableHeaderColumn>
                   ID
                   </TableHeaderColumn>
@@ -59,21 +56,21 @@ export default class Panel extends React.Component {
               </TableBody>
             </Table>
             <form action="/addproduct" method="post">
-              <label> Название </label>
+              <label style={{color: 'rgb(255,255,255)'}}> Название </label>
               <input className={'form-control'} type="text" name="name" />
-              <label> Цена </label>
+              <label style={{color: 'rgb(255,255,255)'}}> Цена </label>
               <input className={'form-control'} type="text" name="price" />
-              <label> Описание </label>
+              <label style={{color: 'rgb(255,255,255)'}}> Описание </label>
               <input className={'form-control'} type="text" name="description" />
-              <label> Ссылка на изображение </label>
+              <label style={{color: 'rgb(255,255,255)'}}> Ссылка на изображение </label>
               <input className={'form-control'} type="text" name="imagelink" />
               <button className={'btn btn-warning btn-lg'} bsSize={'small'} type="submit"> Добавить </button>
             </form>
           </div>
-        )
+        );
       case 'rounds':
-        let rounds = this.props.state.rounds.map((rnd) => {
-          return(
+        var rounds = this.props.state.rounds.map(rnd => {
+          return (
             <TableRow>
               <TableRowColumn>
                 { rnd._id }
@@ -88,14 +85,14 @@ export default class Panel extends React.Component {
                 { rnd.description }
               </TableRowColumn>
             </TableRow>
-          ) 
+          );
         });
-        return(
+        return (
           <div className={'adminPanel'}>
             <h1>Rounds</h1>
             <Table>
               <TableHeader>
-                <TableRow> 
+                <TableRow>
                   <TableHeaderColumn>
                   ID
                   </TableHeaderColumn>
@@ -103,7 +100,7 @@ export default class Panel extends React.Component {
                   Assoc. Product
                   </TableHeaderColumn>
                   <TableHeaderColumn>
-                  Start Date 
+                  Start Date
                   </TableHeaderColumn>
                   <TableHeaderColumn>
                   Description
@@ -124,13 +121,13 @@ export default class Panel extends React.Component {
               <button className={'btn btn-warning btn-lg'} bsSize={'small'} type="submit"> Добавить </button>
             </form>
           </div>
-        )
+        );
       default:
-        return(
+        return (
           <div className={'panel'}>
             <h1>In dev.</h1>
           </div>
-        )
+        );
     }
   }
 }

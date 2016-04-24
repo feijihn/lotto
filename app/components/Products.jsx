@@ -1,6 +1,6 @@
 import React from 'react';
 import Tile from './Tile.jsx';
-import ImageTile from './ImageTile.jsx';
+import Product from './Product.jsx';
 import ProductPage from './ProductPage.jsx';
 import {Panel} from 'react-bootstrap';
 import {Divider} from 'material-ui';
@@ -11,16 +11,16 @@ export default class Products extends React.Component {
     this.props.handleProductClick(id);
   };
   render() {
-    let products = this.props.state.products.map(product => {
+    let products = this.context.store.products.map(product => {
       let imageLink = product.image;
       let imageLabel = product.name;
       return (
-        <ImageTile
+        <Product
         lg={3}
         md={4}
         sm={6}
         xs={12}
-        height={200}
+        height={250}
         bgImageLink={imageLink}
         handleClick={this.handleProductClick}
         id={product._id}
@@ -28,7 +28,7 @@ export default class Products extends React.Component {
         <p className={'tileLabel'}>
         {imageLabel}
         </p>
-        </ImageTile>
+        </Product>
       );
     });
     return (
@@ -38,7 +38,7 @@ export default class Products extends React.Component {
       md={12}
       sm={12}
       height={800}
-      bgColor={Colors.lightBlue50}
+      bgColor={Colors.purple50}
       >
       <h1 style={{textAlign: 'center', backgroundColor: Colors.blueGrey400, padding: 10, color: 'white'}}>
       Лоты

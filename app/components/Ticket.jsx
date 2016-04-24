@@ -30,7 +30,8 @@ export default class Ticket extends React.Component {
       className={'col-lg-10-12 col-md-10-12 col-sm-5-12 col-xs-4 ticket'}
       onClick={this.handleClick}
       style={{
-        cursor: 'pointer'
+        cursor: 'pointer',
+        borderRadius: '50%'
       }}
       >
         {this.props.children}
@@ -38,7 +39,8 @@ export default class Ticket extends React.Component {
         src={this.props.bgImage}
         style={{
           height: 50,
-          width: 50
+          width: 50,
+          borderRadius: '50%'
         }}
         />
       </div>

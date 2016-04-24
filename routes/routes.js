@@ -2,7 +2,9 @@
 // app/routes.js
 var Product = require('../models/product.js');
 var Round = require('../models/rounds.js');
+var Message = require('../models/message.js');
 var Ticket = require('../models/tickets.js');
+var User = require('../models/user.js');
 var mongoose = require('mongoose');
 var roundLogic = require('../roundLogic.js');
 
@@ -11,7 +13,7 @@ module.exports = function(app, passport) {
   // HOME PAGE (with login links) ========
   // =====================================
   app.get('/', (req, res) => {
-    res.render('index.pug'); // load the index.ejs file
+    res.render('main.pug'); // load the index.ejs file
   });
   // =====================================
   // LOGIN ===============================
@@ -47,7 +49,7 @@ module.exports = function(app, passport) {
   // =====================================
   // we will want this protected so you have to be logged in to visit
   // we will use route middleware to verify this (the isLoggedIn function)
-  app.get('/main', isLoggedIn, (req, res) => {
+  app.get('/main', (req, res) => {
     res.render('main.pug');
   });
   app.get('/product', isLoggedIn, (req, res) => {
@@ -84,7 +86,7 @@ module.exports = function(app, passport) {
     });
     res.status(200).send('Added product...');
   });
-  app.post('/claimticket', isLoggedIn, (req, res) => {
+  app.post('/claimticket', (req, res) => {
     let newTicket = new Ticket();
     newTicket.save(err => {
       if (err) {
@@ -92,6 +94,17 @@ module.exports = function(app, passport) {
       }
     });
     res.status(200).send('Added ticket...');
+  });
+  app.post('/alertread', isLoggedIn, (req, res) => {
+    console.log(req.body);
+    console.log(req.query);
+    User.update({'messages._id': req.body.alertId}, {$set: {'messages.$.status': 'read'}}, (err, user) => {
+      if (err) {
+        throw err;
+      }
+      console.log(user);
+    });
+    res.send(req.user);
   });
   app.post('/addround', isLoggedIn, isAdmin, (req, res) => {
     let newRound = new Round();
@@ -106,7 +119,7 @@ module.exports = function(app, passport) {
     });
     res.status(200).send('Added round...');
   });
-  app.get('/products', isLoggedIn, (req, res) => {
+  app.get('/products', (req, res) => {
     Product.find((err, product) => {
       if (err) {
         throw err;
@@ -115,7 +128,7 @@ module.exports = function(app, passport) {
       return undefined;
     });
   });
-  app.get('/rounds', isLoggedIn, (req, res) => {
+  app.get('/rounds', (req, res) => {
     Round.find({product_id: req.query.prodId, running: true}, (err, round) => {
       if (err) {
         throw err;
@@ -124,12 +137,30 @@ module.exports = function(app, passport) {
       return undefined;
     });
   });
-  app.get('/tickets', isLoggedIn, (req, res) => {
+  app.get('/roundsarchive', isLoggedIn, (req, res) => {
+  });
+  app.get('/tickets', (req, res) => {
     Ticket.find({round_id: req.query.rndId}, (err, ticket) => {
       if (err) {
         throw err;
       }
-      res.json(ticket);
+      Round.findOne({_id: req.query.rndId}, (err, round) => {
+        if (err) {
+          throw err;
+        }
+        if (round.ticketsOwned < 100) {
+          res.send({
+            state: 'INPROG',
+            tickets: ticket
+          });
+        } else {
+          res.send({
+            state: 'FINISH',
+            tickets: ticket,
+            winnum: round.winnum
+          });
+        }
+      });
       return undefined;
     });
   });
@@ -142,15 +173,7 @@ module.exports = function(app, passport) {
         }
       });
       req.body.values.forEach((value, i) => {
-        let newTicket = new Ticket();
-        newTicket.round_id = req.body.rndId;
-        newTicket.user_id = req.user._id;
-        newTicket.value = value;
-        newTicket.save(err => {
-          if (err) {
-            throw err;
-          }
-        });
+        roundLogic.ownTicket(req.body.rndId, req.user._id, value);
         Round.findByIdAndUpdate({_id: req.body.rndId, ticketsOwned: {$lt: 100}}, {$inc: {ticketsOwned: 1}}, (err, round) => {
           if (err) {
             throw err;
@@ -159,6 +182,12 @@ module.exports = function(app, passport) {
             resFlag = false;
             console.log('round ' + round._id + 'finished');
             let winningTicket = Math.floor(Math.random() * 100);
+            round.winnum = winningTicket;
+            round.save(err => {
+              if (err) {
+                throw err;
+              }
+            });
             console.log('ticket #' + winningTicket + ' winning the round!');
             res.status(200).json({
               status: 'FINISH',
