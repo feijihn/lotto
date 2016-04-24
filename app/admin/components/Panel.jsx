@@ -33,7 +33,7 @@ export default class Panel extends React.Component {
         });
         return (
           <div className={'adminPanel'}>
-            <h1 style={{color: 'rgb(255,255,255)'}}>Products</h1>
+            <h1>Products</h1>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -56,13 +56,13 @@ export default class Panel extends React.Component {
               </TableBody>
             </Table>
             <form action="/addproduct" method="post">
-              <label style={{color: 'rgb(255,255,255)'}}> Название </label>
+              <label> Название </label>
               <input className={'form-control'} type="text" name="name" />
-              <label style={{color: 'rgb(255,255,255)'}}> Цена </label>
+              <label> Цена </label>
               <input className={'form-control'} type="text" name="price" />
-              <label style={{color: 'rgb(255,255,255)'}}> Описание </label>
+              <label> Описание </label>
               <input className={'form-control'} type="text" name="description" />
-              <label style={{color: 'rgb(255,255,255)'}}> Ссылка на изображение </label>
+              <label> Ссылка на изображение </label>
               <input className={'form-control'} type="text" name="imagelink" />
               <button className={'btn btn-warning btn-lg'} bsSize={'small'} type="submit"> Добавить </button>
             </form>
