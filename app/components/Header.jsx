@@ -1,5 +1,6 @@
 import React from 'react';
-import {FlatButton, List, ListItem, Avatar, Paper, Divider, Badge, Dialog, Colors} from 'material-ui';
+import {FlatButton, List, ListItem, Avatar, Paper, Divider, Badge, Dialog} from 'material-ui';
+import * as Colors from 'material-ui/styles/colors';
 import Tile from './Tile.jsx';
 
 export default class Header extends React.Component {

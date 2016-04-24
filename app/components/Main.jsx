@@ -1,7 +1,10 @@
 import React from 'react';
 import thunkMiddleware from 'redux-thunk';
 import {createStore, applyMiddleware} from 'redux';
-import {Paper, Avatar, List, ListItem, FlatButton, Divider, Colors} from 'material-ui';
+import {Paper, Avatar, List, ListItem, FlatButton, Divider} from 'material-ui';
+import * as Colors from 'material-ui/styles/colors';
+import baseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {Grid, Row, Col} from 'react-bootstrap';
 import Tile from './Tile.jsx';
 import App from '../reducers/reducers.js';
@@ -21,7 +24,8 @@ export default class Main extends React.Component {
       fetchRounds: this.props.fetchRounds,
       fetchUserInfo: this.props.fetchUserInfo,
       fetchTickets: this.props.fetchTickets,
-      clearTickets: this.props.clearTickets
+      clearTickets: this.props.clearTickets,
+      muiTheme: getMuiTheme(baseTheme)
     };
   };
   componentDidMount = () => {
@@ -69,7 +73,8 @@ Main.childContextTypes = {
   fetchTickets: React.PropTypes.func,
   fetchUserInfo: React.PropTypes.func,
   clearTickets: React.PropTypes.func,
-  handleBuyAllClick: React.PropTypes.func
+  handleBuyAllClick: React.PropTypes.func,
+  muiTheme: React.PropTypes.object
 };
 
 React.Component.contextTypes = {

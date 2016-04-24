@@ -1,6 +1,6 @@
 import React from 'react';
 import Tile from './Tile.jsx';
-import {Colors} from 'material-ui';
+import * as Colors from 'material-ui/styles/colors';
 
 export default class AboutUs extends React.Component {
   render() {

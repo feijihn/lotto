@@ -2,7 +2,8 @@ import React from 'react';
 import Tile from './Tile.jsx';
 import RoundPage from './RoundPage.jsx';
 import {Panel} from 'react-bootstrap';
-import {Divider, Colors} from 'material-ui';
+import {Divider} from 'material-ui';
+import * as Colors from 'material-ui/styles/colors';
 
 export default class Rounds extends React.Component {
   constructor(props) {

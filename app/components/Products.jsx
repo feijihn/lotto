@@ -3,7 +3,8 @@ import Tile from './Tile.jsx';
 import Product from './Product.jsx';
 import ProductPage from './ProductPage.jsx';
 import {Panel} from 'react-bootstrap';
-import {Divider, Colors} from 'material-ui';
+import {Divider} from 'material-ui';
+import * as Colors from 'material-ui/styles/colors';
 
 export default class Products extends React.Component {
   handleProductClick = id => {

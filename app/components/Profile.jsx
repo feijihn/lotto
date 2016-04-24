@@ -1,6 +1,7 @@
 import React from 'react';
 import Tile from './Tile.jsx';
-import {List, ListItem, Avatar, Divider, Colors} from 'material-ui';
+import {List, ListItem, Avatar, Divider} from 'material-ui';
+import * as Colors from 'material-ui/styles/colors';
 
 export default class AlertsPage extends React.Component {
   render() {
