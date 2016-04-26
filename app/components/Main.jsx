@@ -25,12 +25,14 @@ export default class Main extends React.Component {
       fetchUserInfo: this.props.fetchUserInfo,
       fetchTickets: this.props.fetchTickets,
       clearTickets: this.props.clearTickets,
-      muiTheme: getMuiTheme(baseTheme)
+      muiTheme: getMuiTheme(baseTheme),
+      selectAllTickets: this.props.selectAllTickets
     };
   };
   componentDidMount = () => {
     this.props.fetchUserInfo();
     this.props.fetchProducts();
+    this.props.fetchRoundsArchive();
     if (window.location.hash === '_=_') {
       window.location.hash = '';
     }
@@ -74,7 +76,8 @@ Main.childContextTypes = {
   fetchUserInfo: React.PropTypes.func,
   clearTickets: React.PropTypes.func,
   handleBuyAllClick: React.PropTypes.func,
-  muiTheme: React.PropTypes.object
+  muiTheme: React.PropTypes.object,
+  selectAllTickets: React.PropTypes.func
 };
 
 React.Component.contextTypes = {
@@ -82,7 +85,8 @@ React.Component.contextTypes = {
   fetchRounds: React.PropTypes.func,
   fetchTickets: React.PropTypes.func,
   fetchUserInfo: React.PropTypes.func,
-  clearTickets: React.PropTypes.func
+  clearTickets: React.PropTypes.func,
+  selectAllTickets: React.PropTypes.func
 };
 
 // <ListItem disabled>

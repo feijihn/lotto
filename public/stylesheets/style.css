@@ -55,3 +55,12 @@ a {
   font-family: 'Flagship Slab',
   src: url('public/fonts/FlagshipSlabReguar.otf')
 }
+
+.ticket {
+  user-drag: none; 
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}

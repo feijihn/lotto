@@ -34,6 +34,7 @@ export default class Tile extends React.Component {
       style={{height: this.props.height || 'auto', zIndex: this.state.zIndex, backgroundColor: this.props.bgColor || '#000000', overflow: 'auto', paddingBottom: 15}}
       onMouseEnter={this.handleMouseEnter}
       onMouseLeave={this.handleMouseLeave}
+      circle={this.props.rounded}
       >
       {this.props.children}
       </Paper>

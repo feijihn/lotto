@@ -31,25 +31,12 @@ export default class Ticket extends React.Component {
       onClick={this.handleClick}
       style={{
         cursor: 'pointer',
-        backgroundImage: 'url(' + this.props.bgImage + ')',
-        backgroundSize: 'cover',
-        width: 50,
         height: 50
       }}
       >
         {this.props.children}
+        <img src={this.props.bgImage} style={{width: 50, height: 50}}/>
       </div>
     );
   }
 }
-      /*
-       *<Paper
-       *zDepth={this.state.zDepth}
-       *style={{height: this.props.height || 100, zIndex: this.state.zIndex, backgroundImage: 'url(' + this.props.bgImageLink + ')' || 'none', backgroundSize: 'cover', cursor: 'pointer', backgroundColor: this.props.bgColor}}
-       *onMouseEnter={this.handleMouseEnter}
-       *onMouseLeave={this.handleMouseLeave}
-       *onTouchTap={this.handleClick}
-       *>
-       *{this.props.children}
-       *</Paper>
-       */

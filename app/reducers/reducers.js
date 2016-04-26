@@ -74,7 +74,6 @@ function App(state = initialState, action) {
     case 'VIEWING_TICKETS':
       var temp = state.viewingTickets;
       action.data.forEach(ticket => {
-        console.log(ticket);
         if (ticket.user_id === state.userinfo._id) {
           temp[ticket.value] = 2;
         } else if (ticket.value === state.winner) {
@@ -119,7 +118,23 @@ function App(state = initialState, action) {
       });
     case 'CLEAR_TICKETS':
       return Object.assign({}, state, {
-        viewingTickets: zeroArray(100)
+        viewingTickets: zeroArray(100),
+        roundFinished: false,
+        markedTickets: [],
+        winner: -1
+      });
+    case 'SELECT_UNMARKED':
+      var stckts = state.viewingTickets;
+      var footckts = state.markedTickets;
+      stckts.forEach((ticket, i) => {
+        if (ticket === 0) {
+          footckts.push(i);
+          stckts[i] = 3;
+        }
+      });
+      return Object.assign({}, state, {
+        viewingTickets: stckts,
+        markedTickets: footckts
       });
     default:
       return state;

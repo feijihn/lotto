@@ -131,6 +131,12 @@ function roundFinished(winnum) {
     winner: winnum
   };
 }
+
+function selectUnmarked() {
+  return {
+    type: 'SELECT_UNMARKED'
+  };
+}
 /**
  * Fetches products from server
  * @function fetchProducts
@@ -346,5 +352,11 @@ export function markAlertAsRead(alertId) {
 export function clearTickets() {
   return function(dispatch) {
     dispatch(clearedTickets());
+  };
+}
+
+export function selectAllTickets() {
+  return function(dispatch) {
+    dispatch(selectUnmarked());
   };
 }

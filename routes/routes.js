@@ -111,7 +111,9 @@ module.exports = function(app, passport) {
     newRound.product_id = req.body.prodId;
     newRound.description = req.body.description;
     newRound.image = req.body.imagelink;
+    newRound.creationTime = Date.now();
     newRound.startTime = Date.now();
+    newRound.running = true;
     newRound.save(err => {
       if (err) {
         throw err;
@@ -129,7 +131,7 @@ module.exports = function(app, passport) {
     });
   });
   app.get('/rounds', (req, res) => {
-    Round.find({product_id: req.query.prodId, running: true}, (err, round) => {
+    Round.find({product_id: req.query.prodId, endTime: {$eq: undefined}, startTime: {$ne: undefined}}, (err, round) => {
       if (err) {
         throw err;
       }
@@ -138,8 +140,16 @@ module.exports = function(app, passport) {
     });
   });
   app.get('/roundsarchive', isLoggedIn, (req, res) => {
+    Round.find({participants: {$in: [String(req.user._id)]}}, (err, rounds) => {
+      if (err) {
+        throw err;
+      }
+      console.log(rounds);
+      res.json(rounds);
+    });
   });
   app.get('/tickets', (req, res) => {
+    roundLogic.checkRoundEnd(req.query.rndId);
     Ticket.find({round_id: req.query.rndId}, (err, ticket) => {
       if (err) {
         throw err;
@@ -148,12 +158,12 @@ module.exports = function(app, passport) {
         if (err) {
           throw err;
         }
-        if (round.ticketsOwned < 100) {
+        if (round && round.tickets.length < 100) {
           res.send({
             state: 'INPROG',
             tickets: ticket
           });
-        } else {
+        } else if (round) {
           res.send({
             state: 'FINISH',
             tickets: ticket,
@@ -165,49 +175,15 @@ module.exports = function(app, passport) {
     });
   });
   app.post('/owntickets', isLoggedIn, (req, res) => {
-    let resFlag = true;
     if (req.body.values) {
-      Round.findOneAndUpdate({_id: req.body.rndId, participants: {$nin: [String(req.user._id)]}}, {$push: {participants: String(req.user._id)}}, (err, round) => {
-        if (err) {
-          throw err;
-        }
-      });
+      roundLogic.addParticipant(req.body.rndId, req.user._id);
       req.body.values.forEach((value, i) => {
         roundLogic.ownTicket(req.body.rndId, req.user._id, value);
-        Round.findByIdAndUpdate({_id: req.body.rndId, ticketsOwned: {$lt: 100}}, {$inc: {ticketsOwned: 1}}, (err, round) => {
-          if (err) {
-            throw err;
-          }
-          if (round.ticketsOwned === 99) {
-            resFlag = false;
-            console.log('round ' + round._id + 'finished');
-            let winningTicket = Math.floor(Math.random() * 100);
-            round.winnum = winningTicket;
-            round.save(err => {
-              if (err) {
-                throw err;
-              }
-            });
-            console.log('ticket #' + winningTicket + ' winning the round!');
-            res.status(200).json({
-              status: 'FINISH',
-              winnum: winningTicket
-            });
-            roundLogic.restartRoundWithDelay(round._id, round, 10000);
-            Ticket.findOne({round_id: round._id, value: winningTicket}, (err, ticket) => {
-              if (err) {
-                throw err;
-              }
-              roundLogic.sendAlertsToParticipants(round._id, ticket.user_id);
-            });
-          }
-          if (resFlag && i === req.body.values.length - 1) {
-            res.status(200).json({
-              status: 'OK'
-            });
-            resFlag = !resFlag;
-          }
-        });
+        if (i === req.body.values.length - 1) {
+          res.status(200).json({
+            status: 'OK'
+          });
+        }
       });
     } else {
       res.status(304).json({

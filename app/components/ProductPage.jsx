@@ -55,6 +55,7 @@ export default class ProductPage extends React.Component {
             Вы выбрали <br/> <span style={{border: '1px solid black', padding: 3}}>{this.context.store.markedTickets.length}</span> <br/> билетов <br/>
           </h1>
             <FlatButton label={'Купить'} backgroundColor={Colors.grey50} onTouchTap={this.props.handleBuyClick} style={{display: 'block', margin: '0 auto'}}/>
+            <FlatButton label={'Выделить все'} backgroundColor={Colors.grey50} onTouchTap={this.context.selectAllTickets} style={{display: 'block', margin: '0 auto'}}/>
           </Tile>
       </div>
     );
