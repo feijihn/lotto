@@ -66,7 +66,7 @@ const config = {
       {
         test: /\.jsx?$/,
         include: PATHS.app.client,
-        loaders: ['react-hot', 'babel']
+        loaders: ['babel']
       }
     ]
   },
