@@ -50,7 +50,7 @@ const config = {
   output: {
     path: PATHS.build,
     filename: '[name].bundle.js',
-    publicPath: '/'
+    publicPath: ''
   },
   stats: {
     colors: true,
