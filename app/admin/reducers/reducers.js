@@ -1,7 +1,8 @@
 'use strict';
 const initialState = {
   products: [],
-  rounds: []
+  rounds: [],
+  content: []
 };
 
 function App(state = initialState, action) {
@@ -9,11 +10,15 @@ function App(state = initialState, action) {
     case 'RECIEVE_PRODUCTS':
       return Object.assign({}, state, {
         products: action.products
-      })
+      });
     case 'RECIEVE_ROUNDS':
       return Object.assign({}, state, {
         rounds: action.rounds
-      })
+      });
+    case 'RECIEVE_CONTENT':
+      return Object.assign({}, state, {
+        content: action.content
+      });
     default:
       return state;
   }

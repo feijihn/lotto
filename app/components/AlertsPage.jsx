@@ -20,20 +20,13 @@ export default class AlertsPage extends React.Component {
       );
     });
     return (
-      <div className={'alertsPage'}>
-        <Tile
-        lg={12}
-        md={12}
-        sm={12}
-        bgColor={Colors.lightBlue50}
-        >
+      <div className={'alertsPage col-lg-6 col-md-8 col-sm-12 col-lg-offset-3 col-md-offset-2'}>
           <h1 style={{textAlign: 'center'}}>
             Уведомления
           </h1>
           <List>
             {alerts}
           </List>
-        </Tile>
       </div>
     );
   }

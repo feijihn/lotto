@@ -1,39 +1,76 @@
+html {
+  width: 100%;
+  height: 100%;
+}
+
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   width: 100%;
-  height: 100%;
-  background-color: #23314F;
+  text-decoration: none;
 }
 
 a {
   color: #00B7FF;
+  text-decoration: none;
+  outline: 0;
 }
 
-.main span{
-	font-family: 'Roboto', sans-serif;
-	color: black;
+a:hover {
+  text-decoration: none;
+}
+
+a:active {
+  text-decoration: none;
+}
+
+a:focus {
+  outline: 0;
+  text-decoration: 0;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+#container {
+  width: 100%;
+}
+
+.main {
+  min-height: 100%;
+  height: 100%;
 }
 
 .panel h1 {
   text-align: center;
 }
 
-.tileLabel {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: 'Roboto', sans-serif;
-  font-weight: 900;
-  font-size: 26px;
-  text-align: center;
-  color: rgba(255,255,255,1);
-  background-color: rgba(0,0,0,0.5);
-  width: 93%;
+.page__section {
+  width: 100%;
 }
 
-.header span{
-  font-family: 'Roboto', sans-serif;
+.page__title {
+  font-size: 4em;
+  font-weight: 900;
+}
+
+.section__title__black {
+  font-family: 'WeblySleek UI';
+  font-size: 3em;
+  color: rgba(0,0,0);
+  margin-bottom: 2%;
+}
+
+.section__title__white {
+  font-family: 'WeblySleek UI';
+  font-size: 3em;
+  color: rgba(0,0,0);
+  margin-bottom: 2%;
+}
+
+.round__steps__caption {
+  margin-top: 2%;
+  color: #6c7a89;
 }
 
 .username {
@@ -51,9 +88,10 @@ a {
   background-color: rgba(0,0,0,0.2);
 }
 
-@font-face {
-  font-family: 'Flagship Slab',
-  src: url('public/fonts/FlagshipSlabReguar.otf')
+.ticketContainer {
+  height: 100%;
+  position: relative;
+  display: inline-block;
 }
 
 .ticket {
@@ -63,4 +101,514 @@ a {
   -webkit-user-drag: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+  cursor: pointer;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 50px;
+}
+
+.buyButton {
+  margin: 0 auto;
+  display: inherit;
+}
+
+.selectAllButton {
+  margin: 0 auto;
+  display: inherit;
+}
+
+.indexPage {
+  background-image: url('../images/bingo.jpg');
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.introSection {
+  height: auto;
+  /*background-color: rgba(0, 145, 80, 0.65);*/
+  background-color: rgba(0, 0, 0, 0.65);
+  padding-bottom: 10%;
+}
+
+.aboutUsSection {
+  background-color: rgba(60, 79, 118, 1);
+  color: rgba(255,255,255,0.6);
+  padding-bottom: 10%;
+}
+
+.aboutUsCaption {
+  display: block;
+  font-family: "WeblySleek UI";
+  color: rgba(255,255,255,1);
+  white-space: pre-wrap;
+}
+
+.aboutUsSection .btn-primary:hover {
+  background-color: #5B94C5;
+}
+
+.introContent {
+  max-height: 100%;
+  padding-top: 1.5%;
+}
+
+.introContent span {
+  font-family: "WeblySleek UI";
+  font-size: 1.2em;
+  font-weight: 900;
+  color: white;
+}
+
+.introTrust {
+  margin-top: 35px;
+  display: inline-block;
+  width: 45%;
+}
+
+.introTrust img {
+  margin-right: 1%;
+  transform: translateY(-22%);
+}
+
+.introTrust a {
+  color: #B0E3F7;
+}
+
+.introTrust a:hover {
+  color: lightblue;
+}
+
+.handsIcon {
+  float: left;
+  white-space: nowrap;
+}
+
+.moreIcon {
+  float: right;
+  white-space: nowrap;
+}
+
+.aboutUsContent {
+  max-height: 100%;
+  padding-top: 1.5%;
+}
+
+.btn-info a{
+  color: white
+}
+
+.aboutUsContent img {
+  width: 23vw;
+  margin-left: 5%;
+  position: absolute;
+  top: 50px;
+  right: 0px;
+}
+
+.trustIcon {
+  font-family: inerhit;
+  color: white;
+}
+
+.snackbar span {
+  color: white;
+}
+
+.securityButton {
+  float: left;
+}
+
+.panel-pages input[type=text] {
+  height: 200px;
+}
+
+.panel-pages input[type=submit] {
+  display: inline-block;
+  margin-top: 10px;
+}
+
+
+.introCaption {
+  display: block;
+  font-family: "WeblySleek UI";
+  color: rgba(255,255,255,1);
+  white-space: pre-wrap;
+  margin-top: 15%;
+}
+
+.caption p {
+ font-size: 1.4em; 
+ font-weight: 900;
+}
+
+.caption span {
+  font-size: 12px;
+}
+
+.headBar {
+  position: absolute;
+  background-color: transparent;
+  margin: 2.2em 5%;
+  min-width: 940px;
+  width: 90%;
+  top: 0;
+  left: 0;
+  z-index: 45;
+  transition: background-color 2s, padding 1s, margin 1s;
+}
+
+.sticky {
+}
+
+.headBar h1 {
+  color: white;
+  font-family: "Circular";
+  font-weight: 900;
+  padding: 0;
+  margin: 0;
+  padding-left: 10px;
+  font-size: 48px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.headBar .logo {
+  display: inline-block;
+}
+
+.headBar .logo:active {
+  transform: translateY(10%);
+}
+
+.headAvatar {
+  position: relative;
+  float: right;
+  transform: translateY(15%);
+  margin-right: 1.5%;
+}
+
+.headAvatarChevron {
+  padding-left: 5px;
+  padding-right: 5px;
+  color: rgba(255, 255, 255, 1);
+  cursor: pointer;
+}
+
+.avatarDropdown {
+  float: right;
+}
+
+.avatarDropdown .dropdown-menu{
+  display: block;
+  left: 100%;
+  transform: translateX(-100%);
+  background-color: rgba(255, 255, 255, 1);
+  font-family: "WeblySleek UI";
+  font-size: 16px;
+}
+
+.avatarDropdown .dropdown-header{
+  color: black;
+  font-size: 14px;
+  text-align: center;
+}
+
+.signInDropdown {
+  background-color: white;
+}
+
+.signInDropdown .dropdown-menu {
+  display: block;
+  left: 100%;
+  transform: translateX(-100%);
+  background-color: white;
+  font-family: "WeblySleek UI";
+  font-size: 16px;
+}
+
+.signInDropdown button {
+  margin-right: 50%;
+}
+
+.signInDropdown .form-group {
+  margin: 0;
+}
+
+.signInForm {
+  padding: 15px;
+  background-color: white;
+  min-width: 400px;
+}
+
+.row {
+  margin: 0;
+}
+
+.loginButton {
+  position: absolute;
+  top: 50%;
+  right: 0%;
+  transform: translate(-10%, -50%);
+}
+
+.productsSection {
+  background-color:  white;
+  margin: 0 auto;
+  text-align: center;
+  padding-bottom: 30px;
+  font-family: "WeblySleek UI";
+}
+
+.product {
+  display: inline-block;
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  height: 200px;
+  margin: 2%;
+  background-color: white;
+  cursor: pointer;
+  border: 3px solid rgba(61,86,165,0.6);
+  box-shadow: 0 0 5px #DDDBF1;
+}
+
+.product div :hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.43);
+}
+
+.product img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.product a {
+  color: white;
+}
+
+.product p {
+  margin-top: 10px;
+  font-size: 16px;
+  color: rgba(0,0,0,1);
+}
+
+.introCaption a {
+  color: white;
+}
+
+.routerContainer {
+  background-color: #3C4F76;
+  height: 100%;
+}
+
+.profilePage {
+  background-color: white;
+  color: black;
+  border-radius: 15px;
+  font-family: 'WeblySleek UI';
+  height: 100%;
+  margin-top: 100px;
+  margin-bottom: 100px;
+}
+
+.profilePage span {
+  color: black;
+  font-size: 1.3em;
+}
+
+.round__history__element {
+  white-space: nowrap;
+  height: 120px;
+  box-sizing: content-box;
+}
+
+.round__history__pic {
+  padding: 0;
+}
+
+.round__history__description {
+  height: 120px;
+}
+
+.roundContainer {
+  height: 100%;
+}
+
+.roundPage {
+  padding-top: 50px;
+  background-color: #23314F;
+}
+
+.roundPage::after {
+  height: 50px;
+  background-color: #23314F;
+}
+
+.roundPage h1 {
+  text-align: center;
+  margin: 0;
+  color: rgba(0,0,0,0.9);
+}
+
+.roundPage p {
+  display: inline-block;
+  color: rgba(0,0,0,0.9);
+  padding-left: 5px;
+}
+
+.roundPage h2, span {
+  color: rgba(0,0,0,0.9);
+}
+
+.roundWaiting {
+  position: absolute;
+  background: rgba(0,0,0,0.5);
+  content: '';
+  width: 100%;
+  height: 100%;
+  transform: translateX(-3%);
+  border-radius: 10px;
+}
+
+.ticketContainer h1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+}
+
+.ticketCost {
+  position: absolute;
+  font-family: 'Circular';
+  color: white;
+  font-weight: 900;
+  padding: 5px;
+  border: 3px solid white;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 32px 32px 32px 32px;
+  transform: translateX(120%);
+}
+
+#round__steps {
+  height: 300px;
+  background-color: #ecf0f1;
+}
+
+.round__info {
+  width: 100%;
+  height: 120px;
+  margin-top: 120px;
+  background-color: #284055;
+  position: relative;
+}
+
+.round__info h1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  color: white;
+}
+
+.roundLegend {
+  display: inline-block;
+  float: left;
+  background-color: white;
+  height: 500px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+
+.roundCheque {
+  display: inline-block;
+  background-color: white;
+  padding: 100px 0 100px 0;
+  height: 500px;
+  border-radius: 10px;
+}
+
+.roundCheque h1 {
+  color: black;
+}
+
+.ticket span {
+  font-family: "Flagship Slab";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-65%, -50%); 
+}
+
+.footer {
+  height: 450px;
+  width: 100%;
+  background-color: #2c3e50;
+  font-family: "WeblySleek UI";
+}
+
+.footerLinks {
+  padding: 5% 0;
+}
+
+.footerLinks h3 {
+  color: white;
+  font-size: 1.7em;
+}
+
+.footerLinks ul {
+  list-style: none;
+  padding: 0;
+  margin: .3em;
+  line-height: 2;
+}
+
+.footerLinks a {
+  color: #6e7f9c;
+  font-size: 1.2em;
+}
+
+.footerLinks a:hover {
+  color: lightblue;
+}
+
+.footerEnd {
+  border-top: 1px solid rgba(110,127,156,0.5);
+  padding: 40px 0;
+  background-color: #2c3e50;
+}
+
+.copyright {
+  font-size: 1em;
+  color: white;
+}
+
+.copyright a {
+  font-size: 1em;
+  color: #6e7f9c;
+}
+
+.supportMail a {
+  font-size: 1em;
+  color: #6e7f9c;
+}
+
+@font-face {
+  font-family: "WeblySleek UI";
+  font-weight: 100;
+  src: local("☺︎"), url("../fonts/ws-ui-light.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Flagship Slab";
+  font-weight: 100;
+  src: local("☺︎"), url("../fonts/FlagshipSlabRegular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Circular";
+  font-style: normal;
+  font-weight: normal;
+  src: url("https://a1.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Book-22799398756cc42454a77735013a3378.eot?#") format("eot"), url("https://a0.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Book-030dcebde359eb3be354ab21c34a89ce.woff") format("woff"), url("https://a0.muscache.com/airbnb/static/airbnb-o2/fonts/Circular_Air-Book-287e910a06039c130e488343a7564c39.svg") format("svg");
 }

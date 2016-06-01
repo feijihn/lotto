@@ -1,6 +1,7 @@
 import React from 'react';
 import {Col} from 'react-bootstrap';
 import {Paper} from 'material-ui';
+import {Link} from 'react-router';
 
 export default class Product extends React.Component {
   constructor(props) {
@@ -22,23 +23,14 @@ export default class Product extends React.Component {
       zIndex: '999'
     });
   };
-  handleClick = () => {
-    this.props.handleClick(this.props.id);
-  };
   render() {
     return (
-      <Col lg={this.props.lg || 12} md={this.props.md || 12} sm={this.props.sm || 12} lgOffset={this.props.lgOffset || 0} mdOffset={this.props.mdOffset || 0} smOffset={this.props.smOffset || 0} style={{zIndex: this.state.zIndex}}>
-      <Paper
-      zDepth={this.state.zDepth}
-      style={{height: this.props.height || 100, zIndex: this.state.zIndex, backgroundImage: 'url(' + this.props.bgImageLink + ')' || 'none', backgroundSize: 'cover', cursor: 'pointer', backgroundColor: this.props.bgColor}}
-      onMouseEnter={this.handleMouseEnter}
-      onMouseLeave={this.handleMouseLeave}
-      onTouchTap={this.handleClick}
-      circle
-      >
-      {this.props.children}
-      </Paper>
-      </Col>
+        <div className={'product'}>
+          {this.props.children}
+          <Link to={'/round/' + this.props.id}>
+            <button type="button" className={'btn btn-primary btn-lg'}><span>Выйграть</span></button>
+          </Link>
+        </div>
     );
   }
 }

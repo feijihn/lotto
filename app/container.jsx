@@ -1,7 +1,7 @@
 import {connect} from 'react-redux';
 import React from 'react';
 import Main from './components/Main.jsx';
-import {fetchUserInfo, fetchProducts, fetchRounds, fetchTickets, claimTicket, viewingProduct, ownTickets, deselectTicket, markAlertAsRead, fetchRoundsArchive, clearTickets, selectAllTickets} from './actions/actions.js';
+import {fetchUserInfo, fetchProducts, fetchRounds, fetchTickets, claimTicket, viewingProduct, ownTickets, deselectTicket, markAlertAsRead, fetchRoundsArchive, clearTickets, selectAllTickets, fetchContent, fetchRoundById} from './actions/actions.js';
 
 const mapStateToProps = state => {
   return {
@@ -20,8 +20,8 @@ const mapDispatchToProps = dispatch => {
     fetchRounds: id => {
       dispatch(fetchRounds(id));
     },
-    fetchTickets: id => {
-      dispatch(fetchTickets(id));
+    fetchTickets: (id, archive) => {
+      dispatch(fetchTickets(id, archive));
     },
     claimTicket: value => {
       dispatch(claimTicket(value));
@@ -46,6 +46,12 @@ const mapDispatchToProps = dispatch => {
     },
     selectAllTickets: () => {
       dispatch(selectAllTickets());
+    },
+    fetchContent: () => {
+      dispatch(fetchContent());
+    },
+    fetchRoundById: roundId => {
+      dispatch(fetchRoundById(roundId));
     }
   };
 };

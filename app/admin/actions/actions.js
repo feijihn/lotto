@@ -1,6 +1,13 @@
 'use strict';
 import $ from 'jquery';
 
+function recieveContent(data) {
+  return {
+    type: 'RECIEVE_CONTENT',
+    content: data
+  };
+}
+
 function recieveProducts(data) {
   return {
     type: 'RECIEVE_PRODUCTS',
@@ -40,6 +47,11 @@ export function fetchRounds() {
       $.ajax({
         url: '/rounds',
         dataType: 'json',
+        data: {
+          options: {
+            all: true
+          }
+        },
         success: data => {
           dispatch(recieveRounds(data));
         },
@@ -51,4 +63,19 @@ export function fetchRounds() {
   };
 }
 
-
+export function fetchContent() {
+  return function(dispatch) {
+    return (
+      $.ajax({
+        url: '/content',
+        dataType: 'json',
+        success: data => {
+          dispatch(recieveContent(data));
+        },
+        error: (xhr, status, err) => {
+          console.error(this.props.url, status, err.toString());
+        }
+      })
+    );
+  };
+}

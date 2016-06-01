@@ -1,39 +1,64 @@
-var webpack = require('webpack');
-var path = require('path');
+const webpack = require('webpack');
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-var APP_DIR = path.resolve(__dirname, './');
-var BUILD_DIR = path.resolve(__dirname, './public/build');
+const PATHS = {
+  app: {
+    client: path.resolve(__dirname, './app'),
+    admin: path.resolve(__dirname, './app/admin')
+  },
+  styles: path.resolve(__dirname, './public/stylesheets'),
+  build: path.resolve(__dirname, './public/build'),
+  public: path.resolve(__dirname, './public')
+};
 
-var config = {
-	entry: {
-		client: APP_DIR + '/app/index.js',
-    admin: APP_DIR + '/app/admin/index.js'
-	},
-	output: {
-		path: BUILD_DIR,
-		filename: '[name].bundle.js'
-	},
-	resolve: {
-		modulesDirectories: ['node_modules'],
-		alias: {},
-		extensions: ['', '.jsx', '.js']
-	},
-	module : {
-		loaders : [
-			{
-				test : /\.jsx?/,
-				include : APP_DIR,
-				loader : 'babel-loader',
-				exclude: /node_modules/,
-				query: {
-					presets: ['es2015', 'react', 'stage-0']
-				}
-			},
-			{ test: /\.json$/,
-				loader: "json-loader"
-			}
-		]
-	},
+const plugins = [
+  // Shared code
+  new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
+  // Avoid publishing files when compilation fails
+  new webpack.HotModuleReplacementPlugin(),
+  new webpack.NoErrorsPlugin(),
+  new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify('development'),
+    __DEV__: JSON.stringify(JSON.parse(process.env.DEBUG || 'false'))
+  }),
+  new webpack.optimize.OccurenceOrderPlugin(),
+  new HtmlWebpackPlugin({
+    title: 'lotalot',
+    filename: './public/index.html'
+  })
+];
+
+const config = {
+  env: process.env.NODE_ENV,
+  entry: {
+    client: [path.resolve(PATHS.app.client + '/index.js'), 'webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr'],
+    admin: [path.resolve(PATHS.app.admin + '/index.js'), 'webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr']
+  },
+  output: {
+    path: PATHS.build,
+    filename: '[name].bundle.js'
+  },
+  stats: {
+    colors: true,
+    reasons: true
+  },
+  resolve: {
+    modulesDirectories: ['node_modules'],
+    alias: {},
+    extensions: ['', '.jsx', '.js']
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        include: PATHS.app.client,
+        loaders: ['react-hot', 'babel']
+      }
+    ]
+  },
+  plugins: plugins,
+  devtool: 'eval'
 };
 
 module.exports = config;

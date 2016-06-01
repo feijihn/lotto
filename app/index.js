@@ -1,23 +1,37 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import thunkMiddleware from 'redux-thunk';
-import {createStore, applyMiddleware} from 'redux';
-import App from './reducers/reducers.js';
-import Main from './components/Main.jsx';
-import AppContainer from './container.jsx';
+import configureStore from './store/configureStore';
+import {Router, browserHistory} from 'react-router';
 
-let store = createStore(
-  App,
-  applyMiddleware(
-    thunkMiddleware
-  )
-);
+import routes from './routes';
+
+const initialState = window.__INITIAL_STATE__;
+const store = configureStore();
+const rootElement = document.getElementById('container');
+let ComponentEl;
+
+if (process.env.NODE_ENV === 'production') {
+  ComponentEl = (
+    <div>
+      <Router history={browserHistory} routes={routes} />
+    </div>
+  );
+} else {
+  const DevTools = require('./containers/DevTools').default;
+
+  // If using routes
+  ComponentEl = (
+    <div>
+      <Router history={browserHistory} routes={routes} />
+      <DevTools />
+    </div>
+  );
+}
 
 ReactDOM.render(
   <Provider store={store}>
-    <AppContainer />
+    {ComponentEl}
   </Provider>,
-  document.getElementById('container')
+  rootElement
 );
-

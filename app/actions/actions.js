@@ -14,6 +14,13 @@ function recieveUserInfo(data) {
   };
 }
 
+function recieveContent(data) {
+  return {
+    type: 'RECIEVE_CONTENT',
+    content: data
+  };
+}
+
 function clearedTickets() {
   return {
     type: 'CLEAR_TICKETS'
@@ -49,15 +56,14 @@ function recieveProducts(data) {
 
 /**
  * Action currently viewing product to reducer
- * @param {Object} product product id currently viewing
+ * @param {Object} prodId product id currently viewing
  * @return {Object} object to update the current store state
  * @memberof Actions
  */
-
-function viewProduct(product) {
+function viewProduct(prodId) {
   return {
     type: 'VIEW_PRODUCT',
-    product: product
+    prodId: prodId
   };
 }
 
@@ -125,6 +131,21 @@ function viewingTickets(data) {
   };
 }
 
+function archiveTickets(data, roundId) {
+  return {
+    type: 'ARCHIVE_TICKETS',
+    roundId: roundId,
+    data: data
+  };
+}
+
+function roundWaitingForWinner(data) {
+  return {
+    type: 'WAITING_FOR_WINNER',
+    data: data
+  };
+}
+
 function roundFinished(winnum) {
   return {
     type: 'ROUND_FINISH',
@@ -145,18 +166,20 @@ function selectUnmarked() {
  */
 export function fetchProducts() {
   return function(dispatch) {
-    return (
+    return new Promise((resolve, reject) => {
       $.ajax({
         url: '/products',
         dataType: 'json',
         success: data => {
           dispatch(recieveProducts(data));
+          resolve('done');
         },
         error: (xhr, status, err) => {
           console.error(status, err.toString());
+          reject('error');
         }
-      })
-    );
+      });
+    });
   };
 }
 
@@ -192,12 +215,10 @@ export function fetchUserInfo() {
         url: '/userinfo',
         dataType: 'json',
         success: data => {
-          console.log('USERINFO RECIEVED');
           dispatch(recieveUserInfo(data));
           dispatch(loggedIn(true));
         },
         error: (xhr, status, err) => {
-          console.log('USERINFO NOt RECIEVED');
           dispatch(loggedIn(false));
           console.error(status, err.toString());
         }
@@ -235,6 +256,25 @@ export function fetchRounds(prodId) {
               console.error(status, err.toString());
             }
           });
+          dispatch(recieveRounds(data[0]));
+        },
+        error: (xhr, status, err) => {
+          console.error(status, err.toString());
+        }
+      })
+    );
+  };
+}
+
+export function fetchRoundById(roundId) {
+  return function(dispatch) {
+    return (
+      $.ajax({
+        url: '/roundbyid',
+        dataType: 'json',
+        method: 'get',
+        data: {roundId: roundId},
+        success: data => {
           dispatch(recieveRounds(data));
         },
         error: (xhr, status, err) => {
@@ -261,34 +301,50 @@ export function claimTicket(value) {
 /**
  * choose product to open respective ProductPage and remember product currently viewing
  * @function fetchRounds
- * @param {ObjectId} product viewing product id
+ * @param {ObjectId} prodId viewing product id
  * @return {Function} dispatcher fucntion which emits action
  * @memberof Actions
  */
-export function viewingProduct(product) {
+export function viewingProduct(prodId) {
   return function(dispatch) {
-    dispatch(viewProduct(product));
+    dispatch(viewProduct(prodId));
   };
 }
 
 /**
  * fetch ticket for specified round
  * @function fetchRounds
- * @param {ObjectId} rndId viewing round id
+ * @param {ObjectId} rndId round id to fetch tickets for
  * @return {Function} dispatcher fucntion which emits action
  * @memberof Actions
  */
-export function fetchTickets(rndId) {
+export function fetchTickets(rndId, archive = false) {
+  console.log('fetching tickets...');
   return function(dispatch) {
     $.ajax({
       url: '/tickets',
       dataType: 'json',
       data: {rndId: rndId},
       success: data => {
-        if (data.state === 'FINISH') {
-          dispatch(roundFinished(data.winnum || 0));
+        if (archive) {
+          dispatch(archiveTickets(data.tickets, rndId));
+          return true;
+        } else {
+          switch (data.state) {
+            case 'FINISH':
+              dispatch(roundFinished(data.winnum));
+              break;
+            case 'WAITING':
+              dispatch(roundWaitingForWinner());
+              break;
+            case 'INPROG':
+              break;
+            default:
+              console.error(new Error('bad data from server when fetching tickets...'));
+              break;
+          }
+          dispatch(viewingTickets(data.tickets));
         }
-        dispatch(viewingTickets(data.tickets));
       },
       error: (xhr, status, err) => {
         console.error(status, err.toString());
@@ -358,5 +414,24 @@ export function clearTickets() {
 export function selectAllTickets() {
   return function(dispatch) {
     dispatch(selectUnmarked());
+  };
+}
+
+export function fetchContent() {
+  return function(dispatch) {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        url: '/content',
+        dataType: 'json',
+        success: data => {
+          dispatch(recieveContent(data));
+          resolve('done');
+        },
+        error: (xhr, status, err) => {
+          console.error(this.props.url, status, err.toString());
+          reject('error');
+        }
+      });
+    });
   };
 }

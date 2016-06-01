@@ -7,32 +7,68 @@ var User = require('./models/user.js');
 var Message = require('./models/message.js');
 var Product = require('./models/product.js');
 
-function chooseWinner() {
-  var winner;
-  request('https://blockchain.info/latestblock', (err, response, body) => {
-    // TODO for date;
-    let lastBlock = JSON.parse(response.body);
-    request('https://blockchain.info/rawblock/' + lastBlock.hash, (err, response, body) => {
-      let rawLastBlock = JSON.parse(response.body);
-      rawLastBlock.tx.forEach((transaction, i) => {
-        let value = 0;
-        transaction.inputs.forEach(input => {
-          if (input.prev_out) {
-            value += input.prev_out.value;
+function convertTime(UNIX_timestamp) {
+  let a = new Date(UNIX_timestamp);
+  let year = a.getFullYear();
+  let month = Number(a.getMonth()) + 1 >= 10 ? Number(a.getMonth) + 1 : '0' + (Number(a.getMonth()) + 1);
+  let date = a.getDate() >= 10 ? a.getDate() : '0' + a.getDate();
+  let hour = a.getHours() >= 10 ? a.getHours() : '0' + a.getHours();
+  let min = a.getMinutes() >= 10 ? a.getMinutes() : '0' + a.getMinutes();
+  let sec = a.getSeconds() >= 10 ? a.getSeconds() : '0' + a.getSeconds();
+  let time = hour + ':' + min + ':' + sec + ' ' + date + '/' + month + '/' + year;
+  return time;
+}
+
+var chooseWinner = function() {
+  let dateNeeded = Date.now();
+  return new Promise(function(resolve, reject) {
+    let handle = setInterval(() => {
+      request('https://blockchain.info/blocks/' + (Date.now()) + '?format=json', (err, response, body) => {
+        try {
+          let winner = 0;
+          let blocks = JSON.parse(response.body).blocks;
+          let lastBlock = blocks[0];
+          console.log('round ended at ' + convertTime(dateNeeded) + ' and got last block at ' + convertTime(lastBlock.time * 1000));
+          if (dateNeeded <= lastBlock.time * 1000) {
+            request('https://blockchain.info/rawblock/' + lastBlock.hash, (err, response, body) => {
+              try {
+                let rawLastBlock = JSON.parse(response.body);
+                rawLastBlock.tx.forEach((transaction, i) => {
+                  console.log(transaction.time * 1000 + '===' + dateNeeded);
+                  if (transaction.time * 1000 >= dateNeeded && transaction.time * 1000 <= dateNeeded + 300 * 1000) {
+                    console.log('got transactions in needed interval...');
+                    let value = 0;
+                    transaction.inputs.forEach(input => {
+                      if (input.prev_out) {
+                        value += input.prev_out.value;
+                      }
+                    });
+                    if (value !== 0) {
+                      value = value.toString();
+                      winner += Number(value.slice(4, 6));
+                    }
+                    if (i === rawLastBlock.tx.length - 1) {
+                      resolve([Number(winner % 100), handle]);
+                    }
+                  } else {
+                    console.log('skipping transactions not in needed time interval...');
+                    if (i === rawLastBlock.tx.length - 1) {
+                      resolve([Number(winner % 100), handle]);
+                    }
+                  }
+                });
+              } catch (e) {
+                console.log('something went wrong when working with RAW block....\n  ERR: ' + e);
+              }
+            });
           }
-        });
-        if (value !== 0) {
-          value = value.toString();
-          winner += Number(value.slice(4, 6));
-        }
-        if (i === rawLastBlock.tx.length - 1) {
-          console.log(winner % 100);
-          return Number(winner % 100);
+        } catch (err) {
+          console.log('something went wrong when working with blocks....\n  ERR: ' + err);
         }
       });
-    });
+    }, 60 * 1000);
   });
-}
+};
 
 function generateWinnerMessage(rndId) {
   return 'Greetings!\n Your ticket was the winner\'s one in the round id ' + rndId + '! Please contact round maintainer to claim your prize.';
@@ -51,20 +87,36 @@ function addParticipant(rndId, userId) {
 }
 
 function checkRoundEnd(rndId) {
-  var winningTicket = chooseWinner() || Math.floor(Math.random() * (100));
-  console.log(winningTicket);
   Round.findOne({_id: rndId, endTime: {$eq: undefined}}, (err, round) => {
     if (err) {
       throw err;
     }
-    if (round && round.tickets.length === 100) {
-      Round.findByIdAndUpdate(rndId, {$set: {endTime: Date.now(), winnum: winningTicket}}, err => {
-        if (err) {
-          throw err;
-        }
-        sendAlertsToParticipants(rndId, winningTicket);
-        handleNextRound(round.product_id);
-      });
+    if (round) {
+      console.log('checking if round ' + round._id + ' ended...');
+      console.log('round has ' + round.tickets.length + ' tickets');
+      if (round.tickets.length >= 100) {
+        Round.findByIdAndUpdate(rndId, {$set: {endTime: Date.now()}}, err => {
+          if (err) {
+            throw err;
+          }
+          chooseWinner().then(
+            result => {
+              let winnum = result[0];
+              let handle = result[1];
+              clearInterval(handle);
+              console.log('winner is ticket number ' + winnum);
+              Round.findByIdAndUpdate(rndId, {$set: {winnum: winnum}}, (err, round) => {
+                if (err) {
+                  throw err;
+                }
+                sendAlertsToParticipants(rndId, winnum);
+                handleNextRound(round.product_id);
+              });
+            },
+            error => console.log('winner not selected!')
+          );
+        });
+      }
     }
   });
 }
@@ -134,7 +186,6 @@ function sendAlertsToParticipants(rndId, winner) {
       throw err;
     }
     round.participants.forEach(participant => {
-      console.log(String(participant) + 'and' + String(winner) + ' === ' + String(participant) === String(winner));
       if (String(participant) === String(winner)) {
         let alert = new Message();
         alert.sender = 'System';

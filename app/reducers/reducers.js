@@ -4,7 +4,7 @@ function zeroArray(len) {
   return new Array(len + 1).join('0').split('').map(parseFloat);
 }
 
-const initialState = {
+export const initialState = {
   userinfo: {
     local: {
       username: ' '
@@ -18,17 +18,17 @@ const initialState = {
   },
   loggedIn: false,
   products: [],
-  rounds: [],
-  viewingProduct: {},
+  round: [],
+  product: [{}],
   viewingRound: {},
   markedTickets: [],
   ownedTickets: [],
   roundHistory: [],
   roundFinished: false,
+  roundWaitingForWinner: false,
   winner: -1,
   numberTicketsMarked: 0,
-  viewingTickets: new Array(100 + 1).join('0').split('').map(parseFloat),
-  nav: 'index'
+  viewingTickets: new Array(100 + 1).join('0').split('').map(parseFloat)
 };
 
 /**
@@ -54,10 +54,7 @@ function App(state = initialState, action) {
       });
     case 'VIEW_PRODUCT':
       var prod = $.grep(state.products, el => {
-        return el._id === action.product;
-      });
-      var round = $.grep(state.rounds, el => {
-        return el.product_id === action.product;
+        return el._id === action.prodId;
       });
       return Object.assign({}, state, {
         product: prod
@@ -121,7 +118,8 @@ function App(state = initialState, action) {
         viewingTickets: zeroArray(100),
         roundFinished: false,
         markedTickets: [],
-        winner: -1
+        winner: null,
+        roundWaitingForWinner: false
       });
     case 'SELECT_UNMARKED':
       var stckts = state.viewingTickets;
@@ -135,6 +133,36 @@ function App(state = initialState, action) {
       return Object.assign({}, state, {
         viewingTickets: stckts,
         markedTickets: footckts
+      });
+    case 'WAITING_FOR_WINNER':
+      return Object.assign({}, state, {
+        roundWaitingForWinner: true
+      });
+    case 'RECIEVE_CONTENT' :
+      var introText = '';
+      var securityText = '';
+      action.content.forEach((entry, i) => {
+        if (entry.name === 'introText') {
+          introText = entry.text;
+        }
+        if (entry.name === 'securityText') {
+          securityText = entry.text;
+        }
+      });
+      return Object.assign({}, state, {
+        introText: introText,
+        securityText: securityText
+      });
+    case 'ARCHIVE_TICKETS' :
+      var archive = state.roundHistory;
+      for (var i in archive) {
+        if (archive[i]._id === action.roundId) {
+          archive[i].tickets = action.data;
+          console.log(archive[i].tickets);
+        }
+      }
+      return Object.assign({}, state, {
+        roundHistory: archive
       });
     default:
       return state;

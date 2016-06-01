@@ -2,26 +2,26 @@ import React from 'react';
 import {Menu, MenuItem} from 'material-ui';
 import * as Colors from 'material-ui/styles/colors';
 import {Grid, Row, Col} from 'react-bootstrap';
-import Panel from './Panel.jsx';
-import baseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import Router from './Router.jsx';
+import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import $ from 'jquery';
 
 injectTapEventPlugin();
 
 export default class Main extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      category: 'index'
-    };
     this.props.fetchProducts();
     this.props.fetchRounds();
+    this.props.fetchContent();
   }
   getChildContext = () => {
     return {
-      muiTheme: getMuiTheme(baseTheme)
+      muiTheme: getMuiTheme(baseTheme),
+      store: this.props.state,
+      fetchRounds: this.props.fetchRounds,
+      fetchProducts: this.props.fetchProducts
     };
   }
   handleClick = value => {
@@ -36,19 +36,22 @@ export default class Main extends React.Component {
       <Row>
       <Col lg={2} style={{paddingTop: 50, height: '100vh'}}>
       <Menu style={{float: 'left', position: 'relative'}}>
-      <MenuItem primaryText={'Продукты'} onTouchTap={() => {
-        this.handleClick('products');
-      }} />
-      <MenuItem primaryText={'Розыгрыши'} onTouchTap={() => {
-        this.handleClick('rounds');
-      }} />
-      <MenuItem primaryText={'Пользователи'} onTouchTap={() => {
-        this.handleClick('users');
-      }} />
+        <a href={'#/panel-products'}>
+          <MenuItem primaryText={'Продукты'}>
+          </MenuItem>
+        </a>
+        <a href={'#/panel-rounds'}>
+          <MenuItem primaryText={'Розыгрыши'}>
+          </MenuItem>
+        </a>
+        <a href={'#/panel-pages'}>
+          <MenuItem primaryText={'Контент'}>
+          </MenuItem>
+        </a>
       </Menu>
       </Col>
       <Col lg={10}>
-      <Panel category={this.state.category} state={this.props.state}/>
+      <Router />
       </Col>
       </Row>
       </Grid>
@@ -58,5 +61,15 @@ export default class Main extends React.Component {
 }
 
 Main.childContextTypes = {
-  muiTheme: React.PropTypes.object
+  muiTheme: React.PropTypes.object,
+  store: React.PropTypes.object,
+  fetchProducts: React.PropTypes.func,
+  fetchRounds: React.PropTypes.func
+};
+
+React.Component.contextTypes = {
+  muiTheme: React.PropTypes.object,
+  store: React.PropTypes.object,
+  fetchProducts: React.PropTypes.func,
+  fetchRounds: React.PropTypes.func
 };

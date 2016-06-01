@@ -30,12 +30,10 @@ export default class Ticket extends React.Component {
       className={'col-lg-10-12 col-md-10-12 col-sm-5-12 col-xs-4 ticket'}
       onClick={this.handleClick}
       style={{
-        cursor: 'pointer',
-        height: 50
+        backgroundImage: 'url(' + this.props.bgImage + ')'
       }}
       >
         {this.props.children}
-        <img src={this.props.bgImage} style={{width: 50, height: 50}}/>
       </div>
     );
   }

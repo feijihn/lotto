@@ -20,6 +20,29 @@ var configDB = require('./config/database.js');
 mongoose.connect(configDB.url); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration
+// require('./webpack.dev.js')(app);
+(function() {
+  var webpack = require('webpack');
+  var webpackConfig = require('./webpack.config.js');
+  var compiler = webpack(webpackConfig);
+
+  app.use(require("webpack-dev-middleware")(compiler, {
+    hot: true,
+    noInfo: false,
+    stats: {
+      colors: true
+    },
+    historyApiFallback: true,
+    publicPath: '',
+    contentBase: './app'
+  }));
+
+  app.use(require("webpack-hot-middleware")(compiler, {
+    log: console.log,
+    heartbeat: 10 * 1000
+  }));
+})();
+
 app.set('view engine', 'pug');
 
 // set up our express application
@@ -39,4 +62,4 @@ require('./routes/routes.js')(app, passport); // load our routes and pass in our
 
 // launch ======================================================================
 app.listen(port);
-console.log('The magic happens on port ' + port);
+console.log('Dev server listening on ' + port);

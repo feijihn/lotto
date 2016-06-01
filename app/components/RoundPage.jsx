@@ -1,8 +1,12 @@
 import React from 'react';
-import {FlatButton, Dialog} from 'material-ui';
+import {FlatButton, Dialog, List, ListItem} from 'material-ui';
 import * as Colors from 'material-ui/styles/colors';
 import Ticket from './Ticket.jsx';
 import Tile from './Tile.jsx';
+import RoundInfo from './RoundInfo.jsx';
+import RoundLegend from './RoundLegend.jsx';
+import RoundCheque from './RoundCheque.jsx';
+import {Col} from 'react-bootstrap';
 
 export default class RoundPage extends React.Component {
   constructor(props) {
@@ -10,6 +14,7 @@ export default class RoundPage extends React.Component {
     this.state = {
       open: true
     };
+    window.scrollTo(0, 100);
   }
   handleClose = () => {
     this.setState({
@@ -17,17 +22,28 @@ export default class RoundPage extends React.Component {
     });
   }
   componentWillMount = () => {
-    this.context.clearTickets();
-    this.context.fetchRounds(this.context.store.product[0]._id);
-    let handle = setInterval(() => {
-      this.context.fetchTickets(this.context.store.round[0]._id);
-    }, 5000);
-    this.setState({
-      fetchTicketsHandle: handle
-    });
+    if (this.props.prodId) {
+      this.context.fetchProducts();
+      this.context.fetchRounds(this.props.prodId);
+      let handle = setInterval(() => {
+        this.context.fetchTickets(this.context.store.round._id);
+      }, 5000);
+      this.setState({
+        fetchTicketsHandle: handle
+      });
+    } else if (this.props.roundId) {
+      this.context.fetchRoundById(this.props.roundId);
+      let handle = setInterval(() => {
+        this.context.fetchTickets(this.props.roundId);
+      }, 5000);
+      this.setState({
+        fetchTicketsHandle: handle
+      });
+    }
   }
   componentWillUnmount = () => {
     clearInterval(this.state.fetchTicketsHandle);
+    this.context.clearTickets();
   }
   render() {
     let tickets = this.context.store.viewingTickets.map((value, i) => {
@@ -39,14 +55,8 @@ export default class RoundPage extends React.Component {
           sm={1}
           bgImage={'../../public/images/ballAmber.png'}
           id={i}
+          key={i}
           >
-          <h2 style={{
-            textAlign: 'center',
-            position: 'absolute',
-            width: '100%'
-          }}>
-          !WIN!
-          </h2>
           </Ticket>
         );
       }
@@ -58,20 +68,12 @@ export default class RoundPage extends React.Component {
           sm={3}
           bgImage={'../../public/images/ballBlue.png'}
           id={i}
-          handleClick={ value => this.props.handleTicketClick(value) }
+          key={i}
+          handleClick={ value => this.context.handleTicketClick(value) }
           >
-          <h2 style={{
-            textAlign: 'center',
-            position: 'absolute',
-            width: '100%',
-            top: '50%',
-            transform: 'translate(-8%, -180%)',
-            fontFamily: 'Flagship Slab',
-            fontSize: 15,
-            fontWeight: 400
-          }}>
+          <span>
           {i}
-          </h2>
+          </span>
           </Ticket>
         );
       }
@@ -83,19 +85,11 @@ export default class RoundPage extends React.Component {
           sm={3}
           bgImage={'../../public/images/ballRed.png'}
           id={i}
+          key={i}
           >
-          <h2 style={{
-            textAlign: 'center',
-            position: 'absolute',
-            width: '100%',
-            top: '50%',
-            transform: 'translate(-8%, -180%)',
-            fontFamily: 'Flagship Slab',
-            fontSize: 15,
-            fontWeight: 400
-          }}>
+          <span>
           {i}
-          </h2>
+          </span>
           </Ticket>
         );
       }
@@ -107,19 +101,11 @@ export default class RoundPage extends React.Component {
           sm={3}
           bgImage={'../../public/images/ballGreen.png'}
           id={i}
+          key={i}
           >
-          <h2 style={{
-            textAlign: 'center',
-            position: 'absolute',
-            width: '100%',
-            top: '50%',
-            transform: 'translate(-8%, -180%)',
-            fontFamily: 'Flagship Slab',
-            fontSize: 15,
-            fontWeight: 400
-          }}>
+          <span>
           {i}
-          </h2>
+          </span>
           </Ticket>
         );
       }
@@ -131,54 +117,63 @@ export default class RoundPage extends React.Component {
           sm={1}
           bgImage={'../../public/images/ballPurple.png'}
           id={i}
-          handleClick={ value => this.props.deselectTicket(value) }
+          key={i}
+          handleClick={ value => this.context.deselectTicket(value) }
           >
-          <h2 style={{
-            textAlign: 'center',
-            position: 'absolute',
-            width: '100%',
-            top: '50%',
-            transform: 'translate(-8%, -180%)',
-            fontFamily: 'Flagship Slab',
-            fontSize: 15,
-            fontWeight: 400
-          }}>
+          <span>
           {i}
-          </h2>
+          </span>
           </Ticket>
         );
       }
       return undefined;
     });
-    if (!this.context.store.roundFinished) {
-      return (
-        <div className={'roundPage'}>
-              {tickets}
-        </div>
-      );
-    }
-    if (this.context.store.roundFinished) {
-      let actions = [
-        <FlatButton
-        label="Хорошо"
-        primary={true}
-        onTouchTap={this.handleClose}
-        />
-      ];
-      return (
-        <div className={'roundPage'}>
+    let roundPage;
+    if (this.context.store.roundWaitingForWinner) {
+      roundPage =
+        <div className={'roundPage row'}>
+        <div className={'roundContainer col-lg-10 col-lg-offset-1'}>
+        <RoundLegend />
+        <div className={'ticketContainer col-lg-6'}>
         {tickets}
-        <Dialog
-        title="Розыгрыш завершен!"
-        actions={actions}
-        modal={true}
-        open={this.state.open}
-        >
-        Розыгрыш завершен. Выйгрышный билет: {this.context.store.winner}!<br />
-        Вы будете перенаправлены на главную через некоторое время.
-        </Dialog>
+        <div className={'roundWaiting'}>
         </div>
-      );
+        <h1>Выбираем победителя...</h1>
+        </div>
+        <RoundCheque />
+        </div>
+        </div>;
+    } else if (this.context.store.roundFinished) {
+      roundPage =
+        <div className={'roundPage row'}>
+        <div className={'roundContainer col-lg-10 col-lg-offset-1'}>
+        <RoundLegend />
+        <div className={'ticketContainer col-lg-6 roundFinished'}>
+        {tickets}
+        <div className={'roundWaiting'}>
+        </div>
+        <h1>Раунд завершен! Выйграл билет №{this.context.store.winner}</h1>
+        </div>
+        <RoundCheque />
+        </div>
+        </div>;
+    } else {
+      roundPage =
+        <div className={'roundPage row'}>
+        <div className={'roundContainer col-lg-10 col-lg-offset-1'}>
+        <RoundLegend />
+        <div className={'ticketContainer col-lg-6'}>
+        {tickets}
+        </div>
+        <RoundCheque />
+        </div>
+        </div>;
     }
+    return (
+      <div>
+        <RoundInfo prodId={this.props.prodId}/>
+        {roundPage}
+      </div>
+    );
   }
 }

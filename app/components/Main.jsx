@@ -1,23 +1,20 @@
 import React from 'react';
-import thunkMiddleware from 'redux-thunk';
-import {createStore, applyMiddleware} from 'redux';
-import {Paper, Avatar, List, ListItem, FlatButton, Divider} from 'material-ui';
 import * as Colors from 'material-ui/styles/colors';
-import baseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {Grid, Row, Col} from 'react-bootstrap';
-import Tile from './Tile.jsx';
-import App from '../reducers/reducers.js';
-import Products from './Products.jsx';
-import Content from './Content.jsx';
 import Header from './Header.jsx';
-import AboutUs from './AboutUs.jsx';
-import {fetchUserInfo} from '../actions/actions.js';
+import Footer from './Footer.jsx';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+
+import * as Actions from '../actions/actions.js';
 
 injectTapEventPlugin();
 
-export default class Main extends React.Component {
+class Main extends React.Component {
   getChildContext = () => {
     return {
       store: this.props.state,
@@ -26,11 +23,20 @@ export default class Main extends React.Component {
       fetchTickets: this.props.fetchTickets,
       clearTickets: this.props.clearTickets,
       muiTheme: getMuiTheme(baseTheme),
-      selectAllTickets: this.props.selectAllTickets
+      selectAllTickets: this.props.selectAllTickets,
+      handleProductClick: this.handleProductClick,
+      handleTicketClick: this.handleTicketClick,
+      deselectTicket: this.deselectTicket,
+      fetchProducts: this.props.fetchProducts,
+      viewingProduct: this.props.viewingProduct,
+      handleBuyClick: this.handleBuyClick,
+      fetchRoundById: this.props.fetchRoundById
     };
   };
+  componentWillMount = () => {
+    this.props.fetchContent();
+  }
   componentDidMount = () => {
-    this.props.fetchUserInfo();
     this.props.fetchProducts();
     this.props.fetchRoundsArchive();
     if (window.location.hash === '_=_') {
@@ -43,27 +49,21 @@ export default class Main extends React.Component {
   deselectTicket = value => {
     this.props.deselectTicket(value);
   };
-  handleProductClick = id => {
-    this.props.fetchRounds(id);
-    this.props.viewingProduct(id);
-    window.location.hash = 'round';
-  };
   handleBuyClick = () => {
-    this.props.ownTickets(this.props.state.markedTickets, this.props.state.round[0]._id);
-    this.props.fetchTickets(this.props.state.round[0]._id);
+    this.props.ownTickets(this.props.state.markedTickets, this.props.state.round._id);
+    this.props.fetchTickets(this.props.state.round._id);
   }
   handleAlertRead = alertId => {
     this.props.markAlertAsRead(alertId);
   }
   render() {
     return (
-      <div className="main" style={{backgroundColor: '#23314F', height: '100%'}}>
-        <Header userinfo={this.props.state.userinfo || {}} handleAlertsClick={this.handleAlertsClick} />
-          <Grid style={{padding: 20}}>
-            <Row>
-              <Content fetchTickets={this.props.fetchTickets} handleProductClick={this.handleProductClick} handleTicketClick={this.handleTicketClick} hanleBuyClick={this.handleBuyClick} deselectTicket={this.deselectTicket} handleAlertRead={this.handleAlertRead}/>
-            </Row>
-          </Grid>
+      <div className="page-container">
+        <Header />
+        <div className="body-container">
+          {this.props.children}
+        </div>
+        <Footer />
       </div>
     );
   }
@@ -77,7 +77,14 @@ Main.childContextTypes = {
   clearTickets: React.PropTypes.func,
   handleBuyAllClick: React.PropTypes.func,
   muiTheme: React.PropTypes.object,
-  selectAllTickets: React.PropTypes.func
+  selectAllTickets: React.PropTypes.func,
+  handleProductClick: React.PropTypes.func,
+  handleTicketClick: React.PropTypes.func,
+  deselectTicket: React.PropTypes.func,
+  fetchProducts: React.PropTypes.func,
+  viewingProduct: React.PropTypes.func,
+  handleBuyClick: React.PropTypes.func,
+  fetchRoundById: React.PropTypes.func
 };
 
 React.Component.contextTypes = {
@@ -86,7 +93,13 @@ React.Component.contextTypes = {
   fetchTickets: React.PropTypes.func,
   fetchUserInfo: React.PropTypes.func,
   clearTickets: React.PropTypes.func,
-  selectAllTickets: React.PropTypes.func
+  selectAllTickets: React.PropTypes.func,
+  handleTicketClick: React.PropTypes.func,
+  deselectTicket: React.PropTypes.func,
+  viewingProduct: React.PropTypes.func,
+  fetchProducts: React.PropTypes.func,
+  handleBuyClick: React.PropTypes.func,
+  fetchRoundById: React.PropTypes.func
 };
 
 // <ListItem disabled>
@@ -104,3 +117,18 @@ React.Component.contextTypes = {
 // <ListItem disabled>
 // Vk id: { this.state.userinfo.vk.id || 'not linked' }
 // </ListItem>
+
+function mapStateToProps(state) {
+  return {
+    state: state
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Actions, dispatch);
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Main);

@@ -5,8 +5,11 @@ var Round = require('../models/rounds.js');
 var Message = require('../models/message.js');
 var Ticket = require('../models/tickets.js');
 var User = require('../models/user.js');
+var Content = require('../models/content.js');
 var mongoose = require('mongoose');
 var roundLogic = require('../roundLogic.js');
+var path = require('path');
+//var App = require('../app/index.js');
 
 module.exports = function(app, passport) {
   // =====================================
@@ -15,6 +18,23 @@ module.exports = function(app, passport) {
   app.get('/', (req, res) => {
     res.render('main.pug'); // load the index.ejs file
   });
+  // =====================================
+  // REACT ROUTER SERVER-SIDE URL HANDLING
+  // ===========(the easy way)============
+  // =====================================
+  /*
+   *app.get('*', (req, res) => {
+   *  var data = {};
+   *  var component = App({
+   *    path: req.path,
+   *    onSetTitle: title => data.title = title,
+   *    onPageNotFound: () => res.status(404)
+   *  });
+   *  data.body = React.renderToString(component);
+   *  var html = _.template(template, data);
+   *  res.send(html);
+   *});
+   */
   // =====================================
   // LOGIN ===============================
   // =====================================
@@ -25,7 +45,7 @@ module.exports = function(app, passport) {
   });
   // process the login form
   app.post('/login', passport.authenticate('local-login', {
-    successRedirect: '/main', // redirect to the secure profile section
+    successRedirect: '/', // redirect to the secure profile section
     failureRedirect: '/login', // redirect back to the signup page if there is an error
     failureFlash: true // allow flash messages
   }));
@@ -40,7 +60,7 @@ module.exports = function(app, passport) {
   // process the signup form
   // app.post('/signup', do all our passport stuff here);
   app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect: '/main', // redirect to the secure profile section
+    successRedirect: '/', // redirect to the secure profile section
     failureRedirect: '/signup', // redirect back to the signup page if there is an error
     failureFlash: true // allow flash messages
   }));
@@ -49,9 +69,6 @@ module.exports = function(app, passport) {
   // =====================================
   // we will want this protected so you have to be logged in to visit
   // we will use route middleware to verify this (the isLoggedIn function)
-  app.get('/main', (req, res) => {
-    res.render('main.pug');
-  });
   app.get('/product', isLoggedIn, (req, res) => {
     res.render('main.pug');
   });
@@ -84,7 +101,7 @@ module.exports = function(app, passport) {
         throw err;
       }
     });
-    res.status(200).send('Added product...');
+    res.sendStatus(200);
   });
   app.post('/claimticket', (req, res) => {
     let newTicket = new Ticket();
@@ -95,9 +112,38 @@ module.exports = function(app, passport) {
     });
     res.status(200).send('Added ticket...');
   });
-  app.post('/alertread', isLoggedIn, (req, res) => {
+  app.get('/content', (req, res) => {
+    Content.find((err, content) => {
+      if (err) {
+        throw err;
+      }
+      console.log(content);
+      res.json(content);
+      return undefined;
+    });
+  });
+  app.post('/modify-content', isLoggedIn, isAdmin, (req, res) => {
     console.log(req.body);
-    console.log(req.query);
+    Object.keys(req.body).forEach((key, i, body) => {
+      let newContent = new Content();
+      newContent.name = key;
+      let text = req.body[key].replace(/\r?\n/g, '<br />');
+      console.log(text);
+      newContent.text = text;
+      Content.remove({}, err => {
+        if (err) {
+          throw err;
+        }
+        newContent.save(err => {
+          if (err) {
+            throw err;
+          }
+        });
+      });
+    });
+    res.sendStatus(200);
+  });
+  app.post('/alertread', isLoggedIn, (req, res) => {
     User.update({'messages._id': req.body.alertId}, {$set: {'messages.$.status': 'read'}}, (err, user) => {
       if (err) {
         throw err;
@@ -119,7 +165,7 @@ module.exports = function(app, passport) {
         throw err;
       }
     });
-    res.status(200).send('Added round...');
+    res.sendStatus(200);
   });
   app.get('/products', (req, res) => {
     Product.find((err, product) => {
@@ -131,12 +177,21 @@ module.exports = function(app, passport) {
     });
   });
   app.get('/rounds', (req, res) => {
-    Round.find({product_id: req.query.prodId, endTime: {$eq: undefined}, startTime: {$ne: undefined}}, (err, round) => {
+    Round.find({product_id: req.query.prodId, startTime: {$ne: undefined}}, (err, round) => {
+      if (err) {
+        throw err;
+      }
+      if (round.winnum === undefined || round.endTime === undefined || (res.body.options && res.body.options.all)) {
+        res.json(round);
+      }
+    });
+  });
+  app.get('/roundbyid', (req, res) => {
+    Round.findById(req.query.roundId, (err, round) => {
       if (err) {
         throw err;
       }
       res.json(round);
-      return undefined;
     });
   });
   app.get('/roundsarchive', isLoggedIn, (req, res) => {
@@ -144,7 +199,6 @@ module.exports = function(app, passport) {
       if (err) {
         throw err;
       }
-      console.log(rounds);
       res.json(rounds);
     });
   });
@@ -159,15 +213,20 @@ module.exports = function(app, passport) {
           throw err;
         }
         if (round && round.tickets.length < 100) {
-          res.send({
+          res.json({
             state: 'INPROG',
             tickets: ticket
           });
-        } else if (round) {
-          res.send({
+        } else if (round && round.winnum) {
+          res.json({
             state: 'FINISH',
             tickets: ticket,
             winnum: round.winnum
+          });
+        } else if (round && round.endTime) {
+          res.json({
+            state: 'WAITING',
+            tickets: ticket
           });
         }
       });
@@ -199,14 +258,13 @@ module.exports = function(app, passport) {
 
   // handle the callback after facebook has authenticated the user
   app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-    successRedirect: '/main',
+    successRedirect: '/',
     failureRedirect: '/'
   }));
   // =====================================
   // VK ROUTES ===========================
   // =====================================
   app.get('/auth/vkontakte', passport.authenticate('vkontakte', {scope: ['email']}), req => {
-    console.log(req);
   });
 
   // handle the callback after vk given the auth
@@ -214,7 +272,7 @@ module.exports = function(app, passport) {
     failureRedirect: '/'
   }), (req, res) => {
     // Successful authentication, redirect home.
-    res.redirect('/main');
+    res.redirect('/');
   });
   // =====================================
   // LOGOUT ==============================

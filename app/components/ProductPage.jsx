@@ -16,7 +16,7 @@ export default class ProductPage extends React.Component {
         <Tile
           lg={3}
           md={3}
-          height={500}
+          height={700}
           bgColor={Colors.purple50}
         >
         <List>
@@ -48,7 +48,7 @@ export default class ProductPage extends React.Component {
           lg={3}
           md={3}
           sm={3}
-          height={500}
+          height={700}
           bgColor={Colors.purple50}
           >
           <h1 style={{textAlign: 'center', fontWeight: 900, marginTop: '52.5%'}}>
