@@ -22,25 +22,27 @@ mongoose.connect(configDB.url); // connect to our database
 require('./config/passport')(passport); // pass passport for configuration
 // require('./webpack.dev.js')(app);
 (function() {
-  var webpack = require('webpack');
-  var webpackConfig = require('./webpack.config.js');
-  var compiler = webpack(webpackConfig);
+  if (process.env.NODE_ENV === 'development') {
+    var webpack = require('webpack');
+    var webpackConfig = require('./webpack.config.js');
+    var compiler = webpack(webpackConfig);
 
-  app.use(require("webpack-dev-middleware")(compiler, {
-    hot: true,
-    noInfo: false,
-    stats: {
-      colors: true
-    },
-    historyApiFallback: true,
-    publicPath: '',
-    contentBase: './app'
-  }));
+    app.use(require("webpack-dev-middleware")(compiler, {
+      hot: true,
+      noInfo: false,
+      stats: {
+        colors: true
+      },
+      historyApiFallback: true,
+      publicPath: '',
+      contentBase: './app'
+    }));
 
-  app.use(require("webpack-hot-middleware")(compiler, {
-    log: console.log,
-    heartbeat: 10 * 1000
-  }));
+    app.use(require("webpack-hot-middleware")(compiler, {
+      log: console.log,
+      heartbeat: 10 * 1000
+    }));
+  }
 })();
 
 app.set('view engine', 'pug');
