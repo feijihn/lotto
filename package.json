@@ -8,6 +8,10 @@
   },
   "dependencies": {
     "autoprefixer": "^6.3.6",
+    "babel-core": "^6.9.1",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-1": "^6.5.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.13.2",
     "connect-flash": "^0.1.1",
@@ -38,16 +42,16 @@
     "redux-thunk": "^2.0.1",
     "request": "^2.72.0",
     "serve-favicon": "~2.3.0",
-    "webpack": "^1.12.14"
-  },
-  "devDependencies": {
-    "babel-cli": "^6.9.0",
+    "webpack": "^1.12.14",
     "babel-core": "^6.9.0",
     "babel-eslint": "^6.0.4",
     "babel-loader": "^6.2.4",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.5.0",
-    "babel-preset-stage-1": "^6.5.0",
+    "babel-preset-stage-1": "^6.5.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.9.0",
     "eslint-config-google": "^0.4.0",
     "html-webpack-plugin": "^2.17.0",
     "react-hot-loader": "^1.3.0",
