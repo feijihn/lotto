@@ -2,7 +2,7 @@
 const initialState = {
   products: [],
   rounds: [],
-  content: []
+  content: undefined
 };
 
 function App(state = initialState, action) {
