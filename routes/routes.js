@@ -22,20 +22,18 @@ module.exports = function(app, passport) {
   // REACT ROUTER SERVER-SIDE URL HANDLING
   // ===========(the easy way)============
   // =====================================
-  /*
-   *app.get('*', (req, res) => {
-   *  var data = {};
-   *  var component = App({
-   *    path: req.path,
-   *    onSetTitle: title => data.title = title,
-   *    onPageNotFound: () => res.status(404)
-   *  });
-   *  data.body = React.renderToString(component);
-   *  var html = _.template(template, data);
-   *  res.send(html);
-   *});
-   */
-  // =====================================
+  //app.get('*', (req, res) => {
+    //var data = {};
+    //var component = App({
+      //path: req.path,
+      //onSetTitle: title => data.title = title,
+      //onPageNotFound: () => res.status(404)
+    //});
+    //data.body = React.renderToString(component);
+    //var html = _.template(template, data);
+    //res.send(html);
+  //});
+  //// =====================================
   // LOGIN ===============================
   // =====================================
   // show the login form
