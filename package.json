@@ -3,9 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "SET NODE_ENV=production& NODE_ENV=production& webpack -p --config ./webpack.prod.config.js  --progress && node app "
+    "start": "SET NODE_ENV=production& NODE_ENV=production& webpack -p --config ./webpack.prod.config.js  --progress && node app",
+    "start-dev": "node app"
   },
   "dependencies": {
+    "autoprefixer": "^6.3.6",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.13.2",
     "connect-flash": "^0.1.1",
