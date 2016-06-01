@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "set NODE_ENV=production& NODE_ENV=production& webpack -p --config ./webpack.prod.config.js  --progress && node app",
-    "start-dev": "node app"
+    "start": "set NODE_ENV=production& NODE_ENV=production& node app",
+    "start-dev": "node app",
+    "build": "webpack -p --config ./webpack.prod.config.js --progress"
   },
   "dependencies": {
     "autoprefixer": "^6.3.6",
