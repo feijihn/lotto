@@ -11,6 +11,15 @@ export default class Pages extends React.Component {
             <h2 className={'text-center'}>Нижний блок </h2>
           <textarea rows="5" cols="120" name="securityText" defaultValue={this.context.store.content ? this.context.store.content[1].text : ''} />
           <input type="submit" value="Изменить" className={'btn btn-lg btn-primary'}/>
+          <div className={'help'}>
+            <h3>Справка</h3>
+            <p>
+            Внутри тэга &lt;h1&gt; - заголовок.<br/>
+            Внутри тэга &lt;p&gt; - текст.<br/>
+            Тэг &lt;br/&gt; - перевод строки.
+            </p>
+          </div>
+
         </form>
       </div>
     );
