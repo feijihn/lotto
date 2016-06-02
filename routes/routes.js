@@ -46,6 +46,15 @@ module.exports = function(app, passport) {
   app.get('/admin.bundle.js', (req, res) => {
     res.sendFile(path.resolve( __dirname + '/../public/build/admin.bundle.js'));
   })
+  app.get('/vendor.bundle.js.map', (req, res) => {
+    res.sendFile(path.resolve( __dirname + '/../public/build/js/vendor.bundle.js.map'));
+  })
+  app.get('/client.bundle.js.map', (req, res) => {
+    res.sendFile(path.resolve( __dirname + '/../public/build/client.bundle.js.map'));
+  })
+  app.get('/admin.bundle.js.map', (req, res) => {
+    res.sendFile(path.resolve( __dirname + '/../public/build/admin.bundle.js.map'));
+  })
   app.get('/login', (req, res) => {
     // render the page and pass in any flash data if it exists
     res.render('login.pug', {message: req.flash('loginMessage')});
