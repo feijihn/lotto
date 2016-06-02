@@ -4,6 +4,7 @@ const autoprefixer = require('autoprefixer');
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const PATHS = {
   app: {
@@ -38,7 +39,11 @@ const plugins = [
     }
   }),
   // This plugin moves all the CSS into a separate stylesheet
-  new ExtractTextPlugin('css/app.css', { allChunks: true })
+  new ExtractTextPlugin('css/app.css', { allChunks: true }),
+  new HtmlWebpackPlugin({
+    title: 'lotalot',
+    filename: './public/index.html'
+  })
 ];
 
 const config = {
