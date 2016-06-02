@@ -38,7 +38,7 @@ module.exports = function(app, passport) {
   // =====================================
   // show the login form
   app.get('/vendor.bundle.js', (req, res) => {
-    res.sendFile(path.resolve(__dirname + '/../public/build/js/vendor.bundle.js'));
+    res.sendFile(path.resolve(__dirname + '/../public/build/vendor.bundle.js'));
   })
   app.get('/client.bundle.js', (req, res) => {
     res.sendFile(path.resolve(__dirname + '/../public/build/client.bundle.js'));
@@ -47,7 +47,7 @@ module.exports = function(app, passport) {
     res.sendFile(path.resolve( __dirname + '/../public/build/admin.bundle.js'));
   })
   app.get('/vendor.bundle.js.map', (req, res) => {
-    res.sendFile(path.resolve( __dirname + '/../public/build/js/vendor.bundle.js.map'));
+    res.sendFile(path.resolve( __dirname + '/../public/build/vendor.bundle.js.map'));
   })
   app.get('/client.bundle.js.map', (req, res) => {
     res.sendFile(path.resolve( __dirname + '/../public/build/client.bundle.js.map'));

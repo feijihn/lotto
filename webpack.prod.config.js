@@ -24,7 +24,7 @@ const plugins = [
     //}
   //]),
   // Shared code
-  new webpack.optimize.CommonsChunkPlugin('vendor', 'js/vendor.bundle.js'),
+  new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
   // Avoid publishing files when compilation fails
   new webpack.NoErrorsPlugin(),
   new webpack.DefinePlugin({
@@ -77,7 +77,7 @@ const config = {
     ]
   },
   plugins: plugins,
-  devtool: 'source-map'
+  devtool: 'eval'
 };
 
 module.exports = config;

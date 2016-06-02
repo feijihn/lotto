@@ -4,15 +4,13 @@ import {persistState} from 'redux-devtools';
 import thunkMiddleware from 'redux-thunk';
 
 export default function configureStore(initialState) {
-  let middleware = applyMiddleware();
+  let middlewares = [require('redux-immutable-state-invariant')(), thunkMiddleware];
+  let middleware = applyMiddleware(...middlewares);
   let enhancer;
 
   if (process.env.NODE_ENV === 'production') {
     enhancer = compose(middleware);
   } else {
-    let middlewares = [require('redux-immutable-state-invariant')()];
-    middleware = applyMiddleware(require('redux-immutable-state-invariant')(), thunkMiddleware.withExtraArgument());
-
     let getDebugSessionKey = function() {
       // By default we try to read the key from ?debug_session=<key> in the address bar
       const matches = window.location.href.match(/[?&]debug_session=([^&]+)\b/);
