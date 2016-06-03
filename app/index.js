@@ -13,7 +13,6 @@ let ComponentEl;
 
 if (process.env.NODE_ENV === 'development') {
   const DevTools = require('./containers/DevTools').default;
-
   // If using routes
   ComponentEl = (
     <div>
