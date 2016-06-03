@@ -11,13 +11,7 @@ const store = configureStore();
 const rootElement = document.getElementById('container');
 let ComponentEl;
 
-if (process.env.NODE_ENV === 'production') {
-  ComponentEl = (
-    <div>
-      <Router history={browserHistory} routes={routes} />
-    </div>
-  );
-} else {
+if (process.env.NODE_ENV === 'development') {
   const DevTools = require('./containers/DevTools').default;
 
   // If using routes
@@ -25,6 +19,12 @@ if (process.env.NODE_ENV === 'production') {
     <div>
       <Router history={browserHistory} routes={routes} />
       <DevTools />
+    </div>
+  );
+} else {
+  ComponentEl = (
+    <div>
+      <Router history={browserHistory} routes={routes} />
     </div>
   );
 }
