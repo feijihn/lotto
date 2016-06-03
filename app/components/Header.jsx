@@ -3,7 +3,11 @@ import {FlatButton, List, ListItem, Avatar, Paper, Divider, Badge, Dialog} from 
 import * as Colors from 'material-ui/styles/colors';
 import Tile from './Tile.jsx';
 
-export default class Header extends React.Component {
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as Actions from '../actions/actions.js';
+
+class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,7 +17,7 @@ export default class Header extends React.Component {
     };
   }
   componentWillMount = () => {
-    this.context.fetchUserInfo();
+    this.props.fetchUserInfo();
   }
   toggleLoginDropdown = () => {
     this.setState({
@@ -32,7 +36,7 @@ export default class Header extends React.Component {
   }
   render() {
     var content = <div></div>;
-    switch (this.context.store.loggedIn) {
+    switch (this.props.state.loggedIn) {
       case true:
         if (this.state.avatarDropdownOpen) {
           return (
@@ -44,13 +48,13 @@ export default class Header extends React.Component {
               border: '3px solid',
               boxSizing: 'content-box'
             }}>
-                { this.context.store.userinfo.local.username.substr(0, 1) }
+                { this.props.state.userinfo.local.username.substr(0, 1) }
               </Avatar>
               <span className={'glyphicon glyphicon-chevron-down headAvatarChevron'} onClick={this.toggleAvatarDropdown}></span>
               </div>
               <div className={'avatarDropdown'}>
                 <ul className={'dropdown-menu'}>
-                  <li className={'dropdown-header'}>{this.context.store.userinfo.local.username}</li>
+                  <li className={'dropdown-header'}>{this.props.state.userinfo.local.username}</li>
                   <li className={'divider'}></li>
                   <li><a href="#/profile"><span className={'glyphicon glyphicon-user'}/> Профиль</a></li>
                   <li><a href="#/alerts"><span className={'glyphicon glyphicon-bell'}/> Уведомления</a></li>
@@ -70,7 +74,7 @@ export default class Header extends React.Component {
                 border: '3px solid',
                 boxSizing: 'content-box'
               }}>
-                { this.context.store.userinfo.local.username.substr(0, 1) }
+                { this.props.state.userinfo.local.username.substr(0, 1) }
               </Avatar>
               <span className={'glyphicon glyphicon-chevron-down headAvatarChevron'} onClick={this.toggleAvatarDropdown}></span>
               </div>
@@ -164,3 +168,18 @@ export default class Header extends React.Component {
     }
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    state: state
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Actions, dispatch);
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Header);

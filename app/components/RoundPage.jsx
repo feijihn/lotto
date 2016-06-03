@@ -1,4 +1,9 @@
 import React from 'react';
+
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as Actions from '../actions/actions.js';
+
 import {FlatButton, Dialog, List, ListItem} from 'material-ui';
 import * as Colors from 'material-ui/styles/colors';
 import Ticket from './Ticket.jsx';
@@ -8,7 +13,7 @@ import RoundLegend from './RoundLegend.jsx';
 import RoundCheque from './RoundCheque.jsx';
 import {Col} from 'react-bootstrap';
 
-export default class RoundPage extends React.Component {
+class RoundPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,18 +28,18 @@ export default class RoundPage extends React.Component {
   }
   componentWillMount = () => {
     if (this.props.prodId) {
-      this.context.fetchProducts();
-      this.context.fetchRounds(this.props.prodId);
+      this.props.fetchProducts();
+      this.props.fetchRounds(this.props.prodId);
       let handle = setInterval(() => {
-        this.context.fetchTickets(this.context.store.round._id);
+        this.props.fetchTickets(this.context.state.round._id);
       }, 5000);
       this.setState({
         fetchTicketsHandle: handle
       });
     } else if (this.props.roundId) {
-      this.context.fetchRoundById(this.props.roundId);
+      this.props.fetchRoundById(this.props.roundId);
       let handle = setInterval(() => {
-        this.context.fetchTickets(this.props.roundId);
+        this.props.fetchTickets(this.props.roundId);
       }, 5000);
       this.setState({
         fetchTicketsHandle: handle
@@ -43,11 +48,11 @@ export default class RoundPage extends React.Component {
   }
   componentWillUnmount = () => {
     clearInterval(this.state.fetchTicketsHandle);
-    this.context.clearTickets();
+    this.props.clearTickets();
   }
   render() {
-    let tickets = this.context.store.viewingTickets.map((value, i) => {
-      if (i === this.context.store.winner) {
+    let tickets = this.props.state.viewingTickets.map((value, i) => {
+      if (i === this.props.state.winner) {
         return (
           <Ticket
           lg={2}
@@ -69,7 +74,7 @@ export default class RoundPage extends React.Component {
           bgImage={'../../public/images/ballBlue.png'}
           id={i}
           key={i}
-          handleClick={ value => this.context.handleTicketClick(value) }
+          handleClick={ value => this.props.handleTicketClick(value) }
           >
           <span>
           {i}
@@ -118,7 +123,7 @@ export default class RoundPage extends React.Component {
           bgImage={'../../public/images/ballPurple.png'}
           id={i}
           key={i}
-          handleClick={ value => this.context.deselectTicket(value) }
+          handleClick={ value => this.props.deselectTicket(value) }
           >
           <span>
           {i}
@@ -129,7 +134,7 @@ export default class RoundPage extends React.Component {
       return undefined;
     });
     let roundPage;
-    if (this.context.store.roundWaitingForWinner) {
+    if (this.props.state.roundWaitingForWinner) {
       roundPage =
         <div className={'roundPage row'}>
         <div className={'roundContainer col-lg-10 col-lg-offset-1'}>
@@ -143,7 +148,7 @@ export default class RoundPage extends React.Component {
         <RoundCheque />
         </div>
         </div>;
-    } else if (this.context.store.roundFinished) {
+    } else if (this.props.state.roundFinished) {
       roundPage =
         <div className={'roundPage row'}>
         <div className={'roundContainer col-lg-10 col-lg-offset-1'}>
@@ -152,7 +157,7 @@ export default class RoundPage extends React.Component {
         {tickets}
         <div className={'roundWaiting'}>
         </div>
-        <h1>Раунд завершен! Выйграл билет №{this.context.store.winner}</h1>
+        <h1>Раунд завершен! Выйграл билет №{this.props.state.winner}</h1>
         </div>
         <RoundCheque />
         </div>
@@ -177,3 +182,18 @@ export default class RoundPage extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    state: state
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Actions, dispatch);
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(RoundPage);

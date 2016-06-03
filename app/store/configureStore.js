@@ -8,9 +8,7 @@ export default function configureStore(initialState) {
   let middleware = applyMiddleware(...middlewares);
   let enhancer;
 
-  if (process.env.NODE_ENV === 'production') {
-    enhancer = compose(middleware);
-  } else {
+  if (process.env.NODE_ENV === 'development') {
     let getDebugSessionKey = function() {
       // By default we try to read the key from ?debug_session=<key> in the address bar
       const matches = window.location.href.match(/[?&]debug_session=([^&]+)\b/);
@@ -28,6 +26,8 @@ export default function configureStore(initialState) {
       // Optional. Lets you write ?debug_session=<key> in address bar to persist debug sessions
       persistState(getDebugSessionKey())
     );
+  } else {
+    enhancer = compose(middleware);
   }
 
   const store = createStore(rootReducer, initialState, enhancer);

@@ -1,16 +1,21 @@
 import React from 'react';
 
-export default class RoundPic extends React.Component {
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as Actions from '../actions/actions.js';
+
+
+class RoundPic extends React.Component {
   componentDidUpdate = () => {
     this.generatePic(this.props.tickets);
   }
   generatePic = tickets => {
     let pixels = new Array(100 + 1).join('0').split('').map(parseFloat);
     for (var i in tickets) {
-      if (tickets[i].user_id === this.context.store.userinfo._id) {
+      if (tickets[i].user_id === this.props.state.userinfo._id) {
         pixels[tickets[i].value] = 2;
       }
-      if (tickets[i].user_id !== this.context.store.userinfo._id) {
+      if (tickets[i].user_id !== this.props.state.userinfo._id) {
         pixels[tickets[i].value] = 1;
       }
     }
@@ -48,3 +53,18 @@ export default class RoundPic extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    state: state
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Actions, dispatch);
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(RoundPic);

@@ -1,7 +1,12 @@
 import React from 'react';
+
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as Actions from '../actions/actions.js';
+
 import {Paper} from 'material-ui';
 
-export default class Ticket extends React.Component {
+class Ticket extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,3 +43,18 @@ export default class Ticket extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    state: state
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Actions, dispatch);
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Ticket);

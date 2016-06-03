@@ -1,13 +1,18 @@
 import React from 'react';
+
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as Actions from '../actions/actions.js';
+
 import RoundPic from './RoundPic.jsx';
 import {List, ListItem, Avatar, Divider} from 'material-ui';
 import * as Colors from 'material-ui/styles/colors';
 
-export default class Profile extends React.Component {
+class Profile extends React.Component {
   componentDidMount = () => {
     let handle = setInterval(() => {
-      this.context.store.roundHistory.forEach(round => {
-        this.context.fetchTickets(round._id, true);
+      this.props.state.roundHistory.forEach(round => {
+        this.props.fetchTickets(round._id, true);
       });
       this.setState({
         handle: handle
@@ -21,10 +26,10 @@ export default class Profile extends React.Component {
     console.log(e.target);
   }
   render() {
-    let yourRounds = this.context.store.roundHistory.map((round, i) => {
+    let yourRounds = this.props.state.roundHistory.map((round, i) => {
       let tickets = [];
       for (let i in round.tickets) {
-        if (round.tickets[i].user_id === this.context.store.userinfo._id) {
+        if (round.tickets[i].user_id === this.props.state.userinfo._id) {
           tickets.push(round.tickets[i].value);
         }
       }
@@ -71,7 +76,7 @@ export default class Profile extends React.Component {
         </a>
       );
     });
-    if (this.context.store.roundHistory.length === 0) {
+    if (this.props.state.roundHistory.length === 0) {
       yourRounds =
         <h2>
           Вы еще не участвовали ни в одном розыгрыше
@@ -82,9 +87,9 @@ export default class Profile extends React.Component {
       <h1 style={{textAlign: 'center', color: 'black'}}>
       Профиль
       </h1>
-      <Avatar size={128} style={{margin: 10}}>{this.context.store.userinfo.local.username[0]}</Avatar>
-      <span>Имя пользователя: {this.context.store.userinfo.local.username}<br/>
-      Email: {this.context.store.userinfo.local.email}</span>
+      <Avatar size={128} style={{margin: 10}}>{this.props.state.userinfo.local.username[0]}</Avatar>
+      <span>Имя пользователя: {this.props.state.userinfo.local.username}<br/>
+      Email: {this.props.state.userinfo.local.email}</span>
       <Divider/>
       <h1 style={{textAlign: 'center', color: 'black'}}>
       Ваши розыгрыши
@@ -96,3 +101,18 @@ export default class Profile extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    state: state
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Actions, dispatch);
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Profile);

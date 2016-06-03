@@ -7,7 +7,11 @@ import {Image, Thumbnail} from 'react-bootstrap';
 import {FlatButton, List, ListItem} from 'material-ui';
 import * as Colors from 'material-ui/styles/colors';
 
-export default class ProductPage extends React.Component {
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as Actions from '../actions/actions.js';
+
+class ProductPage extends React.Component {
   render() {
     return (
       <div className={'productsBlock'}>
@@ -52,12 +56,27 @@ export default class ProductPage extends React.Component {
           bgColor={Colors.purple50}
           >
           <h1 style={{textAlign: 'center', fontWeight: 900, marginTop: '52.5%'}}>
-            Вы выбрали <br/> <span style={{border: '1px solid black', padding: 3}}>{this.context.store.markedTickets.length}</span> <br/> билетов <br/>
+            Вы выбрали <br/> <span style={{border: '1px solid black', padding: 3}}>{this.props.state.markedTickets.length}</span> <br/> билетов <br/>
           </h1>
             <FlatButton label={'Купить'} backgroundColor={Colors.grey50} onTouchTap={this.props.handleBuyClick} style={{display: 'block', margin: '0 auto'}}/>
-            <FlatButton label={'Выделить все'} backgroundColor={Colors.grey50} onTouchTap={this.context.selectAllTickets} style={{display: 'block', margin: '0 auto'}}/>
+            <FlatButton label={'Выделить все'} backgroundColor={Colors.grey50} onTouchTap={this.props.selectAllTickets} style={{display: 'block', margin: '0 auto'}}/>
           </Tile>
       </div>
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    state: state
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Actions, dispatch);
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ProductPage);

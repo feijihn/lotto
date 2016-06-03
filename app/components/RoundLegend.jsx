@@ -1,8 +1,13 @@
 import React from 'react';
+
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as Actions from '../actions/actions.js';
+
 import * as Colors from 'material-ui/styles/colors';
 import {List, ListItem} from 'material-ui';
 
-export default class RoundLegend extends React.Component {
+class RoundLegend extends React.Component {
   render() {
     return (
       <div className={'roundLegend col-lg-3 hidden-md hidden-sm'}>
@@ -43,3 +48,18 @@ export default class RoundLegend extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    state: state
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Actions, dispatch);
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(RoundLegend);

@@ -59,7 +59,7 @@ const config = {
     ]
   },
   plugins: plugins,
-  devtool: 'eval'
+  devtool: 'source-map'
 };
 
 module.exports = config;

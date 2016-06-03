@@ -1,8 +1,13 @@
 import React from 'react';
 
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as Actions from '../actions/actions.js';
+
+
 export default class RoundInfo extends React.Component {
   render() {
-    let productInfo = this.context.store.products.map((product, i) => {
+    let productInfo = this.props.state.products.map((product, i) => {
       if (product._id === this.props.prodId) {
         return (
           <h1 key={i}>
@@ -18,3 +23,18 @@ export default class RoundInfo extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    state: state
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Actions, dispatch);
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(RoundInfo);

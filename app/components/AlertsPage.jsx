@@ -2,11 +2,14 @@ import React from 'react';
 import Alert from './Alert.jsx';
 import Tile from './Tile.jsx';
 import {List, ListItem, Avatar} from 'material-ui';
-import * as Colors from 'material-ui/styles/colors';
 
-export default class AlertsPage extends React.Component {
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as Actions from '../actions/actions.js';
+
+class AlertsPage extends React.Component {
   render() {
-    let rawAlerts = this.context.store.userinfo.messages;
+    let rawAlerts = this.props.state.userinfo.messages;
     let alerts = rawAlerts.reverse().map(message => {
       let time = new Date(message.time);
       return (
@@ -31,3 +34,19 @@ export default class AlertsPage extends React.Component {
     );
   }
 }
+
+
+function mapStateToProps(state) {
+  return {
+    state: state
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Actions, dispatch);
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(AlertsPage);

@@ -6,13 +6,17 @@ import {Panel} from 'react-bootstrap';
 import {Divider} from 'material-ui';
 import * as Colors from 'material-ui/styles/colors';
 import {Link} from 'react-router';
+ 
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as Actions from '../actions/actions.js';
 
-export default class Products extends React.Component {
+class Products extends React.Component {
   handleProductClick = id => {
     this.props.handleProductClick(id);
   };
   render() {
-    let products = this.context.store.products.map((product, i) => {
+    let products = this.props.state.products.map((product, i) => {
       let imageLink = product.image;
       let imageLabel = product.name;
       return (
@@ -31,3 +35,18 @@ export default class Products extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    state: state
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Actions, dispatch);
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Products);

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "export NODE_ENV='production' & node app",
-    "start-dev": "node app",
+    "start-dev": "export NODE_ENV='development' PORT='3000' && node app",
     "build": "webpack -p --config ./webpack.prod.config.js --progress"
   },
   "dependencies": {

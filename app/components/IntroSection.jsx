@@ -2,7 +2,11 @@ import React from 'react';
 import Header from './Header.jsx';
 import $ from 'jquery';
 
-export default class IntroSection extends React.Component {
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as Actions from '../actions/actions.js';
+
+class IntroSection extends React.Component {
   scrollToRounds = () => {
     document.getElementById('rounds').scrollIntoView();
     console.log('rounds');
@@ -11,7 +15,7 @@ export default class IntroSection extends React.Component {
     return (
       <div className={'introSection row'}>
         <div className={'col-lg-10 col-lg-offset-1 text-center introContent'}>
-            <div className={'introCaption caption'} dangerouslySetInnerHTML={{__html: this.context.store.introText}}>
+            <div className={'introCaption caption'} dangerouslySetInnerHTML={{__html: this.props.state.introText}}>
             </div>
             <button className={'btn btn-lg btn-info'} onClick={this.scrollToRounds}><a href="#" id="playButton">Играть</a></button><br/>
             <span className={'introTrust'}>
@@ -37,3 +41,18 @@ export default class IntroSection extends React.Component {
   перед друзьями в школе, выйграйте макбук и понтуйтесь перед друзьями в старбаксе!<br/>
   миллион возможностей только для вас! Спешите! Призы ограничены!
 </p>*/
+
+function mapStateToProps(state) {
+  return {
+    state: state
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Actions, dispatch);
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(IntroSection);
