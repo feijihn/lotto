@@ -286,19 +286,6 @@ export function fetchRoundById(roundId) {
 }
 
 /**
- * Claims a ticket which belong to a product
- * @function fetchRounds
- * @param {Number} value value of ticket
- * @return {Function} dispatcher fucntion which emits action
- * @memberof Actions
- */
-export function claimTicket(value) {
-  return function(dispatch) {
-    dispatch(markTicket(value));
-  };
-}
-
-/**
  * choose product to open respective ProductPage and remember product currently viewing
  * @function fetchRounds
  * @param {ObjectId} prodId viewing product id
