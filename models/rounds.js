@@ -6,7 +6,8 @@ var schema = mongoose.Schema;
 var roundSchema = schema({
   product_id: {type: schema.ObjectId, ref: 'Product'},
   description: String,
-  image: String,
+  imageLink: String,
+  image: {data: Buffer, contentType: String},
   creationTime: Date,
   startTime: Date,
   endTime: Date,

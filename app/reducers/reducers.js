@@ -60,13 +60,14 @@ function App(state = initialState, action) {
         product: prod
       });
     case 'MARK_TICKET':
-      var tckts = state.viewingTickets;
-      tckts[action.value] = 3;
-      var mtckts = state.markedTickets;
-      mtckts.push(action.value);
+      var newState = Object.assign({}, state);
+      var _tickets = newState.viewingTickets;
+      _tickets[action.value] = 3;
+      var _markedTickets = newState.markedTickets;
+      _markedTickets.push(action.value);
       return Object.assign({}, state, {
-        viewingTickets: tckts,
-        markedTickets: mtckts
+        viewingTickets: _tickets,
+        markedTickets: _markedTickets
       });
     case 'VIEWING_TICKETS':
       var temp = state.viewingTickets;

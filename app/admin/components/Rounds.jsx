@@ -1,9 +1,16 @@
 import React from 'react';
 import {Table, TableRow, TableBody, TableFooter, TableHeader, TableRowColumn, TableHeaderColumn, FlatButton} from 'material-ui';
 
-export default class Rounds extends React.Component {
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as Actions from '../actions/actions.js';
+
+class Rounds extends React.Component {
+  componentWillMount = () => {
+    this.props.fetchRounds();
+  }
   render() {
-    var rounds = this.context.store.rounds.map(rnd => {
+    var rounds = this.props.state.rounds.map(rnd => {
       return (
         <TableRow>
           <TableRowColumn>
@@ -58,3 +65,17 @@ export default class Rounds extends React.Component {
     );
   }
 }
+function mapStateToProps(state) {
+  return {
+    state: state
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Actions, dispatch);
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Rounds);

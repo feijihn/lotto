@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "autoprefixer": "^6.3.6",
+    "babel-cli": "^6.9.0",
     "babel-core": "^6.9.0",
     "babel-eslint": "^6.0.4",
     "babel-loader": "^6.2.4",
@@ -24,10 +25,11 @@
     "draft-js": "^0.7.0",
     "eslint": "^2.5.1",
     "express": "~4.13.1",
+    "express-fileupload": "0.0.5",
     "express-session": "^1.13.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "html-parser": "^0.9.0",
-    "html-webpack-plugin": "^2.19.0",
+    "html-webpack-plugin": "^2.17.0",
     "jquery": "^2.2.3",
     "jsdoc": "^3.4.0",
     "material-ui": "^0.15.0-alpha.2",
@@ -46,9 +48,7 @@
     "redux-thunk": "^2.0.1",
     "request": "^2.72.0",
     "serve-favicon": "~2.3.0",
-    "webpack": "^1.12.14",
-    "html-webpack-plugin": "^2.17.0",
-    "babel-cli": "^6.9.0"
+    "webpack": "^1.12.14"
   },
   "devDependencies": {
     "eslint-config-google": "^0.4.0",

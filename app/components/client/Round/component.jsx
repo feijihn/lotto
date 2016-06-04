@@ -29,7 +29,7 @@ class RoundPage extends React.Component {
       this.props.fetchProducts();
       this.props.fetchRounds(this.props.prodId);
       let handle = setInterval(() => {
-        this.props.fetchTickets(this.context.state.round._id);
+        this.props.fetchTickets(this.props.state.round._id);
       }, 5000);
       this.setState({
         fetchTicketsHandle: handle
@@ -72,7 +72,7 @@ class RoundPage extends React.Component {
           bgImage={'../../public/images/ballBlue.png'}
           id={i}
           key={i}
-          handleClick={ value => this.props.markTicket(value) }
+          handleClick={ value => this.props.claimTicket(value) }
           >
           <span>
           {i}
@@ -143,7 +143,7 @@ class RoundPage extends React.Component {
         </div>
         <h1>Выбираем победителя...</h1>
         </div>
-        <RoundCheque />
+        <RoundCheck />
         </div>
         </div>;
     } else if (this.props.state.roundFinished) {
@@ -157,7 +157,7 @@ class RoundPage extends React.Component {
         </div>
         <h1>Раунд завершен! Выйграл билет №{this.props.state.winner}</h1>
         </div>
-        <RoundCheque />
+        <RoundCheck />
         </div>
         </div>;
     } else {
@@ -168,7 +168,7 @@ class RoundPage extends React.Component {
         <div className={'ticketContainer col-lg-6'}>
         {tickets}
         </div>
-        <RoundCheque />
+        <RoundCheck />
         </div>
         </div>;
     }

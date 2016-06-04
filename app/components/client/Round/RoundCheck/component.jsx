@@ -1,6 +1,10 @@
 import React from 'react';
 import {Snackbar, Dialog, FlatButton, RaisedButton, Stepper, Step, StepLabel} from 'material-ui';
 
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as Actions from '../../../../actions/actions.js';
+
 export default class RoundCheck extends React.Component {
   constructor(props) {
     super(props);
@@ -10,7 +14,7 @@ export default class RoundCheck extends React.Component {
     };
   }
   handleBuyClick = () => {
-    if (this.context.store.loggedIn) {
+    if (this.props.state.loggedIn) {
       this.props.ownTickets(this.props.state.markedTickets, this.props.state.round._id);
       this.props.fetchTickets(this.props.state.round._id);
     } else {
@@ -40,7 +44,7 @@ export default class RoundCheck extends React.Component {
     return (
       <div className={'roundCheque col-lg-3 col-md-2 hidden-sm'}>
         <h1>
-          Вы выбрали <br/> <span> {this.context.store.markedTickets.length}</span> <br/> билетов <br/>
+          Вы выбрали <br/> <span> {this.props.state.markedTickets.length}</span> <br/> билетов <br/>
         </h1>
         <button
          className={'btn btn-lg btn-primary text-center buyButton'}
@@ -52,9 +56,8 @@ export default class RoundCheck extends React.Component {
           <span>Купить</span><br/>
         </button>
         <button
-        ikjhjkk
           className={'btn btn-lg btn-danger selectAllButton'}
-         onClick={this.context.selectAllTickets}
+         onClick={this.props.selectAllTickets}
         >
           <span>Выделить все</span>
         </button>
@@ -68,7 +71,7 @@ export default class RoundCheck extends React.Component {
         <Dialog
          title={'Оплата'}
          actions={paymentActions}
-         open={this.state.paymentFormOpened && this.context.store.loggedIn}
+         open={this.state.paymentFormOpened && this.props.state.loggedIn}
          bodyStyle={{
            maxHeight: 'auto'
          }}
@@ -160,3 +163,18 @@ class HorizontalLinearStepper extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    state: state
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Actions, dispatch);
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(RoundCheck);

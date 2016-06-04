@@ -9,6 +9,7 @@ var Content = require('../models/content.js');
 var mongoose = require('mongoose');
 var roundLogic = require('../roundLogic.js');
 var path = require('path');
+var fs = require('fs');
 //var App = require('../app/index.js');
 
 module.exports = function(app, passport) {
@@ -55,6 +56,7 @@ module.exports = function(app, passport) {
   app.get('/admin.bundle.js.map', (req, res) => {
     res.sendFile(path.resolve( __dirname + '/../public/build/admin.bundle.js.map'));
   })
+  // process the login form
   app.post('/login', passport.authenticate('local-login', {
     successRedirect: '/', // redirect to the secure profile section
     failureRedirect: '/', // redirect back to the signup page if there is an error
@@ -84,7 +86,7 @@ module.exports = function(app, passport) {
     res.render('main.pug');
   });
   app.get('/userinfo', isLoggedIn, (req, res) => {
-    res.send(req.user);
+    res.json(req.user);
   });
   // =====================================
   // ADMINISTRATION ======================
@@ -100,17 +102,47 @@ module.exports = function(app, passport) {
   app.get('/admin-panel', isLoggedIn, isAdmin, (req, res) => {
     res.render('admin-panel.pug');
   });
+  app.get('/admin-panel/*', isLoggedIn, isAdmin, (req, res) => {
+    res.render('admin-panel.pug');
+  });
+  app.post('/uploadimage', (req, res) => {
+  });
   app.post('/addproduct', isLoggedIn, isAdmin, (req, res) => {
     let newProduct = new Product();
+    var sampleFile;
+ 
+    if (!req.files) {
+      res.send('Выберите файл изображения!');
+      return;
+    }
+   
+    sampleFile = req.files.picture;
+    let imgPath = path.resolve(__dirname + '/../public/images/' + newProduct._id + '.jpg');
+    let relPath = path.resolve('../../../../../../public/images/' + newProduct._id + '.jpg');
+    sampleFile.mv((imgPath), function(err) {
+      if (err) {
+        res.status(500).send('Произошла ошибка при загрузке изображения' + err);
+      }
+    });
     newProduct.name = req.body.name;
     newProduct.price = req.body.price;
     newProduct.description = req.body.description;
     newProduct.category = 0;
-    newProduct.image = req.body.imagelink;
+    newProduct.image = relPath;
+    let initialRound = new Round();
+    initialRound.product_id = newProduct._id;
+    initialRound.description = '';
+    initialRound.creationTime = Date.now();
+    initialRound.startTime = Date.now();
     newProduct.save(err => {
       if (err) {
         throw err;
       }
+      initialRound.save(err => {
+        if (err) {
+          throw err;
+        }
+      })
     });
     res.sendStatus(200);
   });
@@ -161,7 +193,7 @@ module.exports = function(app, passport) {
       }
       console.log(user);
     });
-    res.send(req.user);
+    res.json(req.user);
   });
   app.post('/addround', isLoggedIn, isAdmin, (req, res) => {
     let newRound = new Round();

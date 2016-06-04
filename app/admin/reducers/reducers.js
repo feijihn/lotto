@@ -2,10 +2,9 @@
 const initialState = {
   products: [],
   rounds: [],
-  content: undefined
 };
 
-function App(state = initialState, action) {
+function rootReducer(state = initialState, action) {
   switch (action.type) {
     case 'RECIEVE_PRODUCTS':
       return Object.assign({}, state, {
@@ -24,4 +23,4 @@ function App(state = initialState, action) {
   }
 }
 
-export default App;
+export default rootReducer;
