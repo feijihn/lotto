@@ -221,8 +221,10 @@ module.exports = function(app, passport) {
       if (err) {
         throw err;
       }
-      if (round.winnum === undefined || round.endTime === undefined || (req.body.options && req.body.options.all)) {
+      if ((round && (round.winnum === undefined || round.endTime === undefined)) || (req.body.options && req.body.options.all)) {
         res.json(round);
+      } else {
+        res.redirect('/');
       }
     });
   });
