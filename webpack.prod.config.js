@@ -49,8 +49,8 @@ const plugins = [
 const config = {
   env: process.env.NODE_ENV,
   entry: {
-    client: path.resolve(PATHS.app.client + '/index.js'), 
-    admin: path.resolve(PATHS.app.admin + '/index.js') 
+    client: ['babel-polyfill', path.resolve(PATHS.app.client + '/index.js')], 
+    admin: ['babel-polyfill', path.resolve(PATHS.app.admin + '/index.js')] 
   },
   output: {
     path: PATHS.build,
