@@ -221,7 +221,7 @@ module.exports = function(app, passport) {
       if (err) {
         throw err;
       }
-      if (round.winnum === undefined || round.endTime === undefined || (res.query.options && res.query.options.all)) {
+      if (round.winnum === undefined || round.endTime === undefined || (req.body.options && req.body.options.all)) {
         res.json(round);
       }
     });
