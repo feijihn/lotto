@@ -204,12 +204,8 @@ a:visited {
   color: white
 }
 
-.aboutUsContent img {
-  width: 20vw;
-  margin-right: 5%;
-  position: absolute;
-  top: 50px;
-  right: 0px;
+.aboutUsImage {
+  width: 100%;
 }
 
 .trustIcon {
