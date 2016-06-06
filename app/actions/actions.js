@@ -245,7 +245,7 @@ export function fetchRounds(prodId) {
           $.ajax({
             url: '/tickets',
             dataType: 'json',
-            data: {rndId: data[0]._id},
+            data: {rndId: data._id},
             success: data => {
               if (data.state === 'FINISH') {
                 dispatch(roundFinished(data.winnum || 0));
@@ -256,7 +256,7 @@ export function fetchRounds(prodId) {
               console.error(status, err.toString());
             }
           });
-          dispatch(recieveRounds(data[0]));
+          dispatch(recieveRounds(data));
         },
         error: (xhr, status, err) => {
           console.error(status, err.toString());
