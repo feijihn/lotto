@@ -248,20 +248,20 @@ a:visited {
 
 .headBar {
   position: absolute;
-  background-color: transparent;
-  margin: 2.2em 5%;
-  min-width: 940px;
-  width: 90%;
+  background-color: black;
+  padding: 2.4em 5%;
+  width: 100%;
   top: 0;
   left: 0;
   z-index: 45;
-  transition: background-color 2s, padding 1s, margin 1s;
+  transition: background-color .5s, padding 1s, margin 1s;
 }
 
-.sticky {
-  background-color: black;
+.headBar-main {
+  background-color: transparent;
   margin: 0;
-  padding: 2.2em 5%;
+  margin: 2.2em 5%;
+  width: 90%;
 }
 
 .headBar h1 {
@@ -304,8 +304,8 @@ a:visited {
 
 .avatarDropdown .dropdown-menu{
   display: block;
-  left: 100%;
-  transform: translateX(-100%);
+  left: 82%;
+  transform: translateY(-10%);
   background-color: rgba(255, 255, 255, 1);
   font-family: "WeblySleek UI";
   font-size: 16px;
@@ -405,14 +405,34 @@ a:visited {
   height: 100%;
 }
 
+.profile__wrapper {
+  width:100%;
+  height: 650px;
+  background-color:rgba(60, 79, 118, 1);
+}
+
+.admin__panel__content {
+  position: absolute;
+  top: 0;
+  left: 21%;
+}
+
+.admin__panel__menu {
+  width: 20%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #aaaaaa;
+  color: white;
+  height: 100vh;
+}
+
 .profilePage {
   background-color: white;
   color: black;
   border-radius: 15px;
   font-family: 'WeblySleek UI';
-  height: 100%;
-  margin-top: 100px;
-  margin-bottom: 100px;
+  margin-top: 150px;
 }
 
 .profilePage span {

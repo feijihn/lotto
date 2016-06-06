@@ -21,16 +21,3 @@ export default (
     <Redirect from="*" to="404" />
   </ Route>
 );
-
-module.exports.routes = (
-  <Route path="/" component={Main}>
-    <IndexRoute component={IndexPage} />
-    <Route path={'/round/:prodId'} component={RoundPage} />
-    <Route path={'/round/archive/:roundId'} componenr={RoundPage} />
-    <Route path={'/notifications'} component={Notifications} />
-    <Route path={'/profile'} component={Profile} />
-    <Route path={'/admin'} component={AdminSignup} />
-    <Route path={'/admin/panel'} component={AdminMain} />
-    <Redirect from="*" to="404" />
-  </ Route>
-);

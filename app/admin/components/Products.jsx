@@ -9,6 +9,10 @@ class Products extends React.Component {
   componentWillMount = () => {
     this.props.fetchProducts();
   }
+  handleSubmit = (e) => {
+    let formData = new FormData(this.refs.productSubmit);
+    this.props.submitProduct(formData);
+  }
   render() {
     var products = this.props.state.products.map(prod => {
       return (
@@ -29,7 +33,7 @@ class Products extends React.Component {
       );
     });
     return (
-      <div className={'adminPanel'}>
+      <div className={'admin__panel__content'}>
         <h1>Products</h1>
         <Table>
           <TableHeader>
@@ -52,7 +56,7 @@ class Products extends React.Component {
             {products}
           </TableBody>
         </Table>
-        <form action="/addproduct" method="post" encType="multipart/form-data">
+        <form action="javascript:void(0);" onSubmit={this.handleSubmit} ref="productSubmit">
           <label> Название </label>
           <input className={'form-control'} type="text" name="name" />
           <label> Цена </label>
@@ -60,7 +64,8 @@ class Products extends React.Component {
           <label> Описание </label>
           <input className={'form-control'} type="text" name="description" />
           <label> Изображение </label>
-          <input className={'form-control'} type="file" name="picture" />
+          <input className={'form-control'} type="file" name="picture" style={{height: '100%'}}/>
+          <hr/>
           <button className={'btn btn-warning btn-lg'} bsSize={'small'} type="submit"> Добавить </button>
         </form>
       </div>

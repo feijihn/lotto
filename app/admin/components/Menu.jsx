@@ -7,16 +7,12 @@ export default class AdminMenu extends React.Component {
     return (
       <div className={'admin__panel__menu'}>
         <Menu>
-            <Link to={'/admin-panel/products'}>
-              <MenuItem primaryText={'Продукты'}>
+            <Link to={'/products'}>
+              <MenuItem primaryText={'Добавить лот'}>
               </MenuItem>
             </Link>
-            <Link to={'/admin-panel/rounds'}>
-              <MenuItem primaryText={'Розыгрыши'}>
-              </MenuItem>
-            </Link>
-            <Link to={'/admin-panel/pages'}>
-              <MenuItem primaryText={'Контент'}>
+            <Link to={'/pages'}>
+              <MenuItem primaryText={'Редактировать главную'}>
               </MenuItem>
             </Link>
         </Menu>

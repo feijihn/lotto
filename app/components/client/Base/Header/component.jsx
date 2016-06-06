@@ -14,6 +14,7 @@ class Header extends React.Component {
       avatarDropdownOpen: false,
       loginDropdownOpen: false
     };
+    console.log(this.props);
   }
   componentWillMount = () => {
     this.props.fetchUserInfo();
@@ -39,8 +40,8 @@ class Header extends React.Component {
       case true:
         if (this.state.avatarDropdownOpen) {
           return (
-            <div className={window.location.pathname === '/' ? 'headBar' : 'headBar sticky'}>
-              <a href="/" className={'logo'}><h1>lotalot</h1></a>
+            <div className={window.location.hash.match(/#\/\?+/) ? 'headBar headBar-main' : 'headBar'}>
+              <Link to="/" className={'logo'}><h1>lotalot</h1></Link>
             <div className={'headAvatar'}>
             <Avatar style={{
               background: 'transparent',
@@ -65,8 +66,8 @@ class Header extends React.Component {
           );
         } else {
           return (
-            <div className={window.location.pathname === '/' ? 'headBar' : 'headBar sticky'}>
-              <a href="/" className={'logo'}><h1>lotalot</h1></a>
+            <div className={window.location.hash.match(/#\/\?+/) ? 'headBar headBar-main' : 'headBar'}>
+              <Link to="/" className={'logo'}><h1>lotalot</h1></Link>
             <div className={'headAvatar'}>
               <Avatar style={{
                 background: 'transparent',
@@ -90,8 +91,8 @@ class Header extends React.Component {
             />
           ];
           return (
-            <div className={window.location.pathname === '/' ? 'headBar' : 'headBar sticky'}>
-              <a href="/" className={'logo'}><h1>lotalot</h1></a>
+            <div className={window.location.hash.match(/#\/\?+/) ? 'headBar headBar-main' : 'headBar'}>
+              <Link to="/" className={'logo'}><h1>lotalot</h1></Link>
                 <button
                   type="button"
                   className={'btn btn-primary loginButton'}
@@ -150,8 +151,8 @@ class Header extends React.Component {
           );
         } else {
           return (
-            <div className={window.location.pathname === '/' ? 'headBar' : 'headBar sticky'}>
-              <a href="/" className={'logo'}><h1>lotalot</h1></a>
+            <div className={window.location.hash.match(/#\/\?+/) ? 'headBar headBar-main' : 'headBar'}>
+              <Link to="/" className={'logo'}><h1>lotalot</h1></Link>
                 <button
                   type="button"
                   className={'btn btn-default loginButton'}

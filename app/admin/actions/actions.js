@@ -80,6 +80,27 @@ export function fetchContent() {
   };
 }
 
+export function submitProduct(formData) {
+  return function(dispatch) {
+    return (
+      $.ajax({
+        url: '/addproduct',
+        method: 'post',
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
+        success: data => {
+          //dispatch(addedProduct());
+        },
+        error: (xhr, status, err) => {
+          console.error(this.props.url, status, err.toString());
+        }
+      })
+    );
+  };
+}
+
 export function updateProducts(product) {
   return function(dispatch) {
     return (

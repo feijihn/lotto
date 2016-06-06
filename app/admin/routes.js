@@ -8,10 +8,10 @@ import Rounds from './components/Rounds.jsx';
 import Pages from './components/Pages.jsx';
 
 export default (
-    <Route path="/admin-panel" component={AdminMain}>
+    <Route path="/" component={AdminMain}>
       <IndexRoute component={Index} />
-      <Route path="/admin-panel/products" component={Products} />
-      <Route path="/admin-panel/rounds" component={Rounds} />
-      <Route path="/admin-panel/pages" component={Pages} />
+      <Route path="/products" component={Products} />
+      <Route path="/rounds" component={Rounds} />
+      <Route path="/pages" component={Pages} />
     </Route>
 )

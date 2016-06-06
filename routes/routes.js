@@ -10,7 +10,9 @@ var mongoose = require('mongoose');
 var roundLogic = require('../roundLogic.js');
 var path = require('path');
 var fs = require('fs');
-//var App = require('../app/index.js');
+
+var multer  = require('multer');
+var upload = multer({ dest: './public/images' });
 
 module.exports = function(app, passport) {
   // =====================================
@@ -107,23 +109,11 @@ module.exports = function(app, passport) {
   });
   app.post('/uploadimage', (req, res) => {
   });
-  app.post('/addproduct', isLoggedIn, isAdmin, (req, res) => {
+  app.post('/addproduct', isLoggedIn, isAdmin, upload.single('picture'), (req, res) => {
     let newProduct = new Product();
-    var sampleFile;
- 
-    if (!req.files) {
-      res.send('Выберите файл изображения!');
-      return;
-    }
-   
-    sampleFile = req.files.picture;
     let imgPath = path.resolve(__dirname + '/../public/images/' + newProduct._id + '.jpg');
+    fs.renameSync(path.resolve(__dirname + '/' + '../' + req.file.path), imgPath);
     let relPath = path.resolve('../../../../../../public/images/' + newProduct._id + '.jpg');
-    sampleFile.mv((imgPath), function(err) {
-      if (err) {
-        res.status(500).send('Произошла ошибка при загрузке изображения' + err);
-      }
-    });
     newProduct.name = req.body.name;
     newProduct.price = req.body.price;
     newProduct.description = req.body.description;
@@ -277,6 +267,7 @@ module.exports = function(app, passport) {
     });
   });
   app.post('/owntickets', isLoggedIn, (req, res) => {
+    console.log(req.body);
     if (req.body.values) {
       roundLogic.addParticipant(req.body.rndId, req.user._id);
       req.body.values.forEach((value, i) => {

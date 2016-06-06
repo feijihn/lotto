@@ -27,11 +27,11 @@ class Main extends React.Component {
   render() {
     return (
       <div className="page-container">
-        <Header />
         <div className="body-container">
+        <Header params={this.props.params}/>
           {this.props.children}
-        </div>
         <Footer />
+        </div>
       </div>
     );
   }

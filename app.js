@@ -56,7 +56,6 @@ app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
 
-app.use(fileUpload());
 // required for passport
 app.use('/public', express.static('public'));
 app.use(session({secret: '4kyldysh20'})); // session secret

@@ -9,12 +9,13 @@ import {Link} from 'react-router';
 class Profile extends React.Component {
   render() {
     return (
+      <div className={'profile__wrapper'}>
       <div className={'profilePage col-lg-6 col-lg-offset-3'}>
         <h1 style={{textAlign: 'center', color: 'black'}}>
         Профиль
         </h1>
         <Avatar size={128} style={{margin: 10}}>
-          {this.props.state.userinfo.local.username[0]}i
+          {this.props.state.userinfo.local.username[0]}
         </Avatar>
         <span>
           Имя пользователя: {this.props.state.userinfo.local.username}<br/>
@@ -22,6 +23,7 @@ class Profile extends React.Component {
         </span>
         <Divider/>
         <RoundHistory />
+      </div>
       </div>
     );
   }
@@ -34,5 +36,5 @@ function mapStateToProps(state) {
 }
 
 export default connect(
-    mapStateToProps,
+    mapStateToProps
 )(Profile);

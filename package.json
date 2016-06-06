@@ -5,7 +5,8 @@
   "scripts": {
     "start": "export NODE_ENV='production' & node app",
     "start-dev": "export NODE_ENV='development' PORT='3000' && node app",
-    "build": "webpack -p --config ./webpack.prod.config.js --progress"
+    "build": "webpack -p --config ./webpack.prod.config.js --progress",
+    "build-es5": "babel --presets=es2015,react,stage-1 ./app -d ./build/"
   },
   "dependencies": {
     "autoprefixer": "^6.3.6",
@@ -35,6 +36,7 @@
     "material-ui": "^0.15.0-alpha.2",
     "mongoose": "^4.4.19",
     "morgan": "~1.6.1",
+    "multer": "^1.1.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.0",
     "passport-local": "^1.0.0",
