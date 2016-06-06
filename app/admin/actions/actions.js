@@ -49,6 +49,13 @@ function submittedContent() {
   } 
 }
 
+function removedProduct(data) {
+  return {
+    type: 'PRODUCT_REMOVED',
+    products: data
+  } 
+}
+
 export function fetchProducts() {
   return function(dispatch) {
     return (
@@ -96,6 +103,25 @@ export function fetchContent() {
         dataType: 'json',
         success: data => {
           dispatch(recieveContent(data));
+        },
+        error: (xhr, status, err) => {
+          console.error(this.props.url, status, err.toString());
+        }
+      })
+    );
+  };
+}
+
+export function removeProduct(productId) {
+  return function(dispatch) {
+    dispatch(submittingProduct());
+    return (
+      $.ajax({
+        url: '/removeproduct',
+        method: 'post',
+        data: {productId: productId},
+        success: data => {
+          dispatch(removedProduct(data));
         },
         error: (xhr, status, err) => {
           console.error(this.props.url, status, err.toString());

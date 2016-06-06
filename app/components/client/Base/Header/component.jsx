@@ -56,8 +56,8 @@ class Header extends React.Component {
                 <ul className={'dropdown-menu'}>
                   <li className={'dropdown-header'}>{this.props.state.userinfo.local.username}</li>
                   <li className={'divider'}></li>
-                  <Link to={'/profile'}><li><span className={'glyphicon glyphicon-user'}/> Профиль</li></Link>
-                  <Link to={'/notifications'}><li><span className={'glyphicon glyphicon-bell'}/> Уведомления</li></Link>
+                  <li><Link to={'/profile'}><span className={'glyphicon glyphicon-user'}/> Профиль</Link></li>
+                  <li><Link to={'/notifications'}><span className={'glyphicon glyphicon-bell'}/> Уведомления</Link></li>
                   <li className={'divider'}></li>
                   <li><a href="/logout"><span className={'glyphicon glyphicon-log-out'}/> Выйти</a></li>
                 </ul>

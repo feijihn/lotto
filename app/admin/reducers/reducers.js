@@ -48,6 +48,10 @@ function rootReducer(state = initialState, action) {
         contentLoading: false,
         contentLoaded: true
       })
+    case 'PRODUCT_REMOVED':
+      return Object.assign({}, state, {
+        products: action.products
+      }) 
     default:
       return state;
   }

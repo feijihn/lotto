@@ -109,6 +109,19 @@ module.exports = function(app, passport) {
   });
   app.post('/uploadimage', (req, res) => {
   });
+  app.post('/removeproduct', isLoggedIn, isAdmin, (req, res) => {
+    Product.remove({_id: req.body.productId}, (err, status) => {
+      if (err) {
+        throw err;
+      }
+      Product.find((err, products) => {
+        if (err) {
+          throw err;
+        }
+        res.json(products);
+      })
+    })
+  });
   app.post('/submitproduct', isLoggedIn, isAdmin, upload.single('picture'), (req, res) => {
     let newProduct = new Product();
     let imgPath = path.resolve(__dirname + '/../public/images/' + newProduct._id + '.jpg');

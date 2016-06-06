@@ -6,6 +6,12 @@ import {connect} from 'react-redux';
 import * as Actions from '../actions/actions.js';
 
 class Products extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      selectedRow: undefined
+    }
+  }
   componentWillMount = () => {
     this.props.fetchProducts();
   }
@@ -13,10 +19,20 @@ class Products extends React.Component {
     let formData = new FormData(this.refs.productSubmit);
     this.props.submitProduct(formData);
   }
+  handleRowSelection = (selectedRows) => {
+    this.setState({
+      selectedRow: selectedRows[0]
+    });
+  }
+  handleRemove = () => {
+    this.props.removeProduct(this.props.state.products[this.state.selectedRow]._id);
+  }
   render() {
-    var products = this.props.state.products.map(prod => {
+    var products = this.props.state.products.map((prod, i) => {
       return (
-        <TableRow>
+        <TableRow
+          selected={this.state.selectedRow === i}
+        >
           <TableRowColumn>
             { prod._id }
           </TableRowColumn>
@@ -34,8 +50,8 @@ class Products extends React.Component {
     });
     return (
       <div className={'admin__panel__content'}>
-        <h1>Products</h1>
-        <Table>
+        <h1>Лоты</h1>
+        <Table onRowSelection={this.handleRowSelection}>
           <TableHeader>
             <TableRow>
               <TableHeaderColumn>
@@ -56,6 +72,9 @@ class Products extends React.Component {
             {products}
           </TableBody>
         </Table>
+        <button className={'btn btn-danger'} onTouchTap={this.handleRemove} disabled={this.state.selectedRow === undefined}>Удалить</button>
+        <hr />
+        <h2>Добавить новый лот</h2>
         <form action="javascript:void(0);" onSubmit={this.handleSubmit} ref="productSubmit">
           <label> Название </label>
           <input className={'form-control'} type="text" name="name" />

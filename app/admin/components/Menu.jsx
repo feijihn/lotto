@@ -8,11 +8,11 @@ export default class AdminMenu extends React.Component {
       <div className={'admin__panel__menu'}>
         <Menu>
             <Link to={'/products'}>
-              <MenuItem primaryText={'Добавить лот'}>
+              <MenuItem primaryText={'Управление лотами'}>
               </MenuItem>
             </Link>
             <Link to={'/pages'}>
-              <MenuItem primaryText={'Редактировать главную'}>
+              <MenuItem primaryText={'Редактирование главной'}>
               </MenuItem>
             </Link>
         </Menu>

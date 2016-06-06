@@ -456,7 +456,7 @@ a:visited {
 
 .admin__panel__menu {
   width: 20%;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   background-color: #aaaaaa;
