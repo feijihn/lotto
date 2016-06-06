@@ -6,6 +6,7 @@ html {
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   width: 100%;
+  height: 100%;
   text-decoration: none;
 }
 
@@ -34,6 +35,7 @@ a:visited {
 
 #container {
   width: 100%;
+  height: 100%;
 }
 
 .main {
@@ -199,8 +201,8 @@ a:visited {
 }
 
 .aboutUsContent img {
-  width: 23vw;
-  margin-left: 5%;
+  width: 20vw;
+  margin-right: 5%;
   position: absolute;
   top: 50px;
   right: 0px;
@@ -411,10 +413,21 @@ a:visited {
   background-color:rgba(60, 79, 118, 1);
 }
 
+.admin__panel {
+  height: 100%;
+  width: 100%;
+}
+
+.admin__panel__wrapper {
+  width: 100%;
+  height: 100%;
+}
+
 .admin__panel__content {
   position: absolute;
   top: 0;
   left: 21%;
+  max-width: 79%;
 }
 
 .admin__panel__menu {
@@ -424,7 +437,7 @@ a:visited {
   left: 0;
   background-color: #aaaaaa;
   color: white;
-  height: 100vh;
+  height: 100%;
 }
 
 .profilePage {

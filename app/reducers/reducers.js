@@ -140,19 +140,14 @@ function App(state = initialState, action) {
         roundWaitingForWinner: true
       });
     case 'RECIEVE_CONTENT' :
-      var introText = '';
-      var securityText = '';
-      action.content.forEach((entry, i) => {
-        if (entry.name === 'introText') {
-          introText = entry.text;
-        }
-        if (entry.name === 'securityText') {
-          securityText = entry.text;
-        }
+      let newContent = {};
+      action.content.forEach((el, i) => {
+        newContent[el.name] = {};
+        newContent[el.name].header = el.header;
+        newContent[el.name].text = el.text;
       });
       return Object.assign({}, state, {
-        introText: introText,
-        securityText: securityText
+        content: newContent
       });
     case 'ARCHIVE_TICKETS' :
       var archive = state.roundHistory;

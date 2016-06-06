@@ -25,19 +25,19 @@ class RoundPage extends React.Component {
     });
   }
   componentWillMount = () => {
-    if (this.props.prodId) {
+    if (this.props.params.productId) {
       this.props.fetchProducts();
-      this.props.fetchRounds(this.props.prodId);
+      this.props.fetchRounds(this.props.params.productId);
       let handle = setInterval(() => {
         this.props.fetchTickets(this.props.state.round._id);
       }, 5000);
       this.setState({
         fetchTicketsHandle: handle
       });
-    } else if (this.props.roundId) {
-      this.props.fetchRoundById(this.props.roundId);
+    } else if (this.props.params.roundId) {
+      this.props.fetchRoundById(this.props.params.roundId);
       let handle = setInterval(() => {
-        this.props.fetchTickets(this.props.roundId);
+        this.props.fetchTickets(this.props.params.roundId);
       }, 5000);
       this.setState({
         fetchTicketsHandle: handle
@@ -174,7 +174,7 @@ class RoundPage extends React.Component {
     }
     return (
       <div>
-        <RoundInfo prodId={this.props.prodId}/>
+        <RoundInfo prodId={this.props.params.productId}/>
         {roundPage}
       </div>
     );

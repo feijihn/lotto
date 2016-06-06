@@ -109,7 +109,7 @@ module.exports = function(app, passport) {
   });
   app.post('/uploadimage', (req, res) => {
   });
-  app.post('/addproduct', isLoggedIn, isAdmin, upload.single('picture'), (req, res) => {
+  app.post('/submitproduct', isLoggedIn, isAdmin, upload.single('picture'), (req, res) => {
     let newProduct = new Product();
     let imgPath = path.resolve(__dirname + '/../public/images/' + newProduct._id + '.jpg');
     fs.renameSync(path.resolve(__dirname + '/' + '../' + req.file.path), imgPath);
@@ -134,7 +134,7 @@ module.exports = function(app, passport) {
         }
       })
     });
-    res.sendStatus(200);
+    res.json(newProduct);
   });
   app.post('/claimticket', (req, res) => {
     let newTicket = new Ticket();
@@ -150,19 +150,22 @@ module.exports = function(app, passport) {
       if (err) {
         throw err;
       }
-      console.log(content);
       res.json(content);
       return undefined;
     });
   });
-  app.post('/modify-content', isLoggedIn, isAdmin, (req, res) => {
-    console.log(req.body);
-    Object.keys(req.body).forEach((key, i, body) => {
+  app.post('/submitcontent', isLoggedIn, isAdmin, upload.single(), (req, res) => {
+      console.log(req.body);
       let newContent = new Content();
-      newContent.name = key;
-      let text = req.body[key].replace(/\r?\n/g, '<br />');
-      console.log(text);
+      newContent.name = 'introSection';
+      newContent.header = req.body.introHeader;
+      let text = req.body.introText.replace(/\r?\n/g, '<br />');
       newContent.text = text;
+      let newContent2 = new Content();
+      newContent2.name = 'reliabilitySection';
+      newContent2.header = req.body.reliabilityHeader;
+      text = req.body.reliabilityText.replace(/\r?\n/g, '<br />');
+      newContent2.text = text;
       Content.remove({}, err => {
         if (err) {
           throw err;
@@ -172,8 +175,12 @@ module.exports = function(app, passport) {
             throw err;
           }
         });
+        newContent2.save(err => {
+          if (err) {
+            throw err;
+          }
+        });
       });
-    });
     res.sendStatus(200);
   });
   app.post('/alertread', isLoggedIn, (req, res) => {
@@ -210,11 +217,11 @@ module.exports = function(app, passport) {
     });
   });
   app.get('/rounds', (req, res) => {
-    Round.find({product_id: req.query.prodId, startTime: {$ne: undefined}}, (err, round) => {
+    Round.findOne({product_id: req.query.prodId, startTime: {$ne: undefined}}, (err, round) => {
       if (err) {
         throw err;
       }
-      if (round.winnum === undefined || round.endTime === undefined || (res.body.options && res.body.options.all)) {
+      if (round.winnum === undefined || round.endTime === undefined || (res.query.options && res.query.options.all)) {
         res.json(round);
       }
     });

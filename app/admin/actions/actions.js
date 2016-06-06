@@ -24,6 +24,31 @@ function recieveRounds(data) {
   };
 }
 
+function submittingProduct() {
+  return {
+    type: 'PRODUCT_SUBMITTING'
+  }
+}
+
+function submittedProduct(product) {
+  return {
+    type: 'PRODUCT_SUBMITTED',
+    product: product
+  } 
+}
+
+function submittingContent() {
+  return {
+    type: 'CONTENT_SUBMITTING'
+  }
+}
+
+function submittedContent() {
+  return {
+    type: 'CONTENT_SUBMITTED'
+  } 
+}
+
 export function fetchProducts() {
   return function(dispatch) {
     return (
@@ -82,16 +107,37 @@ export function fetchContent() {
 
 export function submitProduct(formData) {
   return function(dispatch) {
+    dispatch(submittingProduct());
     return (
       $.ajax({
-        url: '/addproduct',
+        url: '/submitproduct',
         method: 'post',
         cache: false,
         contentType: false,
         processData: false,
         data: formData,
         success: data => {
-          //dispatch(addedProduct());
+          dispatch(submittedProduct(data));
+        },
+        error: (xhr, status, err) => {
+          console.error(this.props.url, status, err.toString());
+        }
+      })
+    );
+  };
+}
+
+export function submitContent(formData) {
+  console.log(formData);
+  return function(dispatch) {
+    dispatch(submittingContent());
+    return (
+      $.ajax({
+        url: '/submitcontent',
+        method: 'post',
+        data: formData,
+        success: data => {
+          dispatch(submittedContent(data));
         },
         error: (xhr, status, err) => {
           console.error(this.props.url, status, err.toString());

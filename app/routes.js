@@ -12,7 +12,7 @@ import AdminMain from './components/admin/Main.jsx';
 export default (
   <Route path="/" component={Main}>
     <IndexRoute component={IndexPage} />
-    <Route path={'/round/:prodId'} component={RoundPage} />
+    <Route path={'/round/:productId'} component={RoundPage} />
     <Route path={'/round/archive/:roundId'} componenr={RoundPage} />
     <Route path={'/notifications'} component={Notifications} />
     <Route path={'/profile'} component={Profile} />

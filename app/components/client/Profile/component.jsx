@@ -1,12 +1,17 @@
 import React from 'react';
 
+import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import * as Actions from '../../../actions/actions.js';
 
 import RoundHistory from './RoundHistory/component.jsx';
 import {List, ListItem, Avatar, Divider} from 'material-ui';
 import {Link} from 'react-router';
 
 class Profile extends React.Component {
+  componentWillMount = () => {
+    this.props.fetchRoundsArchive();
+  }
   render() {
     return (
       <div className={'profile__wrapper'}>
@@ -35,6 +40,11 @@ function mapStateToProps(state) {
   };
 }
 
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Actions, dispatch);
+}
+
 export default connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(Profile);

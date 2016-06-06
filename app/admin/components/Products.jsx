@@ -66,7 +66,8 @@ class Products extends React.Component {
           <label> Изображение </label>
           <input className={'form-control'} type="file" name="picture" style={{height: '100%'}}/>
           <hr/>
-          <button className={'btn btn-warning btn-lg'} bsSize={'small'} type="submit"> Добавить </button>
+          <button className={'btn btn-warning btn-lg'} bsSize={'small'} type="submit" disabled={this.props.state.productLoading}> Добавить </button>
+          <img src="../../../public/images/ajax-loader.gif" style={this.props.state.productLoading ? {display: 'block'} : {display: 'none'}}/>
         </form>
       </div>
         );

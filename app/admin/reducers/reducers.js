@@ -2,6 +2,7 @@
 const initialState = {
   products: [],
   rounds: [],
+  content: undefined
 };
 
 function rootReducer(state = initialState, action) {
@@ -15,9 +16,38 @@ function rootReducer(state = initialState, action) {
         rounds: action.rounds
       });
     case 'RECIEVE_CONTENT':
-      return Object.assign({}, state, {
-        content: action.content
+      let newContent = {};
+      action.content.forEach(el => {
+        newContent[el.name] = {};
+        newContent[el.name].header = el.header;
+        let text = el.text.replace(/<br\ \/>/g, '\n');
+        newContent[el.name].text = text;
       });
+      return Object.assign({}, state, {
+        content: newContent
+      });
+    case 'PRODUCT_SUBMITTING': 
+      return Object.assign({}, state, {
+        productLoading: true
+      });
+    case 'PRODUCT_SUBMITTED':
+      let newProducts = [];
+      newProducts.push(action.product);
+      newProducts.push(...state.products);
+      return Object.assign({}, state, {
+        productLoading: false,
+        products: newProducts,
+        productLoaded: true
+      })
+    case 'CONTENT_SUBMITTING': 
+      return Object.assign({}, state, {
+        contentLoading: true
+      });
+    case 'CONTENT_SUBMITTED':
+      return Object.assign({}, state, {
+        contentLoading: false,
+        contentLoaded: true
+      })
     default:
       return state;
   }

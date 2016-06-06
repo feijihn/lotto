@@ -1,6 +1,8 @@
 import React from 'react';
 
 import {List, ListItem} from 'material-ui';
+import {Link} from 'react-router';
+import RoundPic from './RoundPic/component.jsx';
 
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';

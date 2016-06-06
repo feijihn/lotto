@@ -19,7 +19,7 @@ class AdminMain extends React.Component {
   }
   render() {
     return (
-      <div className={'adminPanel'}>
+      <div className={'admin__panel__wrapper'}>
         <AdminMenu />
         <div className="body-container">
           {this.props.children}

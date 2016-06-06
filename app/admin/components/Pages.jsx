@@ -8,25 +8,33 @@ export default class Pages extends React.Component {
   componentWillMount = () => {
     this.props.fetchContent();
   }
+  handleSubmit = () => {
+    let form = this.refs.contentForm;
+    let formData = {
+      introHeader: form[0].value,
+      introText: form[1].value,
+      reliabilityHeader: form[2].value,
+      reliabilityText: form[3].value
+    }
+    this.props.submitContent(formData);
+  }
   render() {
     return (
       <div className={'admin__panel__content'}>
-        <h1 className={'text-center'}>Редактирование контента</h1>
-        <form action="/modify-content" method="post">
+        <form action="javascript:void(0)" onSubmit={this.handleSubmit} ref="contentForm">
             <h2 className={'text-center'}>Верхний блок</h2>
-          <textarea rows="5" cols="120" name="introText" defaultValue={this.props.state.content ? this.props.state.content[0].text : ''} />
+            <h3>Header</h3>
+            <input type="text" className={'form-control'} name="introHeader" defaultValue={this.props.state.content ? this.props.state.content.introSection.header : ''}/>
+            <h3>Text</h3>
+            <textarea className={'form-control'} rows="5" cols="110" name="introText" defaultValue={this.props.state.content ? this.props.state.content.introSection.text : ''} />
             <h2 className={'text-center'}>Нижний блок </h2>
-          <textarea rows="5" cols="120" name="securityText" defaultValue={this.props.state.content ? this.props.state.content[1].text : ''} />
-          <input type="submit" value="Изменить" className={'btn btn-lg btn-primary'}/>
-          <div className={'help'}>
-            <h3>Справка</h3>
-            <p>
-            Внутри тэга &lt;h1&gt; - заголовок.<br/>
-            Внутри тэга &lt;p&gt; - текст.<br/>
-            Тэг &lt;br/&gt; - перевод строки.
-            </p>
-          </div>
-
+            <h3>Header</h3>
+            <input type="text" className={'form-control'} name="reliablitityHeader" defaultValue={this.props.state.content ? this.props.state.content.reliabilitySection.header : ''}/>
+            <h3>Text</h3>
+            <textarea className={'form-control'} rows="5" cols="110" name="reliabilityText" defaultValue={this.props.state.content ? this.props.state.content.reliabilitySection.text : ''} />
+            <hr/>
+            <input type="submit" value="Изменить" className={'btn btn-lg btn-primary'} disabled={this.props.state.contentLoading}/>
+            <img src="../../../public/images/ajax-loader.gif" style={this.props.state.contentLoading ? {display: 'block'} : {display: 'none'}}/>
         </form>
       </div>
     );

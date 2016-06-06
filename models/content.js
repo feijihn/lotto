@@ -6,6 +6,7 @@ var schema = mongoose.Schema;
 
 var contentSchema = schema({
   name: String,
+  header: String,
   text: String
 });
 
