@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import * as Actions from '../actions/actions.js';
 
 class Rounds extends React.Component {
-  componentWillMount = () => {
+  componentDidMount = () => {
     this.props.fetchRounds();
   }
   render() {

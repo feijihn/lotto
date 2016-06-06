@@ -20,7 +20,9 @@ class RoundHistory extends React.Component {
     }, 5000);
   }
   componentWillUnmount = () => {
-    clearInterval(this.state.handle);
+    if (this.state) {
+      clearInterval(this.state.handle);
+    }
   }
   render(){
     let yourRounds = this.props.state.roundHistory.map((round, i) => {

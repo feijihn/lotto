@@ -6,6 +6,13 @@ import {connect} from 'react-redux';
 import * as Actions from '../actions/actions.js';
 
 class Products extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      selectedRow: undefined,
+      editMode: false
+    }
+  }
   componentWillMount = () => {
     this.props.fetchProducts();
   }
@@ -13,10 +20,29 @@ class Products extends React.Component {
     let formData = new FormData(this.refs.productSubmit);
     this.props.submitProduct(formData);
   }
+  handleEdit = (e) => {
+    let formData = new FormData(this.refs.productEdit);
+    this.props.editProduct(formData);
+  }
+  handleRowSelection = (selectedRows) => {
+    this.setState({
+      selectedRow: selectedRows[0]
+    });
+  }
+  handleRemove = () => {
+    this.props.removeProduct(this.props.state.products[this.state.selectedRow]._id);
+  }
+  handleEditClick = () => {
+    this.setState({
+      editMode: !this.state.editMode
+    })
+  }
   render() {
-    var products = this.props.state.products.map(prod => {
+    var products = this.props.state.products.map((prod, i) => {
       return (
-        <TableRow>
+        <TableRow
+          selected={this.state.selectedRow === i}
+        >
           <TableRowColumn>
             { prod._id }
           </TableRowColumn>
@@ -34,8 +60,8 @@ class Products extends React.Component {
     });
     return (
       <div className={'admin__panel__content'}>
-        <h1>Products</h1>
-        <Table>
+        <h1>Лоты</h1>
+        <Table onRowSelection={this.handleRowSelection}>
           <TableHeader>
             <TableRow>
               <TableHeaderColumn>
@@ -56,20 +82,25 @@ class Products extends React.Component {
             {products}
           </TableBody>
         </Table>
-        <form action="javascript:void(0);" onSubmit={this.handleSubmit} ref="productSubmit">
-          <label> Название </label>
-          <input className={'form-control'} type="text" name="name" />
-          <label> Цена </label>
-          <input className={'form-control'} type="text" name="price" />
-          <label> Описание </label>
-          <input className={'form-control'} type="text" name="description" />
-          <label> Изображение </label>
-          <input className={'form-control'} type="file" name="picture" style={{height: '100%'}}/>
-          <hr/>
-          <button className={'btn btn-warning btn-lg'} bsSize={'small'} type="submit" disabled={this.props.state.productLoading}> Добавить </button>
-          <img src="../../../public/images/ajax-loader.gif" style={this.props.state.productLoading ? {display: 'block'} : {display: 'none'}}/>
-        </form>
-      </div>
+        <button className={'btn btn-danger'} onTouchTap={this.handleRemove} disabled={this.state.selectedRow === undefined}>Удалить</button>
+        <hr />
+          <div className={'admin__panel__form'} style={this.state.editMode ? {display: 'none'} : {display: 'block'}}>
+            <h2>Добавить новый лот</h2>
+              <form action="javascript:void(0);" onSubmit={this.handleSubmit} ref="productSubmit">
+                <label> Название </label>
+                <input className={'form-control'} type="text" name="name" />
+                <label> Цена </label>
+                <input className={'form-control'} type="text" name="price" />
+                <label> Описание </label>
+                <input className={'form-control'} type="text" name="description" />
+                <label> Изображение </label>
+                <input className={'form-control'} type="file" name="picture" style={{height: '100%'}}/>
+                <hr/>
+                <button className={'btn btn-warning btn-lg'} bsSize={'small'} type="submit" disabled={this.props.state.productLoading}> Добавить </button>
+                <img src="../../../public/images/ajax-loader.gif" style={this.props.state.productLoading ? {display: 'block'} : {display: 'none'}}/>
+              </form>
+            </div>
+        </div> 
         );
   }
 }
@@ -88,3 +119,19 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(Products);
+          //<div className={'admin__panel__form'} style={this.state.editMode ? {display: 'block'} : {display: 'none'}}>
+            //<h2>Редактировать лот</h2>
+              //<form action="javascript:void(0);" onSubmit={this.handleEdit} ref="productEdit">
+                //<label> Название </label>
+                //<input className={'form-control'} type="text" name="name" />
+                //<label> Цена </label>
+                //<input className={'form-control'} type="text" name="price" />
+                //<label> Описание </label>
+                //<input className={'form-control'} type="text" name="description" />
+                //<label> Изображение </label>
+                //<input className={'form-control'} type="file" name="picture" style={{height: '100%'}}/>
+                //<hr/>
+                //<button className={'btn btn-warning btn-lg'} bsSize={'small'} type="submit" disabled={this.props.state.productLoading}> Добавить </button>
+                //<img src="../../../public/images/ajax-loader.gif" style={this.props.state.productLoading ? {display: 'block'} : {display: 'none'}}/>
+              //</form>
+          //</div>

@@ -49,6 +49,13 @@ function submittedContent() {
   } 
 }
 
+function removedProduct(data) {
+  return {
+    type: 'PRODUCT_REMOVED',
+    products: data
+  } 
+}
+
 export function fetchProducts() {
   return function(dispatch) {
     return (
@@ -105,12 +112,53 @@ export function fetchContent() {
   };
 }
 
+export function removeProduct(productId) {
+  return function(dispatch) {
+    dispatch(submittingProduct());
+    return (
+      $.ajax({
+        url: '/removeproduct',
+        method: 'post',
+        data: {productId: productId},
+        success: data => {
+          dispatch(removedProduct(data));
+        },
+        error: (xhr, status, err) => {
+          console.error(this.props.url, status, err.toString());
+        }
+      })
+    );
+  };
+}
+
 export function submitProduct(formData) {
   return function(dispatch) {
     dispatch(submittingProduct());
     return (
       $.ajax({
         url: '/submitproduct',
+        method: 'post',
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
+        success: data => {
+          dispatch(submittedProduct(data));
+        },
+        error: (xhr, status, err) => {
+          console.error(this.props.url, status, err.toString());
+        }
+      })
+    );
+  };
+}
+
+export function editProduct(formData) {
+  return function(dispatch) {
+    dispatch(submittingProduct());
+    return (
+      $.ajax({
+        url: '/editproduct',
         method: 'post',
         cache: false,
         contentType: false,
