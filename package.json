@@ -27,6 +27,7 @@
     "eslint": "^2.5.1",
     "express": "~4.13.1",
     "express-fileupload": "0.0.5",
+    "express-history-api-fallback": "^2.0.0",
     "express-session": "^1.13.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "html-parser": "^0.9.0",
