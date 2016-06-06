@@ -385,7 +385,7 @@ a:visited {
   background-color:  white;
   margin: 0 auto;
   text-align: center;
-  padding-bottom: 70px;
+  padding-bottom: 30px;
   font-family: "WeblySleek UI";
 }
 
@@ -437,7 +437,7 @@ a:visited {
 }
 
 .notifications__block {
-  min-height: 200px;
+  min-height: 450px;
   background-color: white;
   color: black;
   border-radius: 15px;
@@ -451,7 +451,7 @@ a:visited {
 
 .profile__wrapper {
   width:100%;
-  min-height: 450px;
+  min-height: 650px;
   background-color:rgba(60, 79, 118, 1);
 }
 
