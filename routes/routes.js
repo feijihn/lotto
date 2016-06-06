@@ -122,6 +122,8 @@ module.exports = function(app, passport) {
       })
     })
   });
+  //app.post('/editproduct', isLoggedIn, isAdmin, upload.single('picture'), (req, res) => {
+  //});
   app.post('/submitproduct', isLoggedIn, isAdmin, upload.single('picture'), (req, res) => {
     let newProduct = new Product();
     let imgPath = path.resolve(__dirname + '/../public/images/' + newProduct._id + '.jpg');

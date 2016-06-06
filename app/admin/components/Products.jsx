@@ -9,7 +9,8 @@ class Products extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      selectedRow: undefined
+      selectedRow: undefined,
+      editMode: false
     }
   }
   componentWillMount = () => {
@@ -19,6 +20,10 @@ class Products extends React.Component {
     let formData = new FormData(this.refs.productSubmit);
     this.props.submitProduct(formData);
   }
+  handleEdit = (e) => {
+    let formData = new FormData(this.refs.productEdit);
+    this.props.editProduct(formData);
+  }
   handleRowSelection = (selectedRows) => {
     this.setState({
       selectedRow: selectedRows[0]
@@ -26,6 +31,11 @@ class Products extends React.Component {
   }
   handleRemove = () => {
     this.props.removeProduct(this.props.state.products[this.state.selectedRow]._id);
+  }
+  handleEditClick = () => {
+    this.setState({
+      editMode: !this.state.editMode
+    })
   }
   render() {
     var products = this.props.state.products.map((prod, i) => {
@@ -74,21 +84,23 @@ class Products extends React.Component {
         </Table>
         <button className={'btn btn-danger'} onTouchTap={this.handleRemove} disabled={this.state.selectedRow === undefined}>Удалить</button>
         <hr />
-        <h2>Добавить новый лот</h2>
-        <form action="javascript:void(0);" onSubmit={this.handleSubmit} ref="productSubmit">
-          <label> Название </label>
-          <input className={'form-control'} type="text" name="name" />
-          <label> Цена </label>
-          <input className={'form-control'} type="text" name="price" />
-          <label> Описание </label>
-          <input className={'form-control'} type="text" name="description" />
-          <label> Изображение </label>
-          <input className={'form-control'} type="file" name="picture" style={{height: '100%'}}/>
-          <hr/>
-          <button className={'btn btn-warning btn-lg'} bsSize={'small'} type="submit" disabled={this.props.state.productLoading}> Добавить </button>
-          <img src="../../../public/images/ajax-loader.gif" style={this.props.state.productLoading ? {display: 'block'} : {display: 'none'}}/>
-        </form>
-      </div>
+          <div className={'admin__panel__form'} style={this.state.editMode ? {display: 'none'} : {display: 'block'}}>
+            <h2>Добавить новый лот</h2>
+              <form action="javascript:void(0);" onSubmit={this.handleSubmit} ref="productSubmit">
+                <label> Название </label>
+                <input className={'form-control'} type="text" name="name" />
+                <label> Цена </label>
+                <input className={'form-control'} type="text" name="price" />
+                <label> Описание </label>
+                <input className={'form-control'} type="text" name="description" />
+                <label> Изображение </label>
+                <input className={'form-control'} type="file" name="picture" style={{height: '100%'}}/>
+                <hr/>
+                <button className={'btn btn-warning btn-lg'} bsSize={'small'} type="submit" disabled={this.props.state.productLoading}> Добавить </button>
+                <img src="../../../public/images/ajax-loader.gif" style={this.props.state.productLoading ? {display: 'block'} : {display: 'none'}}/>
+              </form>
+            </div>
+        </div> 
         );
   }
 }
@@ -107,3 +119,19 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(Products);
+          //<div className={'admin__panel__form'} style={this.state.editMode ? {display: 'block'} : {display: 'none'}}>
+            //<h2>Редактировать лот</h2>
+              //<form action="javascript:void(0);" onSubmit={this.handleEdit} ref="productEdit">
+                //<label> Название </label>
+                //<input className={'form-control'} type="text" name="name" />
+                //<label> Цена </label>
+                //<input className={'form-control'} type="text" name="price" />
+                //<label> Описание </label>
+                //<input className={'form-control'} type="text" name="description" />
+                //<label> Изображение </label>
+                //<input className={'form-control'} type="file" name="picture" style={{height: '100%'}}/>
+                //<hr/>
+                //<button className={'btn btn-warning btn-lg'} bsSize={'small'} type="submit" disabled={this.props.state.productLoading}> Добавить </button>
+                //<img src="../../../public/images/ajax-loader.gif" style={this.props.state.productLoading ? {display: 'block'} : {display: 'none'}}/>
+              //</form>
+          //</div>

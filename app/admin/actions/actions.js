@@ -153,6 +153,28 @@ export function submitProduct(formData) {
   };
 }
 
+export function editProduct(formData) {
+  return function(dispatch) {
+    dispatch(submittingProduct());
+    return (
+      $.ajax({
+        url: '/editproduct',
+        method: 'post',
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: formData,
+        success: data => {
+          dispatch(submittedProduct(data));
+        },
+        error: (xhr, status, err) => {
+          console.error(this.props.url, status, err.toString());
+        }
+      })
+    );
+  };
+}
+
 export function submitContent(formData) {
   console.log(formData);
   return function(dispatch) {
