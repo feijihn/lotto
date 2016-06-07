@@ -1,0 +1,100 @@
+.about-mechanics {
+  margin-top: 120px;
+  font-family: "WeblySleek UI";
+  font-size: 1.5em;
+  background-color: #e6e6e6;
+  overflow: auto;
+}
+
+.about-mechanics__description {
+  h1 {
+    text-align: center;
+  }
+}
+
+.about-mechanics__description__short {
+    padding: 15px;
+    margin: 7.5px 0;
+    background-color: white;
+  p {
+    padding: 0 150px;
+    text-align: center;
+  }
+}
+
+.about-mechanics__description__full {
+    margin: 7.5px 0;
+    background-color: white;
+    p {
+      padding: 15px 150px;
+      transition: 2s;
+    }
+  .tabs {
+    height: 50px;
+    .tab {
+      display: inline-block;
+      width: 50%;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color ease 1s, box-shadow ease 1.5s;
+      span {
+        line-height: 2em;
+      }
+      &:hover {
+        background-color: #d5d5d5;
+      }
+    }
+    .active {
+      cursor: default;
+      background-color: #c4c4c4;
+      box-shadow: inset -10px -10px 10px -10px rgba(0, 0, 0, 0.2);
+      &:hover {
+        background-color: #c4c4c4; 
+      }
+    }
+  }
+}
+
+.about-mechanics__transactions {
+  margin: 7.5px 0;
+  width: 100%; 
+  background-color: white;
+  text-align: center;
+  display: inline-block;
+  .about-mechanics__ruled-paper {
+    display: inline-block;
+    margin: 0 auto;
+    padding: 20px;
+    width: 50%;
+    ul {
+      .plus {
+        list-style-image: url('/../../../../public/images/plusIcon.png');
+      }
+      li {
+        list-style: none;
+      }
+      padding: 0;
+      font-size: .8em;
+      .total {
+        margin-bottom: 10px;
+        list-style: none;
+        font-size: 1em;
+        font-weight: 900;
+      }
+      hr {
+        margin: 5px 0;
+      }
+    }
+  }
+}
+
+.about-mechanics__interactive-check {
+  margin: 7.5px 0;
+  background-color: white;
+  padding: 7.5px 0;
+  text-align: center;
+  .field {
+    width: 75%;
+    margin: 10px auto;
+  }
+}

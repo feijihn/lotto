@@ -34,7 +34,7 @@ const config = {
   output: {
     path: PATHS.build,
     filename: '[name].bundle.js',
-    publicPath: ''
+    publicPath: '/'
   },
   stats: {
     colors: true,
@@ -56,6 +56,10 @@ const config = {
         test: /\.jsx?$/,
         include: PATHS.app.admin,
         loaders: ['react-hot', 'babel']
+      },
+      {
+        test: /\.scss$/,
+        loaders: ['style', 'css', 'sass']
       }
     ]
   },

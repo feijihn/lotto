@@ -35,7 +35,7 @@ module.exports = function(app, passport) {
     //data.body = React.renderToString(component);
     //var html = _.template(template, data);
     //res.send(html);
-  //});
+  //}); 
   //// =====================================
   // LOGIN ===============================
   // =====================================
