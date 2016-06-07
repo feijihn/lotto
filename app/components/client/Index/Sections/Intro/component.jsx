@@ -5,8 +5,11 @@ import {connect} from 'react-redux';
 
 
 class IntroSection extends React.Component {
-  scrollToRounds = () => {
-    document.getElementById('rounds').scrollIntoView();
+  handlePlayClick = () => {
+    document.getElementById('rounds').scrollIntoView({behavior: 'smooth'});
+  }
+  handleMoreClick = () => {
+    document.getElementById('aboutUsSection').scrollIntoView({behavior: 'smooth'});
   }
   render() {
     return (
@@ -16,7 +19,7 @@ class IntroSection extends React.Component {
               <h1 key="introkofwijeo" dangerouslySetInnerHTML={this.props.state.content ? {__html: this.props.state.content.introSection.header} :{__html: ''}}></h1>
               <p key="reliabliewkhew" dangerouslySetInnerHTML={this.props.state.content ? {__html: this.props.state.content.introSection.text} : {__html: ''}}></p>
             </div>
-            <button className={'btn btn-lg btn-info'} onClick={this.scrollToRounds}><a href="#" id="playButton">Играть</a></button><br/>
+            <button className={'btn btn-lg btn-info'} onClick={this.handlePlayClick}><a href="#" id="playButton">Играть</a></button><br/>
             <div className={'col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 introTrust'}>
                  <span className={'col-lg-6 col-md-6 col-sm-6 handsIcon'}>
                     <img src="../../public/images/hands.png" width="32px" height="32px" />
@@ -24,7 +27,7 @@ class IntroSection extends React.Component {
                  </span>
                  <span className={'col-lg-6 col-md-6 col-sm-6 moreIcon'}>
                    <img src="../../public/images/more.png" width="32px" height="32px" />
-                   <a href="#"> прочитайте подробнее</a>
+                   <a onClick={this.handleMoreClick} href="javascript:void(0);"> прочитайте подробнее</a>
                  </span>
             </div>
         </div>
