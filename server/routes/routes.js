@@ -12,7 +12,7 @@ var path = require('path');
 var fs = require('fs');
 
 var multer  = require('multer');
-var upload = multer({ dest: './public/images' });
+var upload = multer({ dest: '../../public/images' });
 
 module.exports = function(app, passport) {
   // =====================================
@@ -126,8 +126,8 @@ module.exports = function(app, passport) {
   //});
   app.post('/submitproduct', isLoggedIn, isAdmin, upload.single('picture'), (req, res) => {
     let newProduct = new Product();
-    let imgPath = path.resolve(__dirname + '/../public/images/' + newProduct._id + '.jpg');
-    fs.renameSync(path.resolve(__dirname + '/' + '../' + req.file.path), imgPath);
+    let imgPath = path.resolve(__dirname + '../../public/images/' + newProduct._id + '.jpg');
+    fs.renameSync(path.resolve(__dirname + '../../' + req.file.path), imgPath);
     let relPath = path.resolve('../../../../../../public/images/' + newProduct._id + '.jpg');
     newProduct.name = req.body.name;
     newProduct.price = req.body.price;
