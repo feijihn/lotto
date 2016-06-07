@@ -134,11 +134,13 @@ class RoundPage extends React.Component {
     let roundPage;
     if (this.props.state.roundWaitingForWinner) {
       roundPage =
-        <div className={'roundPage row'}>
-        <div className={'roundContainer col-lg-10 col-lg-offset-1'}>
+        <div className={'round__page__wrapper'}>
+        <div className={'roundContainer col-lg-10 col-md-12 col-sm-12 col-lg-offset-1'}>
         <RoundLegend />
-        <div className={'ticketContainer col-lg-6'}>
-        {tickets}
+        <div className={'ticketContainer col-lg-6 col-md-6 col-sm-8'}>
+        <div className={'tickets__wrapper'}>
+          {tickets}
+        </div>
         <div className={'roundWaiting'}>
         </div>
         <h1>Выбираем победителя...</h1>
@@ -148,11 +150,13 @@ class RoundPage extends React.Component {
         </div>;
     } else if (this.props.state.roundFinished) {
       roundPage =
-        <div className={'roundPage row'}>
-        <div className={'roundContainer col-lg-10 col-lg-offset-1'}>
+        <div className={'round__page__wrapper'}>
+        <div className={'roundContainer col-lg-10 col-md-12 col-sm-12 col-lg-offset-1'}>
         <RoundLegend />
-        <div className={'ticketContainer col-lg-6 roundFinished'}>
-        {tickets}
+        <div className={'ticketContainer col-lg-6 col-md-6 col-sm-8'}>
+        <div className={'tickets__wrapper'}>
+          {tickets}
+        </div>
         <div className={'roundWaiting'}>
         </div>
         <h1>Раунд завершен! Выйграл билет №{this.props.state.winner}</h1>
@@ -162,11 +166,15 @@ class RoundPage extends React.Component {
         </div>;
     } else {
       roundPage =
-        <div className={'roundPage row'}>
-        <div className={'roundContainer col-lg-10 col-lg-offset-1'}>
+        <div className={'round__page__wrapper'}>
+        <div className={'roundContainer col-lg-10 col-md-12 col-sm-12 col-lg-offset-1'}>
         <RoundLegend />
-        <div className={'ticketContainer col-lg-6'}>
-        {tickets}
+        <div className={'ticketContainer col-lg-6 col-md-6 col-sm-8'}>
+        <div className={'tickets__wrapper'}>
+          <div className={'tickets__wrapper'}>
+            {tickets}
+          </div>
+        </div>
         </div>
         <RoundCheck />
         </div>
@@ -175,7 +183,9 @@ class RoundPage extends React.Component {
     return (
       <div>
         <RoundInfo prodId={this.props.params.productId}/>
-        {roundPage}
+        <div className={'roundPage row'}>
+          {roundPage}
+        </div>
       </div>
     );
   }

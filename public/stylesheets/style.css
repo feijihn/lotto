@@ -92,8 +92,15 @@ a:visited {
 
 .ticketContainer {
   height: 100%;
+  min-width: 500px;
   position: relative;
   display: inline-block;
+  text-align: center;
+}
+
+.tickets__wrapper {
+  display:inline-block;
+  width:500px;
 }
 
 .ticket {
@@ -235,7 +242,7 @@ a:visited {
   font-family: "WeblySleek UI";
   color: rgba(255,255,255,1);
   white-space: pre-wrap;
-  margin-top: 15%;
+  margin-top: 100px;
 }
 
 .caption p {

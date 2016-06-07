@@ -42,7 +42,7 @@ export default class RoundCheck extends React.Component {
       />
     ];
     return (
-      <div className={'roundCheque col-lg-3 col-md-2 hidden-sm'}>
+      <div className={'roundCheque col-lg-3 col-md-3'}>
         <h1>
           Вы выбрали <br/> <span> {this.props.state.markedTickets.length}</span> <br/> билетов <br/>
         </h1>
