@@ -12,7 +12,7 @@ var path = require('path');
 var fs = require('fs');
 
 var multer  = require('multer');
-var upload = multer({ dest: '../../public/images' });
+var upload = multer({ dest: './public/images' });
 
 module.exports = function(app, passport) {
   // =====================================
