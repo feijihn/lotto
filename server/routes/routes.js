@@ -41,22 +41,22 @@ module.exports = function(app, passport) {
   // =====================================
   // show the login form
   app.get('/vendor.bundle.js', (req, res) => {
-    res.sendFile(path.resolve(__dirname + '/../public/build/vendor.bundle.js'));
+    res.sendFile(path.resolve(__dirname + '/../../public/build/vendor.bundle.js'));
   })
   app.get('/client.bundle.js', (req, res) => {
-    res.sendFile(path.resolve(__dirname + '/../public/build/client.bundle.js'));
+    res.sendFile(path.resolve(__dirname + '/../../public/build/client.bundle.js'));
   })
   app.get('/admin.bundle.js', (req, res) => {
-    res.sendFile(path.resolve( __dirname + '/../public/build/admin.bundle.js'));
+    res.sendFile(path.resolve( __dirname + '/../../public/build/admin.bundle.js'));
   })
   app.get('/vendor.bundle.js.map', (req, res) => {
-    res.sendFile(path.resolve( __dirname + '/../public/build/vendor.bundle.js.map'));
+    res.sendFile(path.resolve( __dirname + '/../../public/build/vendor.bundle.js.map'));
   })
   app.get('/client.bundle.js.map', (req, res) => {
-    res.sendFile(path.resolve( __dirname + '/../public/build/client.bundle.js.map'));
+    res.sendFile(path.resolve( __dirname + '/../../public/build/client.bundle.js.map'));
   })
   app.get('/admin.bundle.js.map', (req, res) => {
-    res.sendFile(path.resolve( __dirname + '/../public/build/admin.bundle.js.map'));
+    res.sendFile(path.resolve( __dirname + '/../../public/build/admin.bundle.js.map'));
   })
   // process the login form
   app.post('/login', passport.authenticate('local-login', {

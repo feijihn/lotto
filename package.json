@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "export NODE_ENV='production' & node app",
+    "start": "export NODE_ENV='production' & node server/app",
     "start-dev": "export NODE_ENV='development' PORT='3000' && node server/app",
     "build": "webpack -p --config ./config/webpack.prod.config.js --progress"
   },
