@@ -17,17 +17,15 @@ class IntroSection extends React.Component {
               <p key="reliabliewkhew" dangerouslySetInnerHTML={this.props.state.content ? {__html: this.props.state.content.introSection.text} : {__html: ''}}></p>
             </div>
             <button className={'btn btn-lg btn-info'} onClick={this.scrollToRounds}><a href="#" id="playButton">Играть</a></button><br/>
-            <div className={'row'}>
-              <span className={'introTrust'}>
-                 <span className={'col-lg-6 handsIcon'}>
+            <div className={'col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 introTrust'}>
+                 <span className={'col-lg-6 col-md-6 col-sm-6 handsIcon'}>
                     <img src="../../public/images/hands.png" width="32px" height="32px" />
                     Честно и надежно
                  </span>
-                 <span className={'col-lg-6 moreIcon'}>
+                 <span className={'col-lg-6 col-md-6 col-sm-6 moreIcon'}>
                    <img src="../../public/images/more.png" width="32px" height="32px" />
                    <a href="#"> прочитайте подробнее</a>
                  </span>
-              </span>
             </div>
         </div>
       </div>

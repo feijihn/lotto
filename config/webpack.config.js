@@ -4,12 +4,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const PATHS = {
   app: {
-    client: path.resolve(__dirname, './app'),
-    admin: path.resolve(__dirname, './app/admin')
+    client: path.resolve(__dirname, '../app'),
+    admin: path.resolve(__dirname, '../admin-app')
   },
-  styles: path.resolve(__dirname, './public/stylesheets'),
-  build: path.resolve(__dirname, './public/build'),
-  public: path.resolve(__dirname, './public')
+  styles: path.resolve(__dirname, '../public/stylesheets'),
+  build: path.resolve(__dirname, '../public/build'),
+  public: path.resolve(__dirname, '../public')
 };
 
 const plugins = [
@@ -22,11 +22,7 @@ const plugins = [
     'process.env.NODE_ENV': JSON.stringify('development'),
     __DEV__: JSON.stringify(JSON.parse(process.env.DEBUG || 'false'))
   }),
-  new webpack.optimize.OccurenceOrderPlugin(),
-  new HtmlWebpackPlugin({
-    title: 'lotalot',
-    filename: './public/index.html'
-  })
+  new webpack.optimize.OccurenceOrderPlugin()
 ];
 
 const config = {
@@ -54,6 +50,11 @@ const config = {
       {
         test: /\.jsx?$/,
         include: PATHS.app.client,
+        loaders: ['react-hot', 'babel']
+      },
+      {
+        test: /\.jsx?$/,
+        include: PATHS.app.admin,
         loaders: ['react-hot', 'babel']
       }
     ]

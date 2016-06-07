@@ -7,7 +7,7 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var VKontakteStrategy = require('passport-vkontakte').Strategy;
 
 // load up the user model
-var User = require('../models/user');
+var User = require('../server/models/user');
 var configAuth = require('./auth');
 
 // expose this function to our app using module.exports

@@ -164,8 +164,6 @@ a:visited {
 
 .introTrust {
   margin-top: 35px;
-  display: inline-block;
-  width: 45%;
 }
 
 .introTrust img {
@@ -206,6 +204,7 @@ a:visited {
 
 .aboutUsImage {
   width: 100%;
+  margin-top: 10%;
 }
 
 .trustIcon {
@@ -386,16 +385,9 @@ a:visited {
 }
 
 .product {
-  display: inline-block;
-  border-radius: 50%;
   width: 200px;
-  height: 200px;
-  height: 200px;
-  margin: 2%;
-  background-color: white;
-  cursor: pointer;
-  border: 3px solid rgba(61,86,165,0.6);
-  box-shadow: 0 0 5px #DDDBF1;
+  margin: 0 auto;
+  background-color: transparent;
 }
 
 .product div :hover {
@@ -403,9 +395,11 @@ a:visited {
 }
 
 .product img {
-  width: 100%;
-  height: 100%;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
+  border: 3px solid rgba(61,86,165,0.6);
+  box-shadow: 0 0 5px #DDDBF1;
 }
 
 .product a {
@@ -578,8 +572,8 @@ a:visited {
 }
 
 #round__steps {
-  height: 300px;
   background-color: #ecf0f1;
+  padding-bottom: 50px;
 }
 
 .round__info {
@@ -636,7 +630,6 @@ a:visited {
 }
 
 .footer {
-  height: 450px;
   width: 100%;
   background-color: #2c3e50;
   font-family: "WeblySleek UI";
@@ -669,8 +662,10 @@ a:visited {
 
 .footerEnd {
   border-top: 1px solid rgba(110,127,156,0.5);
-  padding: 40px 0;
+  padding: 40px 20px;
   background-color: #2c3e50;
+  display:inline-block;
+  width: 100%;
 }
 
 .copyright {

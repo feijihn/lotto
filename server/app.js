@@ -15,20 +15,20 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var fileUpload = require('express-fileupload');
 
-var configDB = require('./config/database.js');
+var configDB = require('../config/database.js');
 
 
 // configuration ===============================================================
 mongoose.connect(configDB.url); // connect to our database
 
-require('./config/passport')(passport); // pass passport for configuration
+require('../config/passport')(passport); // pass passport for configuration
 // require('./webpack.dev.js')(app);
 (function() {
   console.log(process.env.NODE_ENV);
   if (process.env.NODE_ENV === 'development') {
     console.log('running webpack middleware...');
     var webpack = require('webpack');
-    var webpackConfig = require('./webpack.config.js');
+    var webpackConfig = require('../config/webpack.config.js');
     var compiler = webpack(webpackConfig);
 
     app.use(require("webpack-dev-middleware")(compiler, {
