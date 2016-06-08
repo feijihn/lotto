@@ -13,11 +13,11 @@ class Transactions extends React.Component {
     this.setState({
       expanded: !this.state.expanded
     });
+    this.props.transactionsExpandToggle(this.state.expanded);
   }
   render() {
     let total = 0;
     let transactions = this.props.state.transactions.map(transaction => {
-      total = total + transaction;
       let transactionString = String(transaction);
       if(transactionString.length < 9) {
         let addition = '';
@@ -30,6 +30,8 @@ class Transactions extends React.Component {
       } else {
         transactionString = transactionString.substr(0, transactionString.length - 8) + '.' + transactionString.substr(transactionString.length - 8, transactionString.length) + ' BTC';
       }
+      console.log(transactionString.substr(0, transactionString.length - 3));
+      total = total + Number(transactionString.substr(0, transactionString.length - 3));
       return (
         <li>
           {transactionString}
@@ -37,42 +39,68 @@ class Transactions extends React.Component {
       );
     });
     let transactionList;
-    let totalLi = <li className={'total'} >{ String(total).substr(0, String(total).length - 9) + '.' + String(total).substr(String(total).length - 9, String(total).length) + ' BTC'}</li>;
+    let decoration = 
+        <div className={'ruled-paper__decoration'}>
+          <div className={'vertical-ruler'}>
+          </div>
+          <div className={'vertical-ruler ruler-2'}>
+          </div>
+          <div className={'ruled-paper__dot dot__0'}>
+          </div>
+          <div className={'ruled-paper__dot dot__1'}>
+          </div>
+          <div className={'ruled-paper__dot dot__2'}>
+          </div>
+          <div className={'ruled-paper__dot dot__3'}>
+          </div>
+          <img className={'plus'} src="public/images/plusIcon.png" />
+        </div>;
+    let totalLi = <li className={'total'} >{ total.toPrecision(9) + ' BTC'}</li>;
     if (this.state.expanded) {
       transactionList = 
-        <ul>
-          {transactions}
-          {totalLi}
-          <li className={'expand__transactions'} onClick={this.handleExpandClick}><img src="public/images/collapse.png"/></li>
-        </ul>
+        <div className={'about-mechanics__ruled-paper'} style={this.props.state.dateChecking ? {display: 'none'} : {display: 'block'}}>
+            {decoration}
+            <ul>
+              {transactions}
+              {totalLi}
+              <li className={'expand__transactions'} onClick={this.handleExpandClick}><img src="public/images/collapse.png"/></li>
+            </ul>
+        </div>
     } else {
       transactionList = 
-        <ul>
-            {transactions[0]}
-            {transactions[1]}
-            {transactions[2]}
-            {transactions[3]}
-            {transactions[4]}
-            {transactions[5]}
-            <li className={'expand__transactions'} onClick={this.handleExpandClick}><img src="public/images/more.png"/></li>
-            {transactions[transactions.length - 5]}
-            {transactions[transactions.length - 4]}
-            {transactions[transactions.length - 3]}
-            {transactions[transactions.length - 2]}
-            {transactions[transactions.length - 1]}
-            {totalLi}
-        </ul>
+        <div className={'about-mechanics__ruled-paper__cutoff'}>
+          <div className={'about-mechanics__ruled-paper ruled-paper__cut-bottom'}>
+            {decoration}
+            <ul>
+              {transactions[0]}
+              {transactions[1]}
+              {transactions[2]}
+              {transactions[3]}
+              {transactions[4]}
+              {transactions[5]}
+            </ul>
+          </div>
+          <div className={'ruled-paper__expand'} onTouchTap={this.handleExpandClick}>
+            <span>Развернуть</span>
+          </div>
+          <div className={'about-mechanics__ruled-paper ruled-paper__cut-top'}>
+            {decoration}
+            <ul>
+              {transactions[transactions.length - 5]}
+              {transactions[transactions.length - 4]}
+              {transactions[transactions.length - 3]}
+              {transactions[transactions.length - 2]}
+              {transactions[transactions.length - 1]}
+              {totalLi}
+            </ul>
+          </div>
+        </div>;
     }
 
     return (
-      <div className={'about-mechanics__transactions col-lg-6 col-md-6 col-sm-6'}>
+      <div className={this.props.state.transactionsExpandState ? 'about-mechanics__transactions col-lg-8 col-md-8 col-sm-8 col-lg-offset-2 col-md-offset-2 col-sm-offset-2' : 'col-lg-6 clo-md-6 col-sm-12 about-mechanics__transactions'}>
         <img className={'about-mechanics__ajax-spinner'} src="public/images/gears.svg" style={this.props.state.dateChecking ? {display: 'block'} : {display: 'none'}}/>
-        <div className={'about-mechanics__ruled-paper'} style={this.props.state.dateChecking ? {display: 'none'} : {display: 'block'}}>
-          <div className={'vertical-ruler'}>
-          </div>
-          <img className={'plus'} src="public/images/plusIcon.png" />
-            {transactionList}
-        </div>
+        {transactionList}
       </div>
     );
   }

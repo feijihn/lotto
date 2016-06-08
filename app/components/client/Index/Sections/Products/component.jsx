@@ -21,7 +21,7 @@ class Products extends React.Component {
       );
     });
     return (
-      <div className={'productsSection row'} id="rounds">
+      <div className={'products__section col-lg-12 col-md-12 col-sm-12 section'} id="rounds">
         <h1 className={'section__title__black text-center'}>Лоты</h1>
         {products}
       </div>

@@ -44,6 +44,7 @@ export const initialState = {
   roundHistory: [],
   roundFinished: false,
   roundWaitingForWinner: false,
+  transactionsExpandState: false,
   winner: -1,
   numberTicketsMarked: 0,
   viewingTickets: new Array(100 + 1).join('0').split('').map(parseFloat)
@@ -188,6 +189,11 @@ function App(state = initialState, action) {
         dateChecking: true,
         transactions: []
       });
+    case 'TRANSACTIONS_EXPAND_TOGGLE' : {
+      return Object.assign({}, state, {
+        transactionsExpandState: action.flag
+      })
+    }
     default:
       return state;
   }

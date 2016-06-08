@@ -74,6 +74,10 @@ const config = {
         test: /\.jsx?$/,
         include: PATHS.app.admin,
         loaders: ['babel']
+      },
+      {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract('style-loader', ['css-loader', 'postcss-loader', 'sass-loader'])
       }
     ]
   },

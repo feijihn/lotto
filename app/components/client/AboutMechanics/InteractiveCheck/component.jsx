@@ -48,7 +48,7 @@ class InteractiveCheck extends React.Component {
   };
   render() {
     return(
-      <div className={'about-mechanics__interactive-check col-lg-6 col-md-6 col-sm-6'}>
+      <div className={'about-mechanics__interactive-check col-lg-6 col-md-6 col-sm-6'} style={this.props.state.transactionsExpandState ? {display: 'none'} : {display: 'block'}}>
         <div className={'about-mechanics__check-fields'}>
           <h3>Выберите дату и время</h3>
           <DateTimeField 
