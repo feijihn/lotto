@@ -74,6 +74,10 @@ const config = {
         test: /\.jsx?$/,
         include: PATHS.app.admin,
         loaders: ['babel']
+      },
+      {
+        test: /\.scss$/,
+        loaders: ['style', 'css', 'sass']
       }
     ]
   },
