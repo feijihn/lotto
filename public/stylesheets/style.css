@@ -154,7 +154,7 @@ a:visited {
 }
 
 .aboutUsSection .btn-primary:hover {
-  background-color: #5B94C5;
+  background-color: #5b94c5;
 }
 
 .introContent {
@@ -694,6 +694,12 @@ a:visited {
   font-family: "WeblySleek UI";
   font-weight: 100;
   src: local("☺︎"), url("../fonts/ws-ui-light.woff") format("woff");
+}
+
+@font-face {
+  font-family: "BeautyScript";
+  font-weight: 100;
+  src: local("☺︎"), url("../fonts/DiscoverBeauty.ttf") format("truetype");
 }
 
 @font-face {

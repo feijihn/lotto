@@ -18,55 +18,103 @@ function convertTime(UNIX_timestamp) {
   let time = hour + ':' + min + ':' + sec + ' ' + date + '/' + month + '/' + year;
   return time;
 }
-
-var chooseWinner = function() {
-  let dateNeeded = Date.now();
+var chooseWinner = function(date, isCheck) {
+  let interval = 60 * 1000;
+  if(String(date).length === 13) {
+    console.log('[BLOCKCHAIN] got date in milliseconds... converting...');
+    date = Math.floor(date / 1000);
+  }
+  let fetchDate = date * 1000;
+  if (isCheck) {
+    var values = [];
+    interval = 5 * 1000;
+    fetchDate = fetchDate + 3600000;
+    console.log('[BLOCKCHAIN] Checking blockchain on date: ' + fetchDate + '...');
+  }
   return new Promise(function(resolve, reject) {
     let handle = setInterval(() => {
-      request('https://blockchain.info/blocks/' + (Date.now()) + '?format=json', (err, response, body) => {
+      request('https://blockchain.info/blocks/' + fetchDate + '?format=json', (err, response, body) => {
         try {
           let winner = 0;
           let blocks = JSON.parse(response.body).blocks;
-          let lastBlock = blocks[0];
-          console.log('round ended at ' + convertTime(dateNeeded) + ' and got last block at ' + convertTime(lastBlock.time * 1000));
-          if (dateNeeded <= lastBlock.time * 1000) {
+          let lastBlock;
+          if (isCheck) {
+            console.log(blocks.length);
+            for(let i = 0; i < blocks.length; i++) {
+              if(blocks[i].time >= date) {
+                lastBlock = blocks[i];
+                break;
+              }
+            }
+          } else {
+            lastBlock = blocks[0];
+          }
+          if(!lastBlock) {
+            throw(new Error('Last block is undefined probably because no blocks were recieved.'))
+          }
+          console.log('[BLOCKCHAIN] Checking at ' + convertTime(date * 1000) + ' and got last block at ' + convertTime(lastBlock.time * 1000) + '...');
+          if (date <= lastBlock.time) {
             request('https://blockchain.info/rawblock/' + lastBlock.hash, (err, response, body) => {
               try {
                 let rawLastBlock = JSON.parse(response.body);
                 rawLastBlock.tx.forEach((transaction, i) => {
-                  console.log(transaction.time * 1000 + '===' + dateNeeded);
-                  if (transaction.time * 1000 >= dateNeeded && transaction.time * 1000 <= dateNeeded + 300 * 1000) {
-                    console.log('got transactions in needed interval...');
+                  //console.log(transaction.time + '===' + date);
+                  if (transaction.time >= date && transaction.time <= date + 60) {
+                    //console.log('[BLOCKCHAIN] Got transactions in needed interval...');
                     let value = 0;
                     transaction.inputs.forEach(input => {
                       if (input.prev_out) {
                         value += input.prev_out.value;
+                      if (isCheck) {
+                        values.push(input.prev_out.value);
+                      }
                       }
                     });
                     if (value !== 0) {
-                      value = value.toString();
-                      winner += Number(value.slice(4, 6));
+                      let valueString = String(value);
+                      if(valueString.length < 9) {
+                        let addition = '';
+                        if (8 - valueString.length) {
+                          addition = '0'.repeat(8 - valueString.length);
+                        }
+                        valueString = '0.' + valueString + addition + ' BTC';
+                      } else if (valueString.length === 9 ) {
+                        valueString = valueString[0] + '.' + valueString.substr(1) + ' BTC';
+                      } else {
+                        valueString = valueString.substr(0, valueString.length - 8) + '.' + valueString.substr(valueString.length - 8, valueString.length) + ' BTC';
+                      }
+                      winner += Number(value);
                     }
                     if (i === rawLastBlock.tx.length - 1) {
-                      resolve([Number(winner % 100), handle]);
+                      if (isCheck) {
+                        resolve([String(winner).substr(-5, 2), values, handle]);
+                      } else {
+                        resolve([String(winner).substr(-5, 2), handle]);
+                      }
                     }
                   } else {
-                    console.log('skipping transactions not in needed time interval...');
+                    //console.log('skipping transactions not in needed time interval...');
                     if (i === rawLastBlock.tx.length - 1) {
-                      resolve([Number(winner % 100), handle]);
+                      if (isCheck) {
+                        resolve([String(winner).substr(-5, 2), values, handle]);
+                      } else {
+                        resolve([String(winner).substr(-5, 2), handle]);
+                      }
                     }
                   }
                 });
               } catch (e) {
-                console.log('something went wrong when working with RAW block....\n  ERR: ' + e);
+                console.log('[BLOCKCHAIN] Something went wrong when working with RAW block....\n  ERR: ' + e + '\nStack:' + e.stack);
+                clearInterval(handle);
               }
             });
           }
         } catch (err) {
-          console.log('something went wrong when working with blocks....\n  ERR: ' + err);
+          console.log('[BLOCKCHAIN] Something went wrong when working with blocks....\n  ERR: ' + err + '\nStack:' + err.stack);
+          clearInterval(handle);
         }
       });
-    }, 60 * 1000);
+    }, interval);
   });
 };
 
@@ -95,11 +143,12 @@ function checkRoundEnd(rndId) {
       console.log('checking if round ' + round._id + ' ended...');
       console.log('round has ' + round.tickets.length + ' tickets');
       if (round.tickets.length >= 100) {
-        Round.findByIdAndUpdate(rndId, {$set: {endTime: Date.now()}}, err => {
+        let end = Date.now();
+        Round.findByIdAndUpdate(rndId, {$set: {endTime: end}}, err => {
           if (err) {
             throw err;
           }
-          chooseWinner().then(
+          chooseWinner(end).then(
             result => {
               let winnum = result[0];
               let handle = result[1];
@@ -286,3 +335,7 @@ module.exports.addParticipant = (rndId, userId) => {
 module.exports.checkRoundEnd = rndId => {
   checkRoundEnd(rndId);
 };
+
+module.exports.checkDate = date => {
+  return chooseWinner(date, true);
+}

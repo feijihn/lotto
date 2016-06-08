@@ -19,6 +19,24 @@ export const initialState = {
   loggedIn: false,
   products: [],
   round: [],
+  dateChecking: false,
+  transactions: [
+    2399123,
+    1234822,
+    299993,
+    327484,
+    1284872,
+    71263,
+    44123452,
+    12312123,
+    123949,
+    1231212,
+    244881,
+    123231,
+    21368089,
+    123689,
+    12389000
+  ],
   product: [{}],
   viewingRound: {},
   markedTickets: [],
@@ -159,6 +177,16 @@ function App(state = initialState, action) {
       }
       return Object.assign({}, state, {
         roundHistory: archive
+      });
+    case 'DATE_CHECKED' :
+      return Object.assign({}, state, {
+        transactions: action.data,
+        dateChecking: false
+      });
+    case 'DATE_CHECKING' :
+      return Object.assign({}, state, {
+        dateChecking: true,
+        transactions: []
       });
     default:
       return state;

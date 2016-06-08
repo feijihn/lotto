@@ -35,7 +35,7 @@ module.exports = function(app, passport) {
     //data.body = React.renderToString(component);
     //var html = _.template(template, data);
     //res.send(html);
-  //});
+  //}); 
   //// =====================================
   // LOGIN ===============================
   // =====================================
@@ -108,6 +108,15 @@ module.exports = function(app, passport) {
     res.render('admin-panel.pug');
   });
   app.post('/uploadimage', (req, res) => {
+  });
+  app.post('/checkdate', (req, res) => {
+    roundLogic.checkDate(Number(req.body.date))
+    .then(
+      result => {
+        clearInterval(result[2]);
+        res.send(result);
+      }
+    )
   });
   app.post('/removeproduct', isLoggedIn, isAdmin, (req, res) => {
     Product.remove({_id: req.body.productId}, (err, status) => {

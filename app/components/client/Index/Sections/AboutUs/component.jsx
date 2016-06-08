@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 
 import {connect} from 'react-redux';
 
@@ -11,7 +12,7 @@ class AboutUs extends React.Component {
               <h1 dangerouslySetInnerHTML={this.props.state.content ? {__html: this.props.state.content.reliabilitySection.header} :{__html: ''}}></h1>
               <p dangerouslySetInnerHTML={this.props.state.content ? {__html: this.props.state.content.reliabilitySection.text} :{__html: ''}}></p>
             </div>
-             <button type="button" className={'btn btn-primary btn-lg securityButton'}><a href="#">Подробнее</a></button>
+             <Link to="/mechanics"><button type="button" className={'btn btn-primary btn-lg securityButton'}>Подробнее</button></Link>
         </div>
         <div className={'col-lg-3 col-md-4 col-sm-4'}>
           <img className={'aboutUsImage'} src="../../public/images/flatlock.png"/>

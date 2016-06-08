@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as Actions from '../../../../actions/actions.js';
 
-export default class RoundCheck extends React.Component {
+class RoundCheck extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,6 +22,9 @@ export default class RoundCheck extends React.Component {
         open: true
       });
     }
+  }
+  handleSnackBarClick = () => {
+    //this.props.openHeaderMenu();
   }
   togglePaymentForm = () => {
     this.setState({
@@ -64,8 +67,10 @@ export default class RoundCheck extends React.Component {
         <Snackbar
           className={'snackbar'}
           open={this.state.open}
-          message="Для покупки билетов войдите или зарегистрируйтесь"
+          message="Авторизуйтесь для покупки билетов"
           autoHideDuration={4000}
+          action={"Вход"}
+          onActionTouchTap={this.handleSnackBarClick}
           onRequestClose={this.handleRequestClose}
         />
         <Dialog

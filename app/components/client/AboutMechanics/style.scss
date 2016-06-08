@@ -1,0 +1,147 @@
+.about-mechanics {
+  margin-top: 120px;
+  font-family: "WeblySleek UI";
+  font-size: 1.5em;
+  background-color: #222222;
+  overflow: auto;
+  .block {
+    background-color: #303030;
+    color: white;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, .05);
+  }
+}
+
+.about-mechanics__description {
+  h1 {
+    text-align: center;
+  }
+}
+
+.about-mechanics__description__short {
+    padding: 15px;
+    margin: 7.5px 0;
+    background-color: #464545;
+  p {
+    padding: 0 150px;
+    text-align: center;
+  }
+}
+
+.about-mechanics__description__full {
+    margin: 7.5px 0;
+    background-color: #464545;
+    p {
+      padding: 15px 150px;
+      transition: 2s;
+    }
+  .tabs {
+    height: 50px;
+    .tab {
+      display: inline-block;
+      width: 50%;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color ease 1s, box-shadow ease 1.5s;
+      span {
+        line-height: 2em;
+      }
+      &:hover {
+        background-color: #d5d5d5;
+      }
+    }
+    .active {
+      cursor: default;
+      background-color: #c4c4c4;
+      &:hover {
+        background-color: #c4c4c4; 
+      }
+    }
+  }
+}
+
+.about-mechanics__transactions {
+  margin: 7.5px 0;
+  width: 50%; 
+  text-align: center;
+  display: inline-block;
+  .about-mechanics__ruled-paper {
+    display: inline-block;
+    margin: 0 auto;
+    width: 85%;
+    background-color: #fdff8f;
+    color: black;
+    border-radius: 3px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    .expand__transactions {
+      &:hover {
+        background-color: rgba(0, 0, 0, .1);
+        cursor: pointer;
+      }
+    }
+    .plus {
+      position: absolute;
+      left: 110px;
+      top: 30px;
+    }
+    .vertical-ruler {
+      width: 1px;
+      background-color: rgb(254, 177, 105);
+      height: 100%;
+      margin-top: -20px;
+      margin-left: 20px;
+      position: absolute;
+    }
+    ul {
+      .plus {
+        list-style-image: url('/../../../../public/images/plusIcon.png');
+      }
+      li {
+        list-style: none;
+        border-bottom: 1px solid rgb(225, 231, 143);
+      }
+      padding: 0;
+      font-size: .8em;
+      .total {
+        margin-bottom: 10px;
+        list-style: none;
+        font-size: 1em;
+        font-weight: 900;
+      }
+      hr {
+        margin: 5px 0;
+      }
+    }
+  }
+}
+
+.about-mechanics__interactive-check {
+  margin: 7.5px 0;
+  padding: 7.5px 0;
+  text-align: center;
+  display: inline-block;
+  width: 50%;
+  .about-mechanics__check-fields {
+    position: relative;
+    .bootstrap-datetimepicker-widget {
+      color: black;
+      position: fixed !important;
+    }
+    .input-group {
+      width: 75%;
+      margin: 10px auto;
+    }
+    .field {
+      width: 75%;
+      margin: 10px auto;
+    }
+  }
+}
+
+.about-mechanics__ajax-spinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, 10%);
+}
