@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as Actions from '../../../../actions/actions.js';
 
-export default class RoundCheck extends React.Component {
+class RoundCheck extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

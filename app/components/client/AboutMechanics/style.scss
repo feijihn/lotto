@@ -2,8 +2,14 @@
   margin-top: 120px;
   font-family: "WeblySleek UI";
   font-size: 1.5em;
-  background-color: #e6e6e6;
+  background-color: #222222;
   overflow: auto;
+  .block {
+    background-color: #303030;
+    color: white;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, .05);
+  }
 }
 
 .about-mechanics__description {
@@ -15,7 +21,7 @@
 .about-mechanics__description__short {
     padding: 15px;
     margin: 7.5px 0;
-    background-color: white;
+    background-color: #464545;
   p {
     padding: 0 150px;
     text-align: center;
@@ -24,7 +30,7 @@
 
 .about-mechanics__description__full {
     margin: 7.5px 0;
-    background-color: white;
+    background-color: #464545;
     p {
       padding: 15px 150px;
       transition: 2s;
@@ -47,7 +53,6 @@
     .active {
       cursor: default;
       background-color: #c4c4c4;
-      box-shadow: inset -10px -10px 10px -10px rgba(0, 0, 0, 0.2);
       &:hover {
         background-color: #c4c4c4; 
       }
@@ -57,21 +62,44 @@
 
 .about-mechanics__transactions {
   margin: 7.5px 0;
-  width: 100%; 
-  background-color: white;
+  width: 50%; 
   text-align: center;
   display: inline-block;
   .about-mechanics__ruled-paper {
     display: inline-block;
     margin: 0 auto;
-    padding: 20px;
-    width: 50%;
+    width: 85%;
+    background-color: #fdff8f;
+    color: black;
+    border-radius: 3px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    .expand__transactions {
+      &:hover {
+        background-color: rgba(0, 0, 0, .1);
+        cursor: pointer;
+      }
+    }
+    .plus {
+      position: absolute;
+      left: 110px;
+      top: 30px;
+    }
+    .vertical-ruler {
+      width: 1px;
+      background-color: rgb(254, 177, 105);
+      height: 100%;
+      margin-top: -20px;
+      margin-left: 20px;
+      position: absolute;
+    }
     ul {
       .plus {
         list-style-image: url('/../../../../public/images/plusIcon.png');
       }
       li {
         list-style: none;
+        border-bottom: 1px solid rgb(225, 231, 143);
       }
       padding: 0;
       font-size: .8em;
@@ -90,11 +118,30 @@
 
 .about-mechanics__interactive-check {
   margin: 7.5px 0;
-  background-color: white;
   padding: 7.5px 0;
   text-align: center;
-  .field {
-    width: 75%;
-    margin: 10px auto;
+  display: inline-block;
+  width: 50%;
+  .about-mechanics__check-fields {
+    position: relative;
+    .bootstrap-datetimepicker-widget {
+      color: black;
+      position: fixed !important;
+    }
+    .input-group {
+      width: 75%;
+      margin: 10px auto;
+    }
+    .field {
+      width: 75%;
+      margin: 10px auto;
+    }
   }
+}
+
+.about-mechanics__ajax-spinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, 10%);
 }

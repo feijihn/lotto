@@ -45,6 +45,7 @@
     "pug": "^2.0.0-alpha1",
     "react": "^15.0.1",
     "react-bootstrap": "^0.28.3",
+    "react-datetime": "^2.2.1",
     "react-dom": "^15.0.1",
     "react-router-component": "^0.32.0",
     "react-tap-event-plugin": "^1.0.0",

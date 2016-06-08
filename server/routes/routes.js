@@ -109,6 +109,15 @@ module.exports = function(app, passport) {
   });
   app.post('/uploadimage', (req, res) => {
   });
+  app.post('/checkdate', (req, res) => {
+    roundLogic.checkDate(Number(req.body.date))
+    .then(
+      result => {
+        clearInterval(result[2]);
+        res.send(result);
+      }
+    )
+  });
   app.post('/removeproduct', isLoggedIn, isAdmin, (req, res) => {
     Product.remove({_id: req.body.productId}, (err, status) => {
       if (err) {

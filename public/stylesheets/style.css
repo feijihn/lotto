@@ -697,6 +697,12 @@ a:visited {
 }
 
 @font-face {
+  font-family: "BeautyScript";
+  font-weight: 100;
+  src: local("☺︎"), url("../fonts/DiscoverBeauty.ttf") format("truetype");
+}
+
+@font-face {
   font-family: "Flagship Slab";
   font-weight: 100;
   src: local("☺︎"), url("../fonts/FlagshipSlabRegular.otf") format("opentype");
