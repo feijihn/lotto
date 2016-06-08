@@ -8,10 +8,14 @@ var scrollIntoView = require('scroll-into-view');
 
 class IntroSection extends React.Component {
   handlePlayClick = () => {
-    scrollIntoView(document.getElementById('rounds'),{time: 1000});
+    $('html, body').animate({
+        scrollTop: $("#rounds").offset().top
+    }, 750);
   }
   handleMoreClick = () => {
-    scrollIntoView(document.getElementById('aboutUsSection'),{time: 1000});
+    $('html, body').animate({
+        scrollTop: $("#aboutUsSection").offset().top
+    }, 750);
   }
   render() {
     return (
