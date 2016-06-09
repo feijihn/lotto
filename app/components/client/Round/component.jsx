@@ -11,6 +11,8 @@ import Ticket from './Ticket/component.jsx';
 
 import {FlatButton, Dialog, List, ListItem} from 'material-ui';
 
+require('./style.scss');
+
 class RoundPage extends React.Component {
   constructor(props) {
     super(props);
@@ -30,7 +32,7 @@ class RoundPage extends React.Component {
       this.props.fetchRounds(this.props.params.productId);
       let handle = setInterval(() => {
         this.props.fetchTickets(this.props.state.round._id);
-      }, 5000);
+      }, 10000);
       this.setState({
         fetchTicketsHandle: handle
       });
@@ -53,12 +55,12 @@ class RoundPage extends React.Component {
       if (i === this.props.state.winner) {
         return (
           <Ticket
-          lg={2}
-          md={1}
-          sm={1}
-          bgImage={'../../public/images/ballAmber.png'}
-          id={i}
-          key={i}
+            lg={2}
+            md={1}
+            sm={1}
+            bgImage={'../../public/images/ballAmber.png'}
+            id={i}
+            key={i}
           >
           </Ticket>
         );
@@ -134,19 +136,15 @@ class RoundPage extends React.Component {
     let roundPage;
     if (this.props.state.roundWaitingForWinner) {
       roundPage =
-        <div className={'round__page__wrapper'}>
-        <div className={'roundContainer col-lg-10 col-md-12 col-sm-12 col-lg-offset-1'}>
-        <RoundLegend />
-        <div className={'ticketContainer col-lg-6 col-md-6 col-sm-8'}>
-        <div className={'tickets__wrapper'}>
-          {tickets}
-        </div>
-        <div className={'roundWaiting'}>
-        </div>
-        <h1>Выбираем победителя...</h1>
-        </div>
-        <RoundCheck />
-        </div>
+        <div className={'roundpage col-lg-10 col-md-12 col-sm-12 col-lg-offset-1'}>
+          <RoundLegend />
+          <div className={'ticket-container col-lg-6 col-md-6 col-sm-8'}>
+            <div className={'ticket-container__overlay'}>
+            {tickets}
+          </div>
+          <h1>Выбираем победителя...</h1>
+          </div>
+          <RoundCheck />
         </div>;
     } else if (this.props.state.roundFinished) {
       roundPage =
@@ -166,27 +164,19 @@ class RoundPage extends React.Component {
         </div>;
     } else {
       roundPage =
-        <div className={'round__page__wrapper'}>
-        <div className={'roundContainer col-lg-10 col-md-12 col-sm-12 col-lg-offset-1'}>
-        <RoundLegend />
-        <div className={'ticketContainer col-lg-6 col-md-6 col-sm-8'}>
-        <div className={'tickets__wrapper'}>
-          <div className={'tickets__wrapper'}>
+        <div className={'roundpage col-lg-10 col-md-12 col-sm-12 col-lg-offset-1'}>
+          <RoundLegend />
+          <div className={'ticket-container col-lg-6 col-md-6 col-sm-8'}>
             {tickets}
           </div>
-        </div>
-        </div>
-        <RoundCheck />
-        </div>
+          <RoundCheck />
         </div>;
     }
     return (
-      <div>
-        <RoundInfo prodId={this.props.params.productId}/>
-        <div className={'roundPage row'}>
+        <div className={'roundpage-wrapper'}>
+          <RoundInfo prodId={this.props.params.productId}/>
           {roundPage}
         </div>
-      </div>
     );
   }
 }

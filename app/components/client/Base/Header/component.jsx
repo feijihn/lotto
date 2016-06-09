@@ -28,7 +28,7 @@ class Header extends React.Component {
   }
   openSignupForm = () => {
     this.setState({
-      signupFormOpened: !this.state.signupFormOpened
+      signupFormOpen: !this.state.signupFormOpen
     });
   }
   toggleHeaderDropdown = () => {
@@ -48,7 +48,7 @@ class Header extends React.Component {
       <Link to="/" className={'header__logo'}>lotalot</Link>;
     let headerRight = 
       <button
-        className={'header__login__button'}
+        className={'header__login-button'}
         onClick={this.toggleLoginDropdown}
       >
         Вход
@@ -82,7 +82,7 @@ class Header extends React.Component {
           <Avatar className={'header__avatar'}>
            { this.props.state.userinfo.local.username.substr(0, 1) }
           </Avatar>
-          <span className={'glyphicon glyphicon-chevron-down header__avatar__chevron'} onClick={this.toggleHeaderDropdown}></span>
+          <span className={'glyphicon glyphicon-chevron-down header__avatar-chevron'} onClick={this.toggleHeaderDropdown}></span>
         </div>;
     }
     if (this.state.headerDropdownOpen) {
@@ -102,7 +102,7 @@ class Header extends React.Component {
       dropdown =
         <div className={'sign-in'}>
           <ul className={'dropdown-menu'}>
-            <form action="/login" method="post" className={'signInForm'}>
+            <form action="/login" method="post" className={'sign-in__form'}>
               <div className={'form-group'}>
                 <label>Email </label>
                 <input className={'form-control'} type="text" name="username"/><br/>
@@ -125,7 +125,7 @@ class Header extends React.Component {
         </div>;
     }
     return (
-      <header className={window.location.hash.match(/#\/\?+/) ? 'header__main' : ''}>
+      <header className={window.location.hash.match(/#\/\?+/) ? 'header_main' : ''}>
         {logo}
         {headerRight}
         {dropdown}

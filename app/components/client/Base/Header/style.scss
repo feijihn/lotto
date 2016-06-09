@@ -26,13 +26,13 @@ header {
       border: 3px solid;
       box-sizing: content-box;
     }
-    .header__avatar__chevron {
+    .header__avatar-chevron {
       padding: 0 5px;
       color: white;
       cursor: pointer;
     }
   }
-  .header__login__button {
+  .header__login-button {
     position: absolute;
     top: 50%;
     right: 5%;
@@ -46,20 +46,18 @@ header {
   }
   .header__dropdown {
     float: right;
-    .header__dropdown__menu {
+    .header__dropdown-menu {
       left: 82%;
       transform: translateY(-20%);
       background-color: white;
       font-size: 16px;
       color: black;
       text-align: center;
-      .dropdown__header {
-      }
     }
   }
 }
 
-.header__main {
+.header_main {
   background-color: transparent !important;
 }
 

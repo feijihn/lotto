@@ -1,0 +1,108 @@
+.roundpage-wrapper {
+  position: relative;
+  background-color: #23314F;
+  width: 100%;
+  overflow: auto;
+}
+.roundpage {
+  padding: 30px 0px;
+}
+
+.roundpage__legend {
+  background-color: white;
+  color: black;
+  border-radius: 3px;
+  border: 2px solid rgba(0, 0, 0, .4);
+  height: 540px;
+}
+
+.ticket-container {
+  width: 540px;
+  height: 540px;
+
+}
+
+.ticket-container__ticket {
+}
+
+.ticket-container__overlay {
+}
+
+
+.reciept {
+  background-color: white;
+  color: black;
+  position: relative;
+  border-radius: 3px;
+  border: 2px solid rgba(0, 0, 0, .4);
+  padding: 20px 5px;
+  height: 535px;
+  .reciept-values {
+    position: relative;
+    height: 300px;
+    border: 3px dashed rgba(0, 0, 0, .5);
+    border-radius: 15px;
+    padding: 10px;
+    font-family: "Reciept";
+    .reciept-values__hint {
+      border-bottom: 2px dashed black;
+    }
+    .reciept-values__total {
+      position: absolute;
+      width: 92%;
+      bottom: 0;
+      margin-bottom: 5%;
+      border-top: 2px dashed black;
+    }
+  }
+  .reciept-ball {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    display: inline-block;
+    img {
+      width:50px;
+      height: 50px;
+    }
+  }
+  .receipt-ball_first {
+    margin-right: 5px;
+  }
+  .receipt-ball_collapsed {
+    width: 27px;
+    .reciept-ball__label {
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform: translate(5px, -60%);
+      font-size: 15px;
+    }
+  }
+  .reciept__buy-button {
+    margin: 10px auto;
+    display: block;
+  }
+  .reciept-ball__label {
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-60%, -60%);
+    font-size: 15px;
+  }
+  &:after {
+    content: " ";
+    display: block;
+    position: relative;
+    top: 90px;
+    left: -7px;
+    width: 105%;
+    height: 30px;
+    background: -moz-linear-gradient(#23314f 0%, transparent 0%),
+     -moz-linear-gradient(135deg, #23314f 33.33%, transparent 33.33%) 0 0%, 
+     #23314f -moz-linear-gradient(45deg, transparent 33.33%, white 33.33%) 0 0%;
+    background-repeat: repeat-x;
+    background-size: 0px 100%, 15px 15px, 15px 15px;
+  }
+}
+.roundpage__info {
+}

@@ -79,17 +79,16 @@ function App(state = initialState, action) {
         product: prod
       });
     case 'MARK_TICKET':
-      var newState = Object.assign({}, state);
-      var _tickets = newState.viewingTickets;
+      var _tickets = [...state.viewingTickets];
       _tickets[action.value] = 3;
-      var _markedTickets = newState.markedTickets;
+      var _markedTickets = [...state.markedTickets];
       _markedTickets.push(action.value);
       return Object.assign({}, state, {
         viewingTickets: _tickets,
         markedTickets: _markedTickets
       });
     case 'VIEWING_TICKETS':
-      var temp = state.viewingTickets;
+      var temp = [...state.viewingTickets];
       action.data.forEach(ticket => {
         if (ticket.user_id === state.userinfo._id) {
           temp[ticket.value] = 2;
@@ -191,7 +190,7 @@ function App(state = initialState, action) {
       });
     case 'TRANSACTIONS_EXPAND_TOGGLE' : {
       return Object.assign({}, state, {
-        transactionsExpandState: action.flag
+        transactionsExpanded: action.flag
       })
     }
     default:
