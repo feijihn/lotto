@@ -103,8 +103,8 @@ function App(state = initialState, action) {
         viewingTickets: temp
       });
     case 'TICKET_DESELECT':
-      var dtckts = state.markedTickets;
-      var vtckts = state.viewingTickets;
+      var dtckts = [...state.markedTickets];
+      var vtckts = [...state.viewingTickets];
       var index = dtckts.indexOf(action.value);
       dtckts.splice(index, 1);
       vtckts[action.value] = 0;
@@ -117,7 +117,7 @@ function App(state = initialState, action) {
         markedTickets: []
       });
     case 'ROUND_FINISH':
-      var wtckts = state.viewingTickets;
+      var wtckts = [...state.viewingTickets];
       wtckts[action.winner] = 4;
       return Object.assign({}, state, {
         viewingTickets: wtckts,
@@ -142,8 +142,8 @@ function App(state = initialState, action) {
         roundWaitingForWinner: false
       });
     case 'SELECT_UNMARKED':
-      var stckts = state.viewingTickets;
-      var footckts = state.markedTickets;
+      var stckts = [...state.viewingTicekts];
+      var footckts = [...state.markedTickets];
       stckts.forEach((ticket, i) => {
         if (ticket === 0) {
           footckts.push(i);
@@ -169,7 +169,7 @@ function App(state = initialState, action) {
         content: newContent
       });
     case 'ARCHIVE_TICKETS' :
-      var archive = state.roundHistory;
+      var archive = [...state.roundHistory];
       for (var i in archive) {
         if (archive[i]._id === action.roundId) {
           archive[i].tickets = action.data;

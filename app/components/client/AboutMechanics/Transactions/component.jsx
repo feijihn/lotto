@@ -101,7 +101,7 @@ class Transactions extends React.Component {
     return (
       <div className={this.props.state.transactionsExpandState ? 'about-mechanics__transactions col-lg-8 col-md-8 col-sm-8 col-lg-offset-2 col-md-offset-2 col-sm-offset-2' : 'col-lg-6 clo-md-6 col-sm-12 about-mechanics__transactions'}>
         <img className={'about-mechanics__ajax-spinner'} src="public/images/gears.svg" style={this.props.state.dateChecking ? {display: 'block'} : {display: 'none'}}/>
-        {transactionList}
+        {this.props.state.dateChecking ? '' : transactionList}
       </div>
     );
   }

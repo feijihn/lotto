@@ -15,12 +15,13 @@
   border-radius: 3px;
   border: 2px solid rgba(0, 0, 0, .4);
   height: 540px;
+  margin-left: 5%;
 }
 
 .ticket-container {
   width: 540px;
   height: 540px;
-
+  position: relative;
 }
 
 .ticket-container__ticket {
@@ -123,6 +124,14 @@
   }
 }
 
+.round-overlay {
+  color: white;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, .7);
+}
+
 .smallscreen-overlay {
   display: none;
   z-index: 9999;
@@ -138,6 +147,14 @@
 }
 
 .roundpage__info {
+}
+
+.round-number {
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 100%);
 }
 
 @media only screen and (max-width : 1325px) and (min-width: 990px)

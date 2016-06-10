@@ -136,7 +136,7 @@ class RoundPage extends React.Component {
     let roundPage;
     if (this.props.state.roundWaitingForWinner) {
       roundPage =
-        <div className={'roundpage col-lg-10 col-md-12 col-sm-12 '}>
+        <div className={'roundpage col-lg-10 col-md-12 col-sm-12 col-lg-offset-1'}>
           <RoundLegend />
           <div className={'ticket-container col-lg-6 col-md-6 col-sm-8'}>
             <div className={'ticket-container__overlay'}>
@@ -149,22 +149,22 @@ class RoundPage extends React.Component {
     } else if (this.props.state.roundFinished) {
       roundPage =
         <div className={'round__page__wrapper'}>
-        <div className={'roundContainer col-lg-10 col-md-12 col-sm-12'}>
+        <div className={'roundContainer col-lg-10 col-md-12 col-sm-12 col-lg-offset-1'}>
         <RoundLegend />
         <div className={'ticketContainer col-lg-6 col-md-6 col-sm-8'}>
         <div className={'tickets__wrapper'}>
           {tickets}
+          <div className={'round-overlay'}>
+            <h1>Раунд завершен! Выйграл билет №{this.props.state.winner}</h1>
+          </div>
         </div>
-        <div className={'roundWaiting'}>
-        </div>
-        <h1>Раунд завершен! Выйграл билет №{this.props.state.winner}</h1>
         </div>
         <RoundCheck />
         </div>
         </div>;
     } else {
       roundPage =
-        <div className={'roundpage col-lg-10 col-md-12 col-sm-12'}>
+        <div className={'roundpage col-lg-10 col-md-12 col-sm-12 col-lg-offset-1'}>
           <RoundLegend />
           <div className={'ticket-container col-lg-6 col-md-6 col-sm-8'}>
             {tickets}
@@ -175,9 +175,6 @@ class RoundPage extends React.Component {
     return (
         <div className={'roundpage-wrapper'}>
           <RoundInfo prodId={this.props.params.productId}/>
-          <div className={'smallscreen-overlay'}>
-            <h1>Ширина вашего экрана меньше поддерживаемой! Приносим свои извинения, скоро мы это исправим!</h1>
-          </div>
           {roundPage}
         </div>
     );

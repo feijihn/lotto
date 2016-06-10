@@ -109,6 +109,31 @@ module.exports = function(app, passport) {
   });
   app.post('/uploadimage', (req, res) => {
   });
+  app.post('/checkround', (req, res) => {
+    Round.findOne({publicId: req.body.roundId}, (err, round) => {
+      if (err) {
+        throw err;
+      }
+      if (round.endTime) {
+        roundLogic.checkDate(Number(round.endTime))
+        .then(
+          result => {
+            clearInterval(result[2]);
+            let response = {
+              status: 'OK',
+              data: result
+            }
+            res.send(response);
+          }
+        )
+      } else {
+        let response = {
+          status: 'NOTFINISHED'
+        }
+        res.send(response);
+      }
+    })
+  });
   app.post('/checkdate', (req, res) => {
     roundLogic.checkDate(Number(req.body.date))
     .then(
@@ -146,6 +171,7 @@ module.exports = function(app, passport) {
     let initialRound = new Round();
     initialRound.product_id = newProduct._id;
     initialRound.description = '';
+    initialRound.publicId = String(initialRound._id).substr(0, 5);
     initialRound.creationTime = Date.now();
     initialRound.startTime = Date.now();
     newProduct.save(err => {
