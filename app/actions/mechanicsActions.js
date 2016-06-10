@@ -1,5 +1,29 @@
 import $ from 'jquery';
 
+
+export function checkRound(roundId) {
+  return function(dispatch) {
+    dispatch(dateChecking());
+    $.ajax({
+      url: '/checkround',
+      dataType: 'json',
+      method: 'post',
+      data: {roundId: roundId},
+      success: data => {
+        switch (data.status) {
+          case 'OK':
+            dispatch(roundChecked(data.info[1]));
+          case 'NOTFINISHED':
+            dispatch(roundNotFinished());
+        }
+      },
+      error: (xhr, status, err) => {
+        console.error(this.props.url, status, err.toString());
+      }
+    });
+  } 
+}
+
 export function checkDate(date) {
   return function(dispatch) {
     dispatch(dateChecking());
@@ -16,6 +40,25 @@ export function checkDate(date) {
       }
     });
   } 
+}
+
+export function roundChecking() {
+  return {
+    type: 'ROUND_CHECKING'
+  }
+}
+
+export function roundNotFinished() {
+  return {
+    type: 'ROUND_NOT_FINISHED'
+  }
+}
+
+export function roundChecked(data) {
+  return {
+    type: 'ROUND_CHECKED',
+    data: data
+  }
 }
 
 export function dateChecking() {

@@ -16,6 +16,7 @@ class RoundInfo extends React.Component {
     return (
       <div className={'round__info'}>
         {productInfo}
+        <span className={'round-number'}>Уникальный id раунда: {this.props.state.round.publicId}</span>
       </div>
     );
   }

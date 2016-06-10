@@ -62,6 +62,8 @@ class InteractiveCheck extends React.Component {
             this.handleInput('roundId');
           }} ref="roundId"/>
         </div>
+        <div className={'error-box'}>
+        </div>
         <button className={'btn btn-lg btn-info'} onTouchTap={() => { this.handleClick();
         }}>Проверить</button>
       </div>
