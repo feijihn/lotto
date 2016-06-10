@@ -410,68 +410,6 @@ a:visited {
   color: white;
 }
 
-.roundLegend {
-  display: inline-block;
-  float: left;
-  background-color: white;
-  height: 500px;
-  border-radius: 10px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.3);
-}
-
-.ticket span {
-  -moz-transform: translate(-65%, -50%); 
-  -ms-transform: translate(-65%, -50%); 
-  -o-transform: translate(-65%, -50%); 
-  -webkit-transform: translate(-65%, -50%); 
-}
-
-.footer {
-  width: 100%;
-  background-color: #2c3e50;
-  font-family: "WeblySleek UI";
-}
-
-.footerLinks {
-  padding: 5% 0;
-}
-
-.footerLinks h3 {
-  color: white;
-  font-size: 1.7em;
-}
-
-.footerLinks ul {
-  list-style: none;
-  padding: 0;
-  margin: .3em;
-  line-height: 2;
-}
-
-.footerLinks a {
-  color: #6e7f9c;
-  font-size: 1.2em;
-}
-
-.footerLinks a:hover {
-  color: lightblue;
-}
-
-.copyright {
-  font-size: 1em;
-  color: white;
-}
-
-.copyright a {
-  font-size: 1em;
-  color: #6e7f9c;
-}
-
-.supportMail a {
-  font-size: 1em;
-  color: #6e7f9c;
-}
-
 @font-face {
   font-family: "WeblySleek UI";
   font-weight: 100;
