@@ -76,31 +76,25 @@ class RoundCheck extends React.Component {
             {hint}
             {marked}
             {total}
+            <button
+             className={'btn btn-primary reciept__buy-button'}
+             onClick={() => {
+               this.handleBuyClick();
+               this.togglePaymentForm();
+             }}
+            >
+              Купить
+            </button>
           </div>
-        <button
-         className={'btn btn-lg btn-primary reciept__buy-button'}
-         onClick={() => {
-           this.handleBuyClick();
-           this.togglePaymentForm();
-         }}
-        >
-          Оформить заказ
-        </button>
-        <button
-          className={'btn btn-lg btn-danger selectAllButton'}
-         onClick={this.props.selectAllTickets}
-        >
-          Выделить все
-        </button>
         <Snackbar
           className={'snackbar'}
           open={this.state.open}
-          message="Авторизуйтесь для покупки билетов"
+          message={<span className={'snackbar__message'}>Для покупки билетов <a>войдите</a> или зарегистрируйтесь.</span>}
           autoHideDuration={4000}
-          action={"Вход"}
           onActionTouchTap={this.handleSnackBarClick}
           onRequestClose={this.handleRequestClose}
-        />
+        >
+        </Snackbar>
         <Dialog
          title={'Оплата'}
          actions={paymentActions}

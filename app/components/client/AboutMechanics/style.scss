@@ -67,13 +67,18 @@
   display: inline-block;
   .ruled-paper__expand {
     text-align: center;
+    display:block;
     height: 30px;
-    margin: 13px 0px 10px 0px;
+    margin: 0 auto;
+    z-index: 15;
+    width: 85%;
+    background-color: rgba(253, 255, 173, .5);
     position: relative;
-    span {
-      color: #00dba3;
-      text-shadow: 0 0 5px #00dba3;
-    }   
+    transform: translateY(20%);
+    margin-bottom: 1%;
+    img {
+      transform: translateY(-10%);
+    }
     &:hover {
       background-color: rgba(0, 0, 0, .1);
       cursor: pointer;

@@ -53,13 +53,13 @@ class Transactions extends React.Component {
           </div>
           <div className={'ruled-paper__dot dot__3'}>
           </div>
-          <img className={'plus'} src="public/images/plusIcon.png" />
         </div>;
     let totalLi = <li className={'total'} >{ total.toPrecision(9) + ' BTC'}</li>;
     if (this.state.expanded) {
       transactionList = 
         <div className={'about-mechanics__ruled-paper'} style={this.props.state.dateChecking ? {display: 'none'} : {display: 'block'}}>
             {decoration}
+            <img className={'plus'} src="public/images/plusIcon.png" />
             <ul>
               {transactions}
               {totalLi}
@@ -71,6 +71,7 @@ class Transactions extends React.Component {
         <div className={'about-mechanics__ruled-paper__cutoff'}>
           <div className={'about-mechanics__ruled-paper ruled-paper__cut-bottom'}>
             {decoration}
+            <img className={'plus'} src="public/images/plusIcon.png" />
             <ul>
               {transactions[0]}
               {transactions[1]}
@@ -81,7 +82,7 @@ class Transactions extends React.Component {
             </ul>
           </div>
           <div className={'ruled-paper__expand'} onTouchTap={this.handleExpandClick}>
-            <span>Развернуть</span>
+            <img src="public/images/more.png" />
           </div>
           <div className={'about-mechanics__ruled-paper ruled-paper__cut-top'}>
             {decoration}
