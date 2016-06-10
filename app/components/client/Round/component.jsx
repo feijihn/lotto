@@ -175,6 +175,9 @@ class RoundPage extends React.Component {
     return (
         <div className={'roundpage-wrapper'}>
           <RoundInfo prodId={this.props.params.productId}/>
+          <div className={'smallscreen-overlay'}>
+            <h1>Ширина вашего экрана меньше поддерживаемой! Приносим свои извинения, скоро мы это исправим!</h1>
+          </div>
           {roundPage}
         </div>
     );

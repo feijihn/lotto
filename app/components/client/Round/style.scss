@@ -5,7 +5,7 @@
   overflow: auto;
 }
 .roundpage {
-  padding: 30px 120px;
+  padding: 5%;
   width: 100%;
 }
 
@@ -51,6 +51,7 @@
   border: 2px solid rgba(0, 0, 0, .4);
   padding: 20px 5px;
   height: 535px;
+  max-width: 271px;
   .reciept-values {
     position: relative;
     height: 500px;
@@ -121,5 +122,50 @@
     background-size: 0px 100%, 15px 15px, 15px 15px;
   }
 }
+
+.smallscreen-overlay {
+  display: none;
+  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: white;
+  h1 {
+    color: black;
+  }
+}
+
 .roundpage__info {
+}
+
+@media only screen and (max-width : 1325px) and (min-width: 990px)
+{ 
+  .roundpage__legend {
+    display: none;
+  }
+  .ticket-container {
+    margin-left: 10%;
+  }
+}
+
+@media only screen and (max-width : 990px) and (min-width: 860px)
+{ 
+  .ticket-container {
+    margin-left: 5%;
+  }
+}
+
+@media only screen and (max-width : 860px) and (min-width: 760px)
+{ 
+  .roundpage {
+    padding: 5% 0px;
+  }
+}
+
+@media only screen and (max-width: 760px) {
+  .smallscreen-overlay {
+    display: block;
+  }
 }

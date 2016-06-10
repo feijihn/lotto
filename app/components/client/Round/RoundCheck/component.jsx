@@ -71,7 +71,7 @@ class RoundCheck extends React.Component {
         Выбранные билеты :
       </div>
     return (
-      <div className={'reciept col-lg-3 col-md-3 hidden-sm'}>
+      <div className={'reciept col-lg-3 col-md-3 col-sm-3'}>
           <div className={'reciept-values'}>
             {hint}
             {marked}
