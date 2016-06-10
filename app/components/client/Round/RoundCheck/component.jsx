@@ -1,6 +1,8 @@
 import React from 'react';
 import {Snackbar, Dialog, FlatButton, RaisedButton, Stepper, Step, StepLabel} from 'material-ui';
 
+import $ from 'jquery';
+
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as Actions from '../../../../actions/actions.js';
@@ -19,14 +21,14 @@ class RoundCheck extends React.Component {
       this.props.ownTickets(this.props.state.markedTickets, this.props.state.round._id);
       this.props.fetchTickets(this.props.state.round._id);
     } else {
+      this.props.toggleLoginDropdown(!this.props.state.loginDropdownOpen);
+      $('html, body').animate({
+          scrollTop: 0
+      }, 750);
       this.setState({
         open: true
       });
     }
-  }
-
-  handleSnackBarClick = () => {
-    //this.props.openHeaderMenu();
   }
 
   togglePaymentForm = () => {
@@ -89,7 +91,7 @@ class RoundCheck extends React.Component {
         <Snackbar
           className={'snackbar'}
           open={this.state.open}
-          message={<span className={'snackbar__message'}>Для покупки билетов <a>войдите</a> или зарегистрируйтесь.</span>}
+          message={<span className={'snackbar__message'}>Для покупки билетов войдите или зарегистрируйтесь</span>}
           autoHideDuration={4000}
           onActionTouchTap={this.handleSnackBarClick}
           onRequestClose={this.handleRequestClose}

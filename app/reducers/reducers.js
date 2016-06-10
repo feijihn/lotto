@@ -43,6 +43,7 @@ export const initialState = {
   ownedTickets: [],
   roundHistory: [],
   roundFinished: false,
+  loginDropdownOpen: false,
   roundWaitingForWinner: false,
   transactionsExpandState: false,
   winner: -1,
@@ -192,6 +193,11 @@ function App(state = initialState, action) {
       return Object.assign({}, state, {
         transactionsExpanded: action.flag
       })
+    }
+    case 'LOGIN_DROPDOWN_TOGGLE': {
+      return Object.assign({}, state, {
+        loginDropdownOpen: action.flag
+      })    
     }
     default:
       return state;

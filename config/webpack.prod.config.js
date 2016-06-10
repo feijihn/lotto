@@ -39,7 +39,7 @@ const plugins = [
     }
   }),
   // This plugin moves all the CSS into a separate stylesheet
-  new ExtractTextPlugin('css/app.css', { allChunks: true })
+  new ExtractTextPlugin('stylesheet.css', { allChunks: true })
 ];
 
 const config = {

@@ -14,7 +14,6 @@ class Header extends React.Component {
     this.state = {
       signupFormOpen: false,
       headerDropdownOpen: false,
-      loginDropdownOpen: false
     };
     console.log(this.props);
   }
@@ -22,9 +21,7 @@ class Header extends React.Component {
     this.props.fetchUserInfo();
   }
   toggleLoginDropdown = () => {
-    this.setState({
-      loginDropdownOpen: !this.state.loginDropdownOpen
-    });
+    this.props.toggleLoginDropdown(!this.props.state.loginDropdownOpen);
   }
   openSignupForm = () => {
     this.setState({
@@ -88,7 +85,7 @@ class Header extends React.Component {
     if (this.state.headerDropdownOpen) {
       dropdown =
         <div className={'header__dropdown'}>
-          <ul className={'header__dropdown__menu'}>
+          <ul className={'dropdown-menu header__dropdown-menu'}>
             <li className={'dropdown__header'}>{this.props.state.userinfo.local.username}</li>
             <li className={'divider'}></li>
             <li><Link to={'/profile'}><span className={'glyphicon glyphicon-user'}/> Профиль</Link></li>
@@ -98,7 +95,7 @@ class Header extends React.Component {
           </ul>
         </div>
     }
-    if (this.state.loginDropdownOpen) {
+    if (this.props.state.loginDropdownOpen) {
       dropdown =
         <div className={'sign-in'}>
           <ul className={'dropdown-menu'}>
