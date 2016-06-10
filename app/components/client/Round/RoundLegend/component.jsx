@@ -7,7 +7,7 @@ import {List, ListItem} from 'material-ui';
 class RoundLegend extends React.Component {
   render() {
     return (
-      <div className={'roundLegend col-lg-3 col-md-3 hidden-sm'}>
+      <div className={'roundpage__legend col-lg-3 col-md-3 hidden-sm'}>
         <List>
           <ListItem>
             <h2 style={{textAlign: 'center'}}> Легенда </h2>

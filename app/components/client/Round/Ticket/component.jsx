@@ -11,7 +11,7 @@ class Ticket extends React.Component {
   render() {
     return (
       <div
-      className={'col-lg-10-12 col-md-10-12 col-sm-5-12 col-xs-4 ticket'}
+      className={'col-lg-10-12 col-md-10-12 col-sm-10-12 ticket-container__ticket'}
       onClick={this.handleClick}
       style={{
         backgroundImage: 'url(' + this.props.bgImage + ')'

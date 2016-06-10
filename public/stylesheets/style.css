@@ -6,7 +6,7 @@ html {
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   text-decoration: none;
 }
 
@@ -45,10 +45,6 @@ a:visited {
 
 .panel h1 {
   text-align: center;
-}
-
-.page__section {
-  width: 100%;
 }
 
 .page__title {
@@ -104,16 +100,10 @@ a:visited {
 }
 
 .ticket {
-  user-drag: none; 
-  user-select: none;
   -moz-user-select: none;
   -webkit-user-drag: none;
   -webkit-user-select: none;
   -ms-user-select: none;
-  cursor: pointer;
-  background-size: cover;
-  background-repeat: no-repeat;
-  height: 50px;
 }
 
 .buyButton {
@@ -131,13 +121,6 @@ a:visited {
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;
-}
-
-.introSection {
-  height: auto;
-  /*background-color: rgba(0, 145, 80, 0.65);*/
-  background-color: rgba(0, 0, 0, 0.65);
-  padding-bottom: 10%;
 }
 
 #aboutUsSection {
@@ -171,15 +154,6 @@ a:visited {
 
 .introTrust {
   margin-top: 35px;
-}
-
-.introTrust img {
-  margin-right: 1%;
-  transform: translateY(-22%);
-  -moz-transform: translateY(-22%);
-  -ms-transform: translateY(-22%);
-  -o-transform: translateY(-22%);
-  -webkit-transform: translateY(-22%);
 }
 
 .introTrust a {
@@ -251,144 +225,7 @@ a:visited {
 }
 
 .caption span {
-  font-size: 12px;
-}
-
-.headBar {
-  position: absolute;
-  background-color: #2c3e50;
-  padding: 2.4em 5%;
-  width: 100%;
-  top: 0;
-  left: 0;
-  z-index: 45;
-  transition: background-color .01s, padding .01s, margin .01s;
-}
-
-.headBar-main {
-  background-color: transparent;
-  margin: 0;
-  margin: 2.2em 5%;
-  width: 90%;
-}
-
-.headBar h1 {
-  color: white;
-  font-family: "Circular";
-  font-weight: 900;
-  padding: 0;
-  margin: 0;
-  padding-left: 10px;
-  font-size: 48px;
-  text-decoration: none;
-  display: inline-block;
-}
-
-.headBar .logo {
-  display: inline-block;
-}
-
-.headBar .logo:active {
-  transform: translateY(10%);
-  -moz-transform: translateY(10%);
-  -ms-transform: translateY(10%);
-  -o-transform: translateY(10%);
-  -webkit-transform: translateY(10%);
-}
-
-.headAvatar {
-  position: relative;
-  float: right;
-  transform: translateY(15%);
-  -moz-transform: translateY(15%);
-  -ms-transform: translateY(15%);
-  -o-transform: translateY(15%);
-  -webkit-transform: translateY(15%);
-  margin-right: 1.5%;
-}
-
-.headAvatarChevron {
-  padding-left: 5px;
-  padding-right: 5px;
-  color: rgba(255, 255, 255, 1);
-  cursor: pointer;
-}
-
-.avatarDropdown {
-  float: right;
-}
-
-.avatarDropdown .dropdown-menu{
-  display: block;
-  left: 82%;
-  transform: translateY(-10%);
-  -moz-transform: translateY(-10%);
-  -ms-transform: translateY(-10%);
-  -o-transform: translateY(-10%);
-  -webkit-transform: translateY(-10%);
-  background-color: rgba(255, 255, 255, 1);
-  font-family: "WeblySleek UI";
-  font-size: 16px;
-}
-
-.avatarDropdown .dropdown-header{
-  color: black;
-  font-size: 14px;
-  text-align: center;
-}
-
-.signInDropdown {
-  background-color: white;
-}
-
-.signInDropdown .dropdown-menu {
-  display: block;
-  left: 100%;
-  transform: translateX(-100%);
-  -moz-transform: translateX(-100%);
-  -ms-transform: translateX(-100%);
-  -o-transform: translateX(-100%);
-  -webkit-transform: translateX(-100%);
-  background-color: white;
-  font-family: "WeblySleek UI";
-  font-size: 16px;
-}
-
-.signInDropdown button {
-  margin-right: 50%;
-}
-
-.signInDropdown .form-group {
-  margin: 0;
-}
-
-.signInForm {
-  padding: 15px;
-  background-color: white;
-  min-width: 400px;
-}
-
-.row {
-  margin: 0;
-}
-
-.loginButton {
-  position: absolute;
-  top: 50%;
-  right: 0%;
-  transform: translate(-10%, -50%);
-  -moz-transform: translate(-10%, -50%);
-  -ms-transform: translate(-10%, -50%);
-  -o-transform: translate(-10%, -50%);
-  -webkit-transform: translate(-10%, -50%);
-}
-
-.productsSection {
-  background-color:  white;
-  margin: 0 auto;
-  text-align: center;
-  padding-bottom: 30px;
-  font-family: "WeblySleek UI";
+ font-size: 12px;
 }
 
 .product {
@@ -506,36 +343,6 @@ a:visited {
   height: 120px;
 }
 
-.roundContainer {
-  height: 100%;
-}
-
-.roundPage {
-  padding-top: 50px;
-  background-color: #23314F;
-}
-
-.roundPage::after {
-  height: 50px;
-  background-color: #23314F;
-}
-
-.roundPage h1 {
-  text-align: center;
-  margin: 0;
-  color: rgba(0,0,0,0.9);
-}
-
-.roundPage p {
-  display: inline-block;
-  color: rgba(0,0,0,0.9);
-  padding-left: 5px;
-}
-
-.roundPage h2, span {
-  color: rgba(0,0,0,0.9);
-}
-
 .roundWaiting {
   position: absolute;
   background: rgba(0,0,0,0.5);
@@ -586,7 +393,7 @@ a:visited {
 .round__info {
   width: 100%;
   height: 120px;
-  margin-top: 120px;
+  margin-top: 130px;
   background-color: #284055;
   position: relative;
 }
@@ -612,24 +419,7 @@ a:visited {
   box-shadow: 0 0 5px rgba(0,0,0,0.3);
 }
 
-.roundCheque {
-  display: inline-block;
-  background-color: white;
-  padding: 100px 0 100px 0;
-  height: 500px;
-  border-radius: 10px;
-}
-
-.roundCheque h1 {
-  color: black;
-}
-
 .ticket span {
-  font-family: "Flagship Slab";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-65%, -50%); 
   -moz-transform: translate(-65%, -50%); 
   -ms-transform: translate(-65%, -50%); 
   -o-transform: translate(-65%, -50%); 
@@ -667,14 +457,6 @@ a:visited {
   color: lightblue;
 }
 
-.footerEnd {
-  border-top: 1px solid rgba(110,127,156,0.5);
-  padding: 40px 20px;
-  background-color: #2c3e50;
-  display:inline-block;
-  width: 100%;
-}
-
 .copyright {
   font-size: 1em;
   color: white;
@@ -697,9 +479,9 @@ a:visited {
 }
 
 @font-face {
-  font-family: "BeautyScript";
+  font-family: "Reciept";
   font-weight: 100;
-  src: local("☺︎"), url("../fonts/DiscoverBeauty.ttf") format("truetype");
+  src: local("☺︎"), url("../fonts/receipt.ttf") format("truetype");
 }
 
 @font-face {

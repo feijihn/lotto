@@ -19,7 +19,7 @@ class IntroSection extends React.Component {
   }
   render() {
     return (
-      <div className={'introSection row'}>
+      <div className={'intro__section col-lg-12 col-md-12 col-sm-12 section'}>
         <div className={'col-lg-10 col-lg-offset-1 text-center introContent'}>
             <div className={'introCaption caption'} >
               <h1 key="introkofwijeo" dangerouslySetInnerHTML={this.props.state.content ? {__html: this.props.state.content.introSection.header} :{__html: ''}}></h1>

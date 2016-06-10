@@ -1,0 +1,79 @@
+header {
+  position: absolute;
+  font-family: "WeblySleek UI";
+  background-color: #2c3e50;
+  padding:2.4em 5%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 45;
+  .header__logo {
+    color: white;
+    font-family: "Circular";
+    font-weight: 900;
+    font-size: 4em;
+    text-decoration: none;
+    &:active {
+      transform: translateY(10%);
+    }
+  }
+  .header__right {
+    float: right;
+    transform: translateY(15%);
+    margin-right:1.5%;
+    .header__avatar {
+      background: transparent;
+      border: 3px solid;
+      box-sizing: content-box;
+    }
+    .header__avatar-chevron {
+      padding: 0 5px;
+      color: white;
+      cursor: pointer;
+    }
+  }
+  .header__login-button {
+    position: absolute;
+    top: 50%;
+    right: 5%;
+    border-radius: 16px;
+    transform: translate(-10%, -50%);
+    background-color: transparent;
+    border: 3px solid;
+    color: white;
+    padding: 5px 15px;
+    font-size: 18px;
+  }
+  .header__dropdown {
+    float: right;
+    .header__dropdown-menu {
+      left: 82%;
+      transform: translateY(-20%);
+      background-color: white;
+      font-size: 16px;
+      color: black;
+      text-align: center;
+    }
+  }
+}
+
+.header_main {
+  background-color: transparent !important;
+}
+
+.sign-in {
+  background-color: white;
+  .dropdown-menu {
+    display: block;
+    left: 100%;
+    transform: translate(-110%, -12.5%);
+    font-size: 17px;
+  }
+  a {
+    float: right;
+  }
+  .sign-in__form {
+    padding: 16px;
+    min-width: 400px;
+  }
+}

@@ -30,3 +30,10 @@ export function dateChecked(data) {
     data: data
   }
 }
+
+export function transactionsExpandToggle(flag) {
+  return {
+    type: 'TRANSACTIONS_EXPAND_TOGGLE',
+    flag: flag
+  }
+}

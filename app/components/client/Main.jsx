@@ -10,6 +10,7 @@ import {connect} from 'react-redux';
 import * as Actions from '../../actions/actions.js';
 
 const muiTheme = getMuiTheme();
+require('./style.scss');
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();

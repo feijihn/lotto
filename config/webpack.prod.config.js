@@ -77,7 +77,7 @@ const config = {
       },
       {
         test: /\.scss$/,
-        loaders: ['style', 'css', 'sass']
+        loader: ExtractTextPlugin.extract('style-loader', ['css-loader', 'postcss-loader', 'sass-loader'])
       }
     ]
   },
