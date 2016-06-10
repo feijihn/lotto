@@ -11,7 +11,7 @@ import AboutMechanics from './components/client/AboutMechanics/component.jsx';
 export default (
   <Route path="/" component={Main}>
     <IndexRoute component={IndexPage} />
-    <Route path={'/_=_'} component={Main} />
+    <Route path={'/_=_'} component={IndexPage} />
     <Route path={'/round/:productId'} component={RoundPage} />
     <Route path={'/round/archive/:roundId'} componenr={RoundPage} />
     <Route path={'/notifications'} component={Notifications} />
