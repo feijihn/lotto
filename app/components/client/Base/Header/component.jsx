@@ -76,7 +76,7 @@ class Header extends React.Component {
           <button className={'btn btn-lg text-center btn-success'} type="submit">Зарегистрироваться</button>
         </form>
       </Dialog>;
-    if (this.state.loggedIn) {
+    if (this.props.state.loggedIn) {
       headerRight = 
         <div className={'header__right'}>
           <Avatar className={'header__avatar'}>
