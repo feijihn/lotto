@@ -230,8 +230,9 @@ a:visited {
 
 .product {
   width: 200px;
-  margin: 0 auto;
   background-color: transparent;
+  display: inline-block;
+  margin: 0 2%;
 }
 
 .product div :hover {
