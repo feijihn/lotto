@@ -136,7 +136,7 @@ class RoundPage extends React.Component {
     let roundPage;
     if (this.props.state.roundWaitingForWinner) {
       roundPage =
-        <div className={'roundpage col-lg-10 col-md-12 col-sm-12 col-lg-offset-1'}>
+        <div className={'roundpage col-lg-10 col-md-12 col-sm-12'}>
           <RoundLegend />
           <div className={'ticket-container col-lg-6 col-md-6 col-sm-8'}>
             <div className={'ticket-container__overlay'}>
@@ -149,7 +149,7 @@ class RoundPage extends React.Component {
     } else if (this.props.state.roundFinished) {
       roundPage =
         <div className={'round__page__wrapper'}>
-        <div className={'roundContainer col-lg-10 col-md-12 col-sm-12 col-lg-offset-1'}>
+        <div className={'roundContainer col-lg-10 col-md-12 col-sm-12'}>
         <RoundLegend />
         <div className={'ticketContainer col-lg-6 col-md-6 col-sm-8'}>
         <div className={'tickets__wrapper'}>
@@ -164,7 +164,7 @@ class RoundPage extends React.Component {
         </div>;
     } else {
       roundPage =
-        <div className={'roundpage col-lg-10 col-md-12 col-sm-12 col-lg-offset-1'}>
+        <div className={'roundpage col-lg-10 col-md-12 col-sm-12'}>
           <RoundLegend />
           <div className={'ticket-container col-lg-6 col-md-6 col-sm-8'}>
             {tickets}
@@ -174,6 +174,8 @@ class RoundPage extends React.Component {
     }
     return (
         <div className={'roundpage-wrapper'}>
+          <div className={'smallscreen-overlay'}>
+          </div>
           <RoundInfo prodId={this.props.params.productId}/>
           {roundPage}
         </div>

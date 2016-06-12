@@ -79,7 +79,7 @@ class Header extends React.Component {
           <Avatar className={'header__avatar'}>
            { this.props.state.userinfo.local.username.substr(0, 1) }
           </Avatar>
-          <span className={'glyphicon glyphicon-chevron-down header__avatar-chevron'} onClick={this.toggleHeaderDropdown}></span>
+          <span className={'glyphicon glyphicon-chevron-down header__avatar-chevron'} onTouchTap={this.toggleHeaderDropdown}></span>
         </div>;
     }
     if (this.state.headerDropdownOpen) {

@@ -1,9 +1,34 @@
-.intro__section {
-  padding: 5% 0;
-  background-color: rgba(0, 0, 0, 0.65);
+.indexpage {
+  font-family: "WeblySleek UI";
+  background-image: url('/public/images/bingo.jpg');
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
-.products__section {
+.intro {
+  padding: 5% 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  color: white;
+}
+
+.intro__content {
+  margin-top: 100px;
+}
+
+.intro__title {
+  font-size: 2.5em;
+}
+
+.intro__subtitle {
+  font-size: 1.5em;
+}
+
+.intro_CTA {
+  margin-top: 2%;
+}
+
+.products {
   background-color:  white;
   text-align: center;
   padding-bottom: 30px;
