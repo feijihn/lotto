@@ -1,13 +1,11 @@
 html {
   width: 100%;
-  height: 100%;
+  min-height: 100%;
 }
 
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   width: 100%;
   min-height: 100%;
-  text-decoration: none;
 }
 
 a {
@@ -33,23 +31,8 @@ a:visited {
   text-decoration: none;
 }
 
-#container {
-  width: 100%;
-  height: 100%;
-}
-
-.main {
-  min-height: 100%;
-  height: 100%;
-}
-
 .panel h1 {
   text-align: center;
-}
-
-.page__title {
-  font-size: 4em;
-  font-weight: 900;
 }
 
 .section__title__black {
@@ -114,13 +97,6 @@ a:visited {
 .selectAllButton {
   margin: 0 auto;
   display: inherit;
-}
-
-.indexPage {
-  background-image: url('../images/bingo.jpg');
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-size: cover;
 }
 
 #aboutUsSection {
@@ -217,15 +193,6 @@ a:visited {
   color: rgba(255,255,255,1);
   white-space: pre-wrap;
   margin-top: 100px;
-}
-
-.caption p {
- font-size: 1.4em; 
- font-weight: 900;
-}
-
-.caption span {
- font-size: 12px;
 }
 
 .product {

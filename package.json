@@ -1,6 +1,9 @@
 {
   "name": "lotalot",
   "version": "0.0.0",
+  "engines": {
+    "node": "6.2.1"
+  },
   "private": true,
   "scripts": {
     "start": "export NODE_ENV='production' & node server/app",

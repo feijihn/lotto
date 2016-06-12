@@ -19,19 +19,17 @@ class IntroSection extends React.Component {
   }
   render() {
     return (
-      <div className={'intro__section col-lg-12 col-md-12 col-sm-12 section'}>
-        <div className={'col-lg-10 col-lg-offset-1 text-center introContent'}>
-            <div className={'introCaption caption'} >
-              <h1 key="introkofwijeo" dangerouslySetInnerHTML={this.props.state.content ? {__html: this.props.state.content.introSection.header} :{__html: ''}}></h1>
-              <p key="reliabliewkhew" dangerouslySetInnerHTML={this.props.state.content ? {__html: this.props.state.content.introSection.text} : {__html: ''}}></p>
-            </div>
-            <button className={'btn btn-lg btn-info'} onClick={this.handlePlayClick}><a href="#" id="playButton">Играть</a></button><br/>
-            <div className={'col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 introTrust'}>
-                 <span className={'col-lg-6 col-md-6 col-sm-6 handsIcon'}>
+      <div className={'intro col-lg-12 col-md-12 col-sm-12 col-xs-12 section'}>
+        <div className={'col-lg-10 col-lg-offset-1 col-md-12 col-sm-12 col-sx-12 text-center intro__content'}>
+              <h1 className={'intro__title'} dangerouslySetInnerHTML={this.props.state.content ? {__html: this.props.state.content.introSection.header} :{__html: ''}}></h1>
+              <p className={'intro__subtitle'} dangerouslySetInnerHTML={this.props.state.content ? {__html: this.props.state.content.introSection.text} : {__html: ''}}></p>
+            <button className={'btn btn-lg btn-info intro_CTA'} onClick={this.handlePlayClick}><a href="#" id="playButton">Играть</a></button><br/>
+            <div className={'col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12 introTrust'}>
+                 <span className={'col-lg-6 col-md-6 col-sm-6 col-xs-12 handsIcon'}>
                     <img src="public/images/hands.png" width="32px" height="32px" />
                     Честно и надежно
                  </span>
-                 <span className={'col-lg-6 col-md-6 col-sm-6 moreIcon'}>
+                 <span className={'col-lg-6 col-md-6 col-sm-6 col-xs-12 moreIcon'}>
                    <img src="public/images/about.png" width="32px" height="32px" />
                    <a onClick={this.handleMoreClick} href="javascript:void(0);"> прочитайте подробнее</a>
                  </span>

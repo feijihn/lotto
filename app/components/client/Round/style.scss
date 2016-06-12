@@ -126,7 +126,7 @@
 
 .round-overlay {
   color: white;
-  position: absolute;
+  position: fixed;
   height: 100%;
   width: 100%;
   background-color: rgba(0, 0, 0, .7);
@@ -146,7 +146,8 @@
   }
 }
 
-.roundpage__info {
+.round__info {
+  margin-top:110px;
 }
 
 .round-number {
