@@ -81,6 +81,7 @@ const config = {
       }
     ]
   },
+  postcss: [ autoprefixer() ],
   plugins: plugins,
   devtool: 'source-map'
 };
