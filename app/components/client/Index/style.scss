@@ -1,0 +1,56 @@
+.indexpage {
+  font-family: "WeblySleek UI";
+  background-image: url('/public/images/bingo.jpg');
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.intro {
+  padding: 5% 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  color: white;
+}
+
+.intro__content {
+  margin-top: 100px;
+  .title {
+    font-size: 2.5em;
+    font-weight: 300;
+  }
+  .subtitle {
+    font-size: 1.5em;
+  }
+}
+
+.intro_CTA {
+  margin-top: 2%;
+}
+
+.products {
+  background-color:  white;
+  text-align: center;
+  padding-bottom: 30px;
+}
+
+.aboutus {
+  background-color: rgba(60, 79, 118, 1);
+  color: white;
+  .btn-primary:hover {
+    background-color: #5b94c5;
+  }
+}
+
+.aboutus__content {
+  .title {
+    font-size: 2.33em;
+  }
+  .paragraph {
+    font-size: 1.3em;
+  }
+}
+
+.aboutus__image {
+  width: 100%;
+  margin-top: 10%;
+}
