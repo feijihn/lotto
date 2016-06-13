@@ -50,7 +50,9 @@ function rootReducer(state = initialState, action) {
       })
     case 'PRODUCT_REMOVED':
       return Object.assign({}, state, {
-        products: action.products
+        products: action.products,
+        productLoaded: true,
+        productLoading: false
       }) 
     default:
       return state;
