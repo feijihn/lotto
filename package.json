@@ -1,11 +1,14 @@
 {
   "name": "lotalot",
   "version": "0.0.0",
+  "engines": {
+    "node": "6.2.1"
+  },
   "private": true,
   "scripts": {
     "start": "export NODE_ENV='production' & node server/app",
     "start-dev": "export NODE_ENV='development' PORT='3000' && node server/app",
-    "build": "webpack -p --config ./config/webpack.prod.config.js --progress"
+    "postinstall": "webpack -p --config ./config/webpack.prod.config.js --progress"
   },
   "dependencies": {
     "autoprefixer": "^6.3.6",
@@ -21,6 +24,7 @@
     "connect-flash": "^0.1.1",
     "cookie-parser": "~1.3.5",
     "copy-webpack-plugin": "^3.0.1",
+    "css-loader": "^0.23.1",
     "debug": "~2.2.0",
     "draft-js": "^0.7.0",
     "eslint": "^2.5.1",
@@ -29,9 +33,11 @@
     "express-history-api-fallback": "^2.0.0",
     "express-session": "^1.13.0",
     "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.8.5",
     "html-parser": "^0.9.0",
     "html-webpack-plugin": "^2.17.0",
     "jquery": "^2.2.3",
+    "jquery.scrollto": "^2.1.2",
     "jsdoc": "^3.4.0",
     "material-ui": "^0.15.0-alpha.2",
     "mongoose": "^4.4.19",
@@ -41,26 +47,35 @@
     "passport-facebook": "^2.1.0",
     "passport-local": "^1.0.0",
     "passport-vkontakte": "^0.4.0",
+    "postcss-loader": "^0.9.1",
     "pug": "^2.0.0-alpha1",
     "react": "^15.0.1",
     "react-bootstrap": "^0.28.3",
+    "react-datetime": "^2.2.1",
     "react-dom": "^15.0.1",
     "react-router-component": "^0.32.0",
     "react-tap-event-plugin": "^1.0.0",
     "redux-thunk": "^2.0.1",
     "request": "^2.72.0",
+    "sass-loader": "^3.2.0",
+    "scroll-into-view": "^1.6.0",
     "serve-favicon": "~2.3.0",
     "smoothscroll-polyfill": "^0.3.3",
+    "style-loader": "^0.13.1",
     "webpack": "^1.12.14"
   },
   "devDependencies": {
+    "css-loader": "^0.23.1",
     "eslint-config-google": "^0.4.0",
+    "node-sass": "^3.7.0",
     "react-hot-loader": "^1.3.0",
     "redux-devtools": "^3.3.1",
     "redux-devtools-dock-monitor": "^1.1.1",
     "redux-devtools-log-monitor": "^1.0.11",
     "redux-immutable-state-invariant": "^1.2.3",
     "redux-slider-monitor": "^1.0.5",
+    "sass-loader": "^3.2.0",
+    "style-loader": "^0.13.1",
     "webpack": "^1.13.1",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-hot-middleware": "^2.10.0"

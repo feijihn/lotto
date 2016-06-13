@@ -17,7 +17,7 @@ class RoundHistory extends React.Component {
       this.setState({
         handle: handle
       });
-    }, 5000);
+    }, 15000);
   }
   componentWillUnmount = () => {
     if (this.state) {

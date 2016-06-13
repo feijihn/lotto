@@ -1,11 +1,13 @@
 import React from 'react';
 import {Snackbar, Dialog, FlatButton, RaisedButton, Stepper, Step, StepLabel} from 'material-ui';
 
+import $ from 'jquery';
+
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as Actions from '../../../../actions/actions.js';
 
-export default class RoundCheck extends React.Component {
+class RoundCheck extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,27 +15,47 @@ export default class RoundCheck extends React.Component {
       paymentFormOpened: false
     };
   }
+   
   handleBuyClick = () => {
     if (this.props.state.loggedIn) {
       this.props.ownTickets(this.props.state.markedTickets, this.props.state.round._id);
       this.props.fetchTickets(this.props.state.round._id);
     } else {
+      this.props.toggleLoginDropdown(!this.props.state.loginDropdownOpen);
+      $('html, body').animate({
+          scrollTop: 0
+      }, 750);
       this.setState({
         open: true
       });
     }
   }
+
   togglePaymentForm = () => {
     this.setState({
       paymentFormOpened: !this.state.paymentFormOpened
     });
   }
+
   handleRequestClose = () => {
     this.setState({
       open: false
     });
   }
+
   render() {
+    const marked = this.props.state.markedTickets.map((value, i, values) => {
+      let span;
+      if (i === values.length - 1) {
+        span = <span className={'roundpage__reciept-value'}>{value}</span>;
+      } else {
+        span = <span className={'roundpage__reciept-value'}>{value}, </span>;
+      }
+      return (
+        span
+      );
+    });
+
     const paymentActions = [
       <FlatButton
         label="Закрыть"
@@ -41,33 +63,40 @@ export default class RoundCheck extends React.Component {
         onTouchTap={this.togglePaymentForm}
       />
     ];
+    const total =
+      <div className={'reciept-values__total'}>
+        Итого : {this.props.state.markedTickets.length} штук.<br/>
+        Цена : {this.props.state.markedTickets.length * 100} &#8381; .-
+      </div>
+    const hint =
+      <div className={'reciept-values__hint'}>
+        Выбранные билеты :
+      </div>
     return (
-      <div className={'roundCheque col-lg-3 col-md-3'}>
-        <h1>
-          Вы выбрали <br/> <span> {this.props.state.markedTickets.length}</span> <br/> билетов <br/>
-        </h1>
-        <button
-         className={'btn btn-lg btn-primary text-center buyButton'}
-         onClick={() => {
-           this.handleBuyClick();
-           this.togglePaymentForm();
-         }}
-        >
-          <span>Купить</span><br/>
-        </button>
-        <button
-          className={'btn btn-lg btn-danger selectAllButton'}
-         onClick={this.props.selectAllTickets}
-        >
-          <span>Выделить все</span>
-        </button>
+      <div className={'reciept col-lg-3 col-md-3 col-sm-3'}>
+          <div className={'reciept-values'}>
+            {hint}
+            {marked}
+            {total}
+            <button
+             className={'btn btn-primary reciept__buy-button'}
+             onClick={() => {
+               this.handleBuyClick();
+               this.togglePaymentForm();
+             }}
+            >
+              Купить
+            </button>
+          </div>
         <Snackbar
           className={'snackbar'}
           open={this.state.open}
-          message="Для покупки билетов войдите или зарегистрируйтесь"
+          message={<span className={'snackbar__message'}>Для покупки билетов войдите или зарегистрируйтесь</span>}
           autoHideDuration={4000}
+          onActionTouchTap={this.handleSnackBarClick}
           onRequestClose={this.handleRequestClose}
-        />
+        >
+        </Snackbar>
         <Dialog
          title={'Оплата'}
          actions={paymentActions}
@@ -89,7 +118,6 @@ class HorizontalLinearStepper extends React.Component {
     finished: false,
     stepIndex: 0
   };
-
   handleNext = () => {
     const {stepIndex} = this.state;
     this.setState({
@@ -178,3 +206,31 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(RoundCheck);
+
+//nice stacking balls (UNDERESTIMATED ;(  )
+    //let balls = this.props.state.markedTickets.map((ticket, i, tickets) => {
+      //let ball;
+      //if (tickets.length > 5) {
+        //if (i === 0) {
+          //ball =
+            //<div className={'reciept-ball receipt-ball_first'}>
+              //<img src="public/images/ballBlue.png" />
+              //<span className={'reciept-ball__label'}>{ticket}</span>
+            //</div>
+        //}
+        //ball = 
+          //<div className={'reciept-ball receipt-ball_collapsed'}>
+            //<img src="public/images/ballBlue.png" />
+            //<span className={'reciept-ball__label'}>{ticket}</span>
+          //</div>
+      //} else {
+        //ball =
+          //<div className={'reciept-ball'}>
+            //<img src="public/images/ballBlue.png" />
+            //<span className={'reciept-ball__label'}>{ticket}</span>
+          //</div>
+      //}
+      //return (
+        //ball
+      //)
+    //});

@@ -39,7 +39,7 @@ const plugins = [
     }
   }),
   // This plugin moves all the CSS into a separate stylesheet
-  new ExtractTextPlugin('css/app.css', { allChunks: true })
+  new ExtractTextPlugin('stylesheet.css', { allChunks: true })
 ];
 
 const config = {
@@ -74,9 +74,14 @@ const config = {
         test: /\.jsx?$/,
         include: PATHS.app.admin,
         loaders: ['babel']
+      },
+      {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract('style-loader', ['css-loader', 'postcss-loader', 'sass-loader'])
       }
     ]
   },
+  postcss: [autoprefixer()],
   plugins: plugins,
   devtool: 'source-map'
 };

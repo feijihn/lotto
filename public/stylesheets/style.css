@@ -8,28 +8,6 @@ body {
   min-height: 100%;
 }
 
-a {
-  color: #00B7FF;
-  text-decoration: none;
-  outline: 0;
-}
-
-a:hover {
-  text-decoration: none;
-}
-
-a:active {
-  text-decoration: none;
-}
-
-a:focus {
-  outline: 0;
-  text-decoration: 0;
-}
-
-a:visited {
-  text-decoration: none;
-}
 
 .panel h1 {
   text-align: center;
@@ -99,50 +77,10 @@ a:visited {
   display: inherit;
 }
 
-#aboutUsSection {
-  background-color: rgba(60, 79, 118, 1);
-  color: rgba(255,255,255,0.6);
-  padding-bottom: 10%;
-}
 
-.aboutUsCaption {
-  display: block;
-  font-family: "WeblySleek UI";
-  color: rgba(255,255,255,1);
-  white-space: pre-wrap;
-}
-
-.aboutUsSection .btn-primary:hover {
-  background-color: #5b94c5;
-}
-
-.introContent {
-  max-height: 100%;
-  padding-top: 1.5%;
-}
-
-.introContent span {
-  font-family: "WeblySleek UI";
-  font-size: 1.2em;
-  font-weight: 900;
-  color: white;
-}
-
-.introTrust {
-  margin-top: 35px;
-}
-
-.introTrust a {
-  color: #B0E3F7;
-}
-
-.introTrust a:hover {
-  color: lightblue;
-}
-
-.handsIcon {
-  float: left;
-  white-space: nowrap;
+.panel-pages input[type=submit] {
+  display: inline-block;
+  margin-top: 10px;
 }
 
 .moreIcon {
@@ -164,9 +102,10 @@ a:visited {
   margin-top: 10%;
 }
 
-.trustIcon {
-  font-family: inerhit;
-  color: white;
+.product p {
+  margin-top: 10px;
+  font-size: 16px;
+  color: rgba(0,0,0,1);
 }
 
 .introCaption a {

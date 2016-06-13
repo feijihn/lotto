@@ -7,6 +7,7 @@ import $ from 'jquery';
  * @return {Object} object to update the current store state
  * @memberof Actions
  */
+
 function recieveUserInfo(data) {
   return {
     type: 'RECIEVE_USERINFO',
@@ -408,6 +409,22 @@ export function markAlertAsRead(alertId) {
 export function clearTickets() {
   return function(dispatch) {
     dispatch(clearedTickets());
+  };
+}
+
+export function toggleLoginDropdown(flag) {
+  return function(dispatch) {
+    dispatch({
+      type: 'LOGIN_DROPDOWN_TOGGLE',
+      flag: flag
+    });
+  }
+}
+
+
+export function selectAllTickets() {
+  return function(dispatch) {
+    dispatch(selectUnmarked());
   };
 }
 

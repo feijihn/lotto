@@ -19,13 +19,33 @@ export const initialState = {
   loggedIn: false,
   products: [],
   round: [],
+  dateChecking: false,
+  transactions: [
+    2399123,
+    1234822,
+    299993,
+    327484,
+    1284872,
+    71263,
+    44123452,
+    12312123,
+    123949,
+    1231212,
+    244881,
+    123231,
+    21368089,
+    123689,
+    12389000
+  ],
   product: [{}],
   viewingRound: {},
   markedTickets: [],
   ownedTickets: [],
   roundHistory: [],
   roundFinished: false,
+  loginDropdownOpen: false,
   roundWaitingForWinner: false,
+  transactionsExpandState: false,
   winner: -1,
   numberTicketsMarked: 0,
   viewingTickets: new Array(100 + 1).join('0').split('').map(parseFloat)
@@ -60,17 +80,16 @@ function App(state = initialState, action) {
         product: prod
       });
     case 'MARK_TICKET':
-      var newState = Object.assign({}, state);
-      var _tickets = newState.viewingTickets;
+      var _tickets = [...state.viewingTickets];
       _tickets[action.value] = 3;
-      var _markedTickets = newState.markedTickets;
+      var _markedTickets = [...state.markedTickets];
       _markedTickets.push(action.value);
       return Object.assign({}, state, {
         viewingTickets: _tickets,
         markedTickets: _markedTickets
       });
     case 'VIEWING_TICKETS':
-      var temp = state.viewingTickets;
+      var temp = [...state.viewingTickets];
       action.data.forEach(ticket => {
         if (ticket.user_id === state.userinfo._id) {
           temp[ticket.value] = 2;
@@ -84,8 +103,8 @@ function App(state = initialState, action) {
         viewingTickets: temp
       });
     case 'TICKET_DESELECT':
-      var dtckts = state.markedTickets;
-      var vtckts = state.viewingTickets;
+      var dtckts = [...state.markedTickets];
+      var vtckts = [...state.viewingTickets];
       var index = dtckts.indexOf(action.value);
       dtckts.splice(index, 1);
       vtckts[action.value] = 0;
@@ -98,7 +117,7 @@ function App(state = initialState, action) {
         markedTickets: []
       });
     case 'ROUND_FINISH':
-      var wtckts = state.viewingTickets;
+      var wtckts = [...state.viewingTickets];
       wtckts[action.winner] = 4;
       return Object.assign({}, state, {
         viewingTickets: wtckts,
@@ -123,8 +142,8 @@ function App(state = initialState, action) {
         roundWaitingForWinner: false
       });
     case 'SELECT_UNMARKED':
-      var stckts = state.viewingTickets;
-      var footckts = state.markedTickets;
+      var stckts = [...state.viewingTicekts];
+      var footckts = [...state.markedTickets];
       stckts.forEach((ticket, i) => {
         if (ticket === 0) {
           footckts.push(i);
@@ -150,7 +169,7 @@ function App(state = initialState, action) {
         content: newContent
       });
     case 'ARCHIVE_TICKETS' :
-      var archive = state.roundHistory;
+      var archive = [...state.roundHistory];
       for (var i in archive) {
         if (archive[i]._id === action.roundId) {
           archive[i].tickets = action.data;
@@ -160,6 +179,26 @@ function App(state = initialState, action) {
       return Object.assign({}, state, {
         roundHistory: archive
       });
+    case 'DATE_CHECKED' :
+      return Object.assign({}, state, {
+        transactions: action.data,
+        dateChecking: false
+      });
+    case 'DATE_CHECKING' :
+      return Object.assign({}, state, {
+        dateChecking: true,
+        transactions: []
+      });
+    case 'TRANSACTIONS_EXPAND_TOGGLE' : {
+      return Object.assign({}, state, {
+        transactionsExpanded: action.flag
+      })
+    }
+    case 'LOGIN_DROPDOWN_TOGGLE': {
+      return Object.assign({}, state, {
+        loginDropdownOpen: action.flag
+      })    
+    }
     default:
       return state;
   }
