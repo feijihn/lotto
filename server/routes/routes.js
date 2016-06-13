@@ -156,8 +156,25 @@ module.exports = function(app, passport) {
       })
     })
   });
-  //app.post('/editproduct', isLoggedIn, isAdmin, upload.single('picture'), (req, res) => {
-  //});
+  app.post('/editproduct', isLoggedIn, isAdmin, upload.single('picture'), (req, res) => {
+    Product.findById(req.body.productId, (err, product) => {
+      let newName = req.body.name || product.name;
+      let newPrice = req.body.price || product.price;
+      let newDescription = req.body.description || product.description;
+      let relPath;
+      if (req.file) {
+        let imgPath = path.resolve(__dirname + '../../public/images/' + newProduct._id + '.jpg');
+        fs.renameSync(path.resolve(__dirname + '../../' + req.file.path), imgPath);
+        relPath = path.resolve('../../../../../../public/images/' + newProduct._id + '.jpg');
+      }
+      let newImage = relPath || product.image;
+      product.update({$set: {name: newName, price: newPrice, description: newDescription, image: newImage}}, (err, query) => {
+        if (err) {
+          throw err;
+        }
+      });
+    });
+  });
   app.post('/submitproduct', isLoggedIn, isAdmin, upload.single('picture'), (req, res) => {
     let newProduct = new Product();
     let imgPath = path.resolve(__dirname + '/../../public/images/' + newProduct._id + '.jpg');

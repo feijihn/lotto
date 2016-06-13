@@ -21,9 +21,9 @@ class IntroSection extends React.Component {
     return (
       <div className={'intro col-lg-12 col-md-12 col-sm-12 col-xs-12 section'}>
         <div className={'col-lg-10 col-lg-offset-1 col-md-12 col-sm-12 col-sx-12 text-center intro__content'}>
-              <h1 className={'intro__title'} dangerouslySetInnerHTML={this.props.state.content ? {__html: this.props.state.content.introSection.header} :{__html: ''}}></h1>
-              <p className={'intro__subtitle'} dangerouslySetInnerHTML={this.props.state.content ? {__html: this.props.state.content.introSection.text} : {__html: ''}}></p>
-            <button className={'btn btn-lg btn-info intro_CTA'} onClick={this.handlePlayClick}><a href="#" id="playButton">Играть</a></button><br/>
+              <h1 className={'title'} dangerouslySetInnerHTML={this.props.state.content ? {__html: this.props.state.content.introSection.header} :{__html: ''}}></h1>
+              <p className={'subtitle'} dangerouslySetInnerHTML={this.props.state.content ? {__html: this.props.state.content.introSection.text} : {__html: ''}}></p>
+            <button className={'btn btn-lg btn-info intro_CTA'} onClick={this.handlePlayClick}>Играть</button><br/>
             <div className={'col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12 introTrust'}>
                  <span className={'col-lg-6 col-md-6 col-sm-6 col-xs-12 handsIcon'}>
                     <img src="public/images/hands.png" width="32px" height="32px" />

@@ -25,7 +25,8 @@ mongoose.connect(configDB.url); // connect to our database
 require('../config/passport')(passport); // pass passport for configuration
 // require('./webpack.dev.js')(app);
 console.server = (text) => console.log('[SERVER]'.blue + ' ' + text);
-console.err = (text) => console.error('[ERROR]'.red + ' ' + text);
+console.err = (text, error) => console.error('[ERROR]'.bgRed.yellow + ' ' + text.bgRed.yellow + '\n' + error);
+console.webpack = (text) => conole.log('[WEBPACK]'.magenta + ' ' + text);
 
 (function() {
   if (process.env.NODE_ENV === 'development') {
@@ -46,7 +47,7 @@ console.err = (text) => console.error('[ERROR]'.red + ' ' + text);
     }));
 
     app.use(require("webpack-hot-middleware")(compiler, {
-      log: console.log,
+      log: console.webpack,
       heartbeat: 10 * 1000
     }));
   }
@@ -77,9 +78,9 @@ require('./routes/routes.js')(app, passport); // load our routes and pass in our
 
 // launch ======================================================================
 app.listen(port);
-console.log('[SERVER]'.blue + ' listening on port:' + port + ' ...');
+console.server('Listening on port ' + port.black.bgYellow + ' ...');
 if (process.env.NODE_ENV) {
-  console.log('[SERVER]'.blue + ' Entered ' + process.env.NODE_ENV + ' mode...')
+  console.server('Entered ' + process.env.NODE_ENV.black.bgYellow + ' mode...')
 } else {
   throw(new Error('[Error] no NODE_ENV specified or NODE_ENV is corrupt. Please do $export NODE_ENV=%mode% and specify \'production\' or \'development\' as %mode%'))
 }
