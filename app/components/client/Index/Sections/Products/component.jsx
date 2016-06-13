@@ -14,9 +14,11 @@ class Products extends React.Component {
       let imageLabel = product.name;
       return (
         <Product id={product._id} ticketCost={product.price / 50} key={i}>
-          <span className={'ticketCost'}>{product.price / 50} за билет</span>
-          <img src={imageLink}/>
-          <p>{ imageLabel }</p>
+          <span className={'product__ticket-cost'}>{product.price / 50} за билет</span>
+          <div className={'product__image'} style={{backgroundImage: 'url(' + imageLink + ')'}}>
+          </div>
+          <h3 className={'product__title'}>{ imageLabel }</h3>
+          <div className={'product__description'}>{product.description}</div>
         </Product>
       );
     });

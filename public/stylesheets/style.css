@@ -169,6 +169,7 @@ a:visited {
   color: white;
 }
 
+<<<<<<< HEAD
 .snackbar span {
   color: white;
 }
@@ -338,15 +339,6 @@ a:visited {
 }
 
 .ticketCost {
-  position: absolute;
-  font-family: 'Circular';
-  color: white;
-  font-weight: 900;
-  padding: 5px;
-  border: 3px solid white;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 32px 32px 32px 32px;
-  transform: translateX(120%);
   -moz-transform: translateX(120%);
   -ms-transform: translateX(120%);
   -o-transform: translateX(120%);
