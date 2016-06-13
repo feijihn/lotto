@@ -14,14 +14,13 @@
 
 .intro__content {
   margin-top: 100px;
-}
-
-.intro__title {
-  font-size: 2.5em;
-}
-
-.intro__subtitle {
-  font-size: 1.5em;
+  .title {
+    font-size: 2.5em;
+    font-weight: 300;
+  }
+  .subtitle {
+    font-size: 1.5em;
+  }
 }
 
 .intro_CTA {
@@ -32,4 +31,26 @@
   background-color:  white;
   text-align: center;
   padding-bottom: 30px;
+}
+
+.aboutus {
+  background-color: rgba(60, 79, 118, 1);
+  color: white;
+  .btn-primary:hover {
+    background-color: #5b94c5;
+  }
+}
+
+.aboutus__content {
+  .title {
+    font-size: 2.33em;
+  }
+  .paragraph {
+    font-size: 1.3em;
+  }
+}
+
+.aboutus__image {
+  width: 100%;
+  margin-top: 10%;
 }
