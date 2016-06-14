@@ -30,7 +30,8 @@ node_modules
 public/build
 
 #product images  directory
-public/images/product-pics
+public/images/product-pics/*
+!public/images/product-pics/lockfile
 
 # Optional npm cache directory
 .npm
