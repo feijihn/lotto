@@ -8,11 +8,6 @@ body {
   min-height: 100%;
 }
 
-
-.panel h1 {
-  text-align: center;
-}
-
 .section__title__black {
   font-family: 'WeblySleek UI';
   font-size: 3em;
@@ -38,39 +33,6 @@ body {
   font-weight: 600;
 }
 
-.buyTickets {
-  position: fixed;
-  padding: 10px;
-  width: 100px;
-  top: 50%;
-  right: 0;
-  background-color: rgba(0,0,0,0.2);
-}
-
-.ticketContainer {
-  height: 100%;
-  min-width: 500px;
-  position: relative;
-  display: inline-block;
-  text-align: center;
-}
-
-.tickets__wrapper {
-  display:inline-block;
-  width:500px;
-}
-
-.buyButton {
-  margin: 0 auto;
-  display: inherit;
-}
-
-.selectAllButton {
-  margin: 0 auto;
-  display: inherit;
-}
-
-
 .panel-pages input[type=submit] {
   display: inline-block;
   margin-top: 10px;
@@ -84,25 +46,6 @@ body {
 .aboutUsContent {
   max-height: 100%;
   padding-top: 1.5%;
-}
-
-.btn-info a{
-  color: white
-}
-
-.aboutUsImage {
-  width: 100%;
-  margin-top: 10%;
-}
-
-.product p {
-  margin-top: 10px;
-  font-size: 16px;
-  color: rgba(0,0,0,1);
-}
-
-.introCaption a {
-  color: white;
 }
 
 .routerContainer {
@@ -132,33 +75,6 @@ body {
   width:100%;
   min-height: 650px;
   background-color:rgba(60, 79, 118, 1);
-}
-
-.admin__panel {
-  height: 100%;
-  width: 100%;
-}
-
-.admin__panel__wrapper {
-  width: 100%;
-  height: 100%;
-}
-
-.admin__panel__content {
-  position: absolute;
-  top: 0;
-  left: 21%;
-  max-width: 79%;
-}
-
-.admin__panel__menu {
-  width: 20%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: #aaaaaa;
-  color: white;
-  height: 100%;
 }
 
 .profilePage {
@@ -224,26 +140,6 @@ body {
 #round__steps {
   background-color: #ecf0f1;
   padding-bottom: 50px;
-}
-
-.round__info {
-  width: 100%;
-  height: 120px;
-  margin-top: 130px;
-  background-color: #284055;
-  position: relative;
-}
-
-.round__info h1 {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -100%);
-  -moz-transform: translate(-50%, -100%);
-  -ms-transform: translate(-50%, -100%);
-  -o-transform: translate(-50%, -100%);
-  -webkit-transform: translate(-50%, -100%);
-  color: white;
 }
 
 @font-face {

@@ -24,8 +24,7 @@ const plugins = [
     'process.env.NODE_ENV': JSON.stringify('development'),
     __DEV__: JSON.stringify(JSON.parse(process.env.DEBUG || 'false'))
   }),
-  new webpack.optimize.OccurenceOrderPlugin(),
-  new ExtractTextPlugin('stylesheet.css')
+  new webpack.optimize.OccurenceOrderPlugin()
 ];
 
 const config = {
@@ -62,7 +61,7 @@ const config = {
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('style-loader', ['css-loader', 'postcss-loader', 'sass-loader'])
+        loaders: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
       }
     ]
   },

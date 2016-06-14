@@ -26,7 +26,7 @@ require('../config/passport')(passport); // pass passport for configuration
 // require('./webpack.dev.js')(app);
 console.server = (text) => console.log('[SERVER]'.blue + ' ' + text);
 console.err = (text, error) => console.error('[ERROR]'.bgRed.yellow + ' ' + text.bgRed.yellow + '\n' + error);
-console.webpack = (text) => conole.log('[WEBPACK]'.magenta + ' ' + text);
+console.webpack = (text) => console.log('[WEBPACK]'.magenta + ' ' + text);
 
 (function() {
   if (process.env.NODE_ENV === 'development') {
