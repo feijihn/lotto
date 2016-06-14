@@ -96,8 +96,14 @@
   left: 0;
   border: 0;
   color: white;
+  &:hover {
+    background-color: #3971a1;
+  }
 }
 
 .product__description {
   position: absolute;
+  text-align: left;
+  padding: 2%;
+  font-size: 16px;
 }
