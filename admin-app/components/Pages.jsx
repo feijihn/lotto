@@ -8,6 +8,9 @@ export default class Pages extends React.Component {
   componentWillMount = () => {
     this.props.fetchContent();
   }
+  componentDidMount = () => {
+    this.props.fetchContent();
+  }
   handleSubmit = () => {
     let form = this.refs.contentForm;
     let formData = {
@@ -19,8 +22,9 @@ export default class Pages extends React.Component {
     this.props.submitContent(formData);
   }
   render() {
+    let content = this.props.state.content;
     return (
-      <div className={'admin__panel__content'}>
+      <div className={'admin-panel__content'}>
         <form action="javascript:void(0)" onSubmit={this.handleSubmit} ref="contentForm">
             <h2 className={'text-center'}>Верхний блок</h2>
             <h3>Header</h3>
@@ -28,7 +32,7 @@ export default class Pages extends React.Component {
               type="text"
               className={'form-control'}
               name="introHeader"
-              defaultValue={this.props.state.content ? this.props.state.content.introSection.header : ''}
+              value={content ? content.introSection.header : ''}
             />
             <h3>Text</h3>
             <textarea
@@ -36,7 +40,7 @@ export default class Pages extends React.Component {
               rows="5"
               cols="110"
               name="introText"
-              defaultValue={this.props.state.content ? this.props.state.content.introSection.text : ''} 
+              value={content ? content.introSection.text : ''} 
             />
             <h2 className={'text-center'}>Нижний блок </h2>
             <h3>Header</h3>
@@ -44,7 +48,7 @@ export default class Pages extends React.Component {
               type="text"
               className={'form-control'}
               name="reliablitityHeader"
-              defaultValue={this.props.state.content ? this.props.state.content.reliabilitySection.header : ''}
+              value={content ? content.reliabilitySection.header : ''}
             />
             <h3>Text</h3>
             <textarea
@@ -52,7 +56,7 @@ export default class Pages extends React.Component {
               rows="5"
               cols="110"
               name="reliabilityText"
-              defaultValue={this.props.state.content ? this.props.state.content.reliabilitySection.text : ''}
+              value={content ? content.reliabilitySection.text : ''} 
             />
             <hr/>
             <input
