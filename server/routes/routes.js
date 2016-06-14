@@ -338,6 +338,7 @@ module.exports = function(app, passport) {
             tickets: ticket
           });
         }
+      });
       return undefined;
     });
   });
