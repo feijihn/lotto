@@ -39,7 +39,7 @@ const plugins = [
     }
   }),
   // This plugin moves all the CSS into a separate stylesheet
-  new ExtractTextPlugin('stylesheet.css')
+  new ExtractTextPlugin('stylesheet.css', { allChunks: true })
 ];
 
 const config = {
@@ -81,11 +81,7 @@ const config = {
       }
     ]
   },
-<<<<<<< HEAD
-  postcss: [ autoprefixer() ],
-=======
   postcss: [autoprefixer()],
->>>>>>> development
   plugins: plugins,
   devtool: 'source-map'
 };
