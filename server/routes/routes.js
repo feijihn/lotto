@@ -169,7 +169,7 @@ module.exports = function(app, passport) {
       let newName = req.body.name || product.name;
       let newPrice = req.body.price || product.price;
       let newDescription = req.body.description || product.description;
-      let newImage = req.file.path || product.image;
+      let newImage = req.file.fieldname || product.image;
       product.update({$set: {name: newName, price: newPrice, description: newDescription, image: newImage}}, (err, query) => {
         if (err) {
           throw err;
@@ -183,7 +183,7 @@ module.exports = function(app, passport) {
     newProduct.price = req.body.price;
     newProduct.description = req.body.description;
     newProduct.category = 0;
-    newProduct.image = req.file.path;
+    newProduct.image = req.file.fieldname;
     let initialRound = new Round();
     initialRound.product_id = newProduct._id;
     initialRound.description = '';

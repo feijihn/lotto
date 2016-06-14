@@ -8,6 +8,8 @@ import RoundHistory from './RoundHistory/component.jsx';
 import {List, ListItem, Avatar, Divider} from 'material-ui';
 import {Link} from 'react-router';
 
+require('./style.scss');
+
 class Profile extends React.Component {
   componentWillMount = () => {
     this.props.fetchRoundsArchive();
@@ -19,13 +21,13 @@ class Profile extends React.Component {
           <h1 className={'profile__title'}>
             Профиль
           </h1>
-          <Avatar className={'profile__avatar'}>
+          <Avatar className={'profile__avatar'} size="128">
             {this.props.state.userinfo.local.username[0]}
           </Avatar>
-          <span className={'profile__info'}>
+          <div className={'profile__info'}>
             Имя пользователя: {this.props.state.userinfo.local.username}<br/>
             Email: {this.props.state.userinfo.local.email}
-          </span>
+          </div>
           <Divider/>
           <RoundHistory />
         </div>

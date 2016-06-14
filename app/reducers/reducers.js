@@ -171,9 +171,9 @@ function App(state = initialState, action) {
     case 'ARCHIVE_TICKETS' :
       var archive = [...state.roundHistory];
       for (var i in archive) {
+        archive[i] = {...state.roundHistory[i]};
         if (archive[i]._id === action.roundId) {
           archive[i].tickets = action.data;
-          console.log(archive[i].tickets);
         }
       }
       return Object.assign({}, state, {

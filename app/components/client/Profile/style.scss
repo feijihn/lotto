@@ -1,1 +1,31 @@
-.{}
+.profile-wrapper {
+  width: 100%;
+  position: relative;
+  overflow: auto;
+  background-color:rgba(60, 79, 118, 1);
+  padding: 3% 0px;
+}
+
+.profile {
+  font-family: "WeblySleek UI";
+  background-color: white;
+  border-radius: 15px;
+  border: 2px solid rgba(0, 0, 0, .4);
+  margin-top: 120px;
+}
+
+.profile__title {
+  color: black;
+  text-align: center;
+}
+
+.profile__avatar {
+  position: absolute;
+  line-height: 116px !important;
+}
+
+.profile__info {
+  min-height: 132px;
+  padding: 2% 0px 2% 132px;
+}
+
