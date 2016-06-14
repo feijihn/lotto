@@ -1,0 +1,28 @@
+.admin-panel__menu {
+  width: 17%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  color: white;
+  height: 100%;
+  box-shadow: 0 0 15px rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, .1);
+  overflow: hidden;
+  .material-menu__item {
+    font-family: "Roboto" !important;
+    text-decoration: none !important;
+  }
+}
+
+.admin-panel__wrapper {
+  width: 100%;
+  min-height: 100%;
+}
+
+.admin-panel__content {
+  position: absolute;
+  top:0;
+  left: 17%;
+  max-width: 83%;
+  padding: 2%;
+}

@@ -59,7 +59,7 @@ class Products extends React.Component {
       );
     });
     return (
-      <div className={'admin__panel__content'}>
+      <div className={'admin-panel__content'}>
         <h1>Лоты</h1>
         <Table onRowSelection={this.handleRowSelection}>
           <TableHeader>

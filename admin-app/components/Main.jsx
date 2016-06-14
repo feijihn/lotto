@@ -7,9 +7,7 @@ import {connect} from 'react-redux';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
-import injectTapEventPlugin from 'react-tap-event-plugin';
-
-injectTapEventPlugin();
+require('./style.scss');
 
 class AdminMain extends React.Component {
   getChildContext = () => {
@@ -19,7 +17,7 @@ class AdminMain extends React.Component {
   }
   render() {
     return (
-      <div className={'admin__panel__wrapper'}>
+      <div className={'admin-panel__wrapper'}>
         <AdminMenu />
         <div className="body-container">
           {this.props.children}
