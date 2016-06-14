@@ -30,7 +30,7 @@ console.webpack = (text) => conole.log('[WEBPACK]'.magenta + ' ' + text);
 
 (function() {
   if (process.env.NODE_ENV === 'development') {
-    console.server('running webpack middleware...');
+    console.server('Running webpack middleware...');
     var webpack = require('webpack');
     var webpackConfig = require('../config/webpack.config.js');
     var compiler = webpack(webpackConfig);

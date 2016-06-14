@@ -12,7 +12,15 @@ var path = require('path');
 var fs = require('fs');
 
 var multer  = require('multer');
-var upload = multer({ dest: '../../public/images' });
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '../../public/images');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname);
+  }
+})
+var upload = multer({ storage: storage });
 
 module.exports = function(app, passport) {
   // =====================================
@@ -161,13 +169,7 @@ module.exports = function(app, passport) {
       let newName = req.body.name || product.name;
       let newPrice = req.body.price || product.price;
       let newDescription = req.body.description || product.description;
-      let relPath;
-      if (req.file) {
-        let imgPath = path.resolve(__dirname + '../../public/images/' + newProduct._id + '.jpg');
-        fs.renameSync(path.resolve(__dirname + '../../' + req.file.path), imgPath);
-        relPath = path.resolve('../../../../../../public/images/' + newProduct._id + '.jpg');
-      }
-      let newImage = relPath || product.image;
+      let newImage = req.file.path || product.image;
       product.update({$set: {name: newName, price: newPrice, description: newDescription, image: newImage}}, (err, query) => {
         if (err) {
           throw err;
@@ -177,14 +179,11 @@ module.exports = function(app, passport) {
   });
   app.post('/submitproduct', isLoggedIn, isAdmin, upload.single('picture'), (req, res) => {
     let newProduct = new Product();
-    let imgPath = path.resolve(__dirname + '/../../public/images/' + newProduct._id + '.jpg');
-    fs.renameSync(path.resolve(__dirname + '/../../' + req.file.path), imgPath);
-    let relPath = path.resolve('../../../../../../public/images/' + newProduct._id + '.jpg');
     newProduct.name = req.body.name;
     newProduct.price = req.body.price;
     newProduct.description = req.body.description;
     newProduct.category = 0;
-    newProduct.image = relPath;
+    newProduct.image = req.file.path;
     let initialRound = new Round();
     initialRound.product_id = newProduct._id;
     initialRound.description = '';
