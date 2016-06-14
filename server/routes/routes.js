@@ -14,10 +14,10 @@ var fs = require('fs');
 var multer  = require('multer');
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, '../../public/images');
+    cb(null, 'public/images/product-pics');
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname);
+    cb(null, file.originalname);
   }
 })
 var upload = multer({ storage: storage });
@@ -106,7 +106,7 @@ module.exports = function(app, passport) {
   });
   app.post('/admin', passport.authenticate('local-admin-login', {
     successRedirect: '/admin-panel',
-    failureRedirect: '/',
+    failureRedirect: '/admin',
     failureFlash: true
   }));
   app.get('/admin-panel', isLoggedIn, isAdmin, (req, res) => {
@@ -169,7 +169,7 @@ module.exports = function(app, passport) {
       let newName = req.body.name || product.name;
       let newPrice = req.body.price || product.price;
       let newDescription = req.body.description || product.description;
-      let newImage = req.file.fieldname || product.image;
+      let newImage = req.file.path || product.image;
       product.update({$set: {name: newName, price: newPrice, description: newDescription, image: newImage}}, (err, query) => {
         if (err) {
           throw err;
@@ -178,12 +178,13 @@ module.exports = function(app, passport) {
     });
   });
   app.post('/submitproduct', isLoggedIn, isAdmin, upload.single('picture'), (req, res) => {
+    console.log(req.file);
     let newProduct = new Product();
     newProduct.name = req.body.name;
     newProduct.price = req.body.price;
     newProduct.description = req.body.description;
     newProduct.category = 0;
-    newProduct.image = req.file.fieldname;
+    newProduct.image = req.file.path;
     let initialRound = new Round();
     initialRound.product_id = newProduct._id;
     initialRound.description = '';
