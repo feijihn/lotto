@@ -29,6 +29,9 @@ node_modules
 # Build directory
 public/build
 
+#product images  directory
+public/images/product-pics
+
 # Optional npm cache directory
 .npm
 
