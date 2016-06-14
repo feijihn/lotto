@@ -7,6 +7,10 @@ import {connect} from 'react-redux';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
+injectTapEventPlugin();
+
 require('./style.scss');
 
 class AdminMain extends React.Component {
