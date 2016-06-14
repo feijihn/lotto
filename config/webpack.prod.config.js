@@ -16,8 +16,6 @@ const PATHS = {
   public: path.resolve(__dirname, '../public')
 };
 
-/kVy:q:!echo " >> history.log
-
 const plugins = [
   //new CopyWebpackPlugin([
     //{
