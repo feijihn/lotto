@@ -1,0 +1,20 @@
+.notifications-wrapper {
+  width: 100%;
+  position: relative;
+  overflow: auto;
+  background-color: rgb(60, 79, 118);
+  padding: 3% 0px;
+}
+
+.notifications {
+  font-family: "WeblySleek UI";
+  background-color: white;
+  border-radius: 15px;
+  border: 2px solid rgba(0, 0, 0, .4);
+  margin-top: 120px;
+}
+
+.notifications__title {
+  text-align: center;
+  color: black;
+}

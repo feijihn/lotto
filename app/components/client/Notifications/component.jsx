@@ -6,6 +6,8 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as Actions from '../../../actions/actions.js';
 
+require('./style.scss');
+
 class Notifications extends React.Component {
   render() {
     let rawNots = this.props.state.userinfo.messages || [];
@@ -25,11 +27,12 @@ class Notifications extends React.Component {
       nots = <h2>У вас еще нет уведомлений</h2>;
     }
     return (
-      <div className={'notifications__wrapper'}>
-        <div className={'notifications__block col-lg-6 col-md-8 col-sm-12 col-lg-offset-3 col-md-offset-2'}>
-            <h1 style={{textAlign: 'center'}}>
+      <div className={'notifications-wrapper'}>
+        <div className={'notifications col-lg-6 col-md-8 col-sm-12 col-lg-offset-3 col-md-offset-2 col-xs-12'}>
+            <h1 className={'notifications__title'}>
               Уведомления
             </h1>
+            <hr/>
             <List>
               {nots}
             </List>
