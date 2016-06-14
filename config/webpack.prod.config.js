@@ -37,9 +37,7 @@ const plugins = [
     compress: {
       warnings: false
     }
-  }),
-  // This plugin moves all the CSS into a separate stylesheet
-  new ExtractTextPlugin('stylesheet.css', { allChunks: true })
+  })
 ];
 
 const config = {
@@ -77,7 +75,7 @@ const config = {
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('style-loader', ['css-loader', 'postcss-loader', 'sass-loader'])
+        loaders: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
       }
     ]
   },
