@@ -319,13 +319,13 @@ export function viewingProduct(prodId) {
  * @return {Function} dispatcher fucntion which emits action
  * @memberof Actions
  */
-export function fetchTickets(rndId, archive = false) {
-  console.log('fetching tickets...');
+export function fetchTickets(rndId, archive = false, ticketsCount) {
+  console.log('Fetching tickets...');
   return function(dispatch) {
     $.ajax({
       url: '/tickets',
       dataType: 'json',
-      data: {rndId: rndId},
+      data: {roundId: roundId, ticketsCount: ticketsCount},
       success: data => {
         if (archive) {
           dispatch(archiveTickets(data.tickets, rndId));
@@ -338,13 +338,16 @@ export function fetchTickets(rndId, archive = false) {
             case 'WAITING':
               dispatch(roundWaitingForWinner());
               break;
-            case 'INPROG':
+            case 'MODIFIED':
+              dispatch(viewingTickets(data.tickets));
+              break;
+            case 'NOTMODIFIED':
+              console.log('Tickets not modified...');
               break;
             default:
               console.error(new Error('bad data from server when fetching tickets...'));
               break;
           }
-          dispatch(viewingTickets(data.tickets));
         }
       },
       error: (xhr, status, err) => {
