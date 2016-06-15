@@ -27,24 +27,13 @@ class RoundPage extends React.Component {
     });
   }
   componentWillMount = () => {
-    if (this.props.params.productId) {
-      this.props.fetchProducts();
-      this.props.fetchRounds(this.props.params.productId);
+      this.props.params.productId ? this.props.fetchRounds(this.props.params.productId) : this.props.fetchRoundById(this.props.params.roundId);
       let handle = setInterval(() => {
-        this.props.fetchTickets(this.props.state.round._id, false, this.props.state.viewingTickets.length);
+        this.props.fetchTickets(this.props.state.round._id | this.props.params.roundId, false, this.props.state.viewingTickets.length);
       }, 10000);
       this.setState({
         fetchTicketsHandle: handle
       });
-    } else if (this.props.params.roundId) {
-      this.props.fetchRoundById(this.props.params.roundId);
-      let handle = setInterval(() => {
-        this.props.fetchTickets(this.props.params.roundId, false, this.props.state.viewingTickets.length);
-      }, 5000);
-      this.setState({
-        fetchTicketsHandle: handle
-      });
-    }
   }
   componentWillUnmount = () => {
     clearInterval(this.state.fetchTicketsHandle);
