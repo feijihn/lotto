@@ -165,9 +165,6 @@ class RoundPage extends React.Component {
         <div className={'roundpage col-lg-10 col-md-12 col-sm-12'}>
           <RoundLegend />
           <div className={'ticket-container col-lg-6 col-md-6 col-sm-8'}>
-          <div className={'ticket-container__overlay'}>
-            <h1>Раунд завершен! Выйграл билет №{this.props.state.winner}</h1>
-          </div>
             {tickets}
           </div>
           <RoundCheck />
