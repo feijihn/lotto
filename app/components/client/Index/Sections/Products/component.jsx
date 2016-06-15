@@ -10,15 +10,19 @@ import {connect} from 'react-redux';
 class Products extends React.Component {
   render() {
     let products = this.props.state.products.map((product, i) => {
-      let imageLink = product.image;
+      let imageLink = 'productpic/' + product._id;
       let imageLabel = product.name;
       return (
         <Product id={product._id} ticketCost={product.price / 50} key={i}>
           <span className={'product__ticket-cost'}>{product.price / 50} за билет</span>
           <div className={'product__image'} style={{backgroundImage: 'url(' + imageLink + ')'}}>
           </div>
-          <h3 className={'product__title'}>{ imageLabel }</h3>
-          <div className={'product__description'}>{product.description}</div>
+          <h3 className={'product__title'}>
+            { imageLabel }
+          </h3>
+          <div className={'product__description'}>
+            {product.description}
+          </div>
         </Product>
       );
     });
