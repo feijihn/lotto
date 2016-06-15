@@ -323,12 +323,12 @@ module.exports = function(app, passport) {
     });
   });
   app.get('/tickets', (req, res) => {
-    roundLogic.checkRoundEnd(req.query.rndId);
-    Ticket.find({round_id: req.query.rndId}, (err, ticket) => {
+    roundLogic.checkRoundEnd(req.query.roundId);
+    Ticket.find({round_id: req.query.roundId}, (err, ticket) => {
       if (err) {
         throw err;
       }
-      Round.findOne({_id: req.query.rndId}, (err, round) => {
+      Round.findOne({_id: req.query.roundId}, (err, round) => {
         if (err) {
           throw err;
         }

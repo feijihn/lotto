@@ -38,17 +38,15 @@ export const initialState = {
     12389000
   ],
   product: [{}],
-  viewingRound: {},
   markedTickets: [],
-  ownedTickets: [],
   roundHistory: [],
   roundFinished: false,
   loginDropdownOpen: false,
   roundWaitingForWinner: false,
   transactionsExpandState: false,
   winner: -1,
-  numberTicketsMarked: 0,
-  viewingTickets: new Array(100 + 1).join('0').split('').map(parseFloat)
+  viewingTickets: new Array(100 + 1).join('0').split('').map(parseFloat),
+  viewingTicketsCount: 0
 };
 
 /**
@@ -90,17 +88,22 @@ function App(state = initialState, action) {
       });
     case 'VIEWING_TICKETS':
       var temp = [...state.viewingTickets];
+      var notZeroTicketsLength = 0;
       action.data.forEach(ticket => {
         if (ticket.user_id === state.userinfo._id) {
           temp[ticket.value] = 2;
+          notZeroTicketsLength++;
         } else if (ticket.value === state.winner) {
           temp[ticket.value] = 4;
+          notZeroTicketsLength++;
         } else {
           temp[ticket.value] = 1;
+          notZeroTicketsLength++;
         }
       });
       return Object.assign({}, state, {
-        viewingTickets: temp
+        viewingTickets: temp,
+        viewingTicketsCount: notZeroTicketsLength
       });
     case 'TICKET_DESELECT':
       var dtckts = [...state.markedTickets];

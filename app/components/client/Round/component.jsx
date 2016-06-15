@@ -29,7 +29,8 @@ class RoundPage extends React.Component {
   componentWillMount = () => {
       this.props.params.productId ? this.props.fetchRounds(this.props.params.productId) : this.props.fetchRoundById(this.props.params.roundId);
       let handle = setInterval(() => {
-        this.props.fetchTickets(this.props.state.round._id | this.props.params.roundId, false, this.props.state.viewingTickets.length);
+        let id = this.props.state.round._id || this.props.params.roundId;
+        this.props.fetchTickets(id, false, this.props.state.viewingTicketsCount);
       }, 10000);
       this.setState({
         fetchTicketsHandle: handle
