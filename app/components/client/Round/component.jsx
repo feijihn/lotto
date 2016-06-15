@@ -31,7 +31,7 @@ class RoundPage extends React.Component {
       this.props.fetchProducts();
       this.props.fetchRounds(this.props.params.productId);
       let handle = setInterval(() => {
-        this.props.fetchTickets(this.props.state.round._id);
+        this.props.fetchTickets(this.props.state.round._id, false, this.props.state.viewingTickets.length);
       }, 10000);
       this.setState({
         fetchTicketsHandle: handle
@@ -39,7 +39,7 @@ class RoundPage extends React.Component {
     } else if (this.props.params.roundId) {
       this.props.fetchRoundById(this.props.params.roundId);
       let handle = setInterval(() => {
-        this.props.fetchTickets(this.props.params.roundId);
+        this.props.fetchTickets(this.props.params.roundId, false, this.props.state.viewingTickets.length);
       }, 5000);
       this.setState({
         fetchTicketsHandle: handle
@@ -140,9 +140,9 @@ class RoundPage extends React.Component {
           <RoundLegend />
           <div className={'ticket-container col-lg-6 col-md-6 col-sm-8'}>
             <div className={'ticket-container__overlay'}>
+              <h1>Выбираем победителя...</h1>
+            </div>
             {tickets}
-          </div>
-          <h1>Выбираем победителя...</h1>
           </div>
           <RoundCheck />
         </div>;
@@ -154,7 +154,7 @@ class RoundPage extends React.Component {
         <div className={'ticketContainer col-lg-6 col-md-6 col-sm-8'}>
         <div className={'tickets__wrapper'}>
           {tickets}
-          <div className={'round-overlay'}>
+          <div className={'round-finished-overlay'}>
             <h1>Раунд завершен! Выйграл билет №{this.props.state.winner}</h1>
           </div>
         </div>
@@ -167,6 +167,9 @@ class RoundPage extends React.Component {
         <div className={'roundpage col-lg-10 col-md-12 col-sm-12'}>
           <RoundLegend />
           <div className={'ticket-container col-lg-6 col-md-6 col-sm-8'}>
+            <div className={'ticket-container__overlay'}>
+              <h1>Выбираем победителя...</h1>
+            </div>
             {tickets}
           </div>
           <RoundCheck />
