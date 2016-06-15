@@ -319,7 +319,7 @@ export function viewingProduct(prodId) {
  * @return {Function} dispatcher fucntion which emits action
  * @memberof Actions
  */
-export function fetchTickets(rndId, archive = false, ticketsCount) {
+export function fetchTickets(roundId, archive = false, ticketsCount) {
   console.log('Fetching tickets...');
   return function(dispatch) {
     $.ajax({
