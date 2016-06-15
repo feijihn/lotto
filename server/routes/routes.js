@@ -20,7 +20,7 @@ var storage = multer.diskStorage({
     cb(null, file.originalname);
   }
 })
-var upload = multer({ storage: storage });
+var upload = multer();
 
 module.exports = function(app, passport) {
   // =====================================
@@ -115,6 +115,16 @@ module.exports = function(app, passport) {
   app.get('/admin-panel/*', isLoggedIn, isAdmin, (req, res) => {
     res.render('admin-panel.pug');
   });
+  app.get('/productpic/:productId', (req, res) => {
+    console.log(req.params);
+    Product.findById(req.params.productId, (err, product) => {
+      if (err) {
+        throw err;
+      }
+      res.contentType(product.image.contentType);
+      res.send(product.image.data);
+    })
+  });
   app.post('/uploadimage', (req, res) => {
   });
   app.post('/checkround', (req, res) => {
@@ -184,7 +194,8 @@ module.exports = function(app, passport) {
     newProduct.price = req.body.price;
     newProduct.description = req.body.description;
     newProduct.category = 0;
-    newProduct.image = req.file.path;
+    newProduct.image.data = req.file.buffer;
+    newProduct.image.contentType = req.file.mimetype;
     let initialRound = new Round();
     initialRound.product_id = newProduct._id;
     initialRound.description = '';
@@ -322,10 +333,16 @@ module.exports = function(app, passport) {
           throw err;
         }
         if (round && round.tickets.length < 100) {
-          res.json({
-            state: 'INPROG',
-            tickets: ticket
-          });
+          if(req.body.ticketsCount === round.tickets.length) {
+            res.json({
+              state: 'NOTMODIFIED'
+            })
+          } else {
+            res.json({
+              state: 'MODIFIED',
+              tickets: ticket
+            });
+          }
         } else if (round && round.winnum) {
           res.json({
             state: 'FINISH',

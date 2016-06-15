@@ -7,7 +7,7 @@ var productSchema = schema({
   name: String,
   price: Number,
   description: String,
-  image: String,
+  image: {data: Buffer, contentType: String},
   roundsCount: {type: Number, default: 0}
 });
 
