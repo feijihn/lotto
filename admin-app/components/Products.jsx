@@ -42,6 +42,7 @@ class Products extends React.Component {
       return (
         <TableRow
           selected={this.state.selectedRow === i}
+          key={i}
         >
           <TableRowColumn>
             { prod._id }

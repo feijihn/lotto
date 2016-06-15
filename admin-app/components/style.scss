@@ -6,8 +6,11 @@
   color: white;
   height: 100%;
   box-shadow: 0 0 15px rgba(0, 0, 0, .5);
-  background-color: rgba(0, 0, 0, .1);
+  background-color: rgba(0, 0, 0, .7);
   overflow: hidden;
+  .material-menu {
+    width: 100%;
+  }
   .material-menu__item {
     font-family: "Roboto" !important;
     text-decoration: none !important;

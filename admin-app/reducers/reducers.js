@@ -2,7 +2,8 @@
 const initialState = {
   products: [],
   rounds: [],
-  content: undefined
+  content: undefined,
+  footerLinks: []
 };
 
 function rootReducer(state = initialState, action) {
