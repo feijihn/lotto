@@ -22,6 +22,8 @@
   width: 540px;
   height: 540px;
   position: relative;
+  padding: 0;
+  margin: 0px 15px;
 }
 
 .ticket-container__ticket {
@@ -42,11 +44,20 @@
 
 .ticket-container__overlay {
   position:absolute;
-  height:100%;
+  height:90%;
   width:100%;
   z-index: 999;
   background-color: rgba(0, 0, 0, .5);
   color: white;
+  top: 0;
+  left: 0;
+  h1 {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    transform: translateY(-100%);
+    text-align: center;
+  }
 }
 
 
