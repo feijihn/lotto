@@ -1,6 +1,4 @@
 'use strict';
-// app/routes.js
-var Product = require('../models/product.js');
 var Round = require('../models/rounds.js');
 var Message = require('../models/message.js');
 var Ticket = require('../models/tickets.js');
@@ -11,18 +9,10 @@ var roundLogic = require('../roundLogic.js');
 var path = require('path');
 var fs = require('fs');
 
-var multer  = require('multer');
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'public/images/product-pics');
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  }
-})
-var upload = multer();
 
 module.exports = function(app, passport) {
+  require('./admin/productsCRUD.js')(app);
+  require('./admin/pagesCRUD.js')(app);
   // =====================================
   // HOME PAGE (with login links) ========
   // =====================================
@@ -115,16 +105,6 @@ module.exports = function(app, passport) {
   app.get('/admin-panel/*', isLoggedIn, isAdmin, (req, res) => {
     res.render('admin-panel.pug');
   });
-  app.get('/productpic/:productId', (req, res) => {
-    console.log(req.params);
-    Product.findById(req.params.productId, (err, product) => {
-      if (err) {
-        throw err;
-      }
-      res.contentType(product.image.contentType);
-      res.send(product.image.data);
-    })
-  });
   app.post('/uploadimage', (req, res) => {
   });
   app.post('/checkround', (req, res) => {
@@ -161,59 +141,6 @@ module.exports = function(app, passport) {
       }
     )
   });
-  app.post('/removeproduct', isLoggedIn, isAdmin, (req, res) => {
-    Product.remove({_id: req.body.productId}, (err, status) => {
-      if (err) {
-        throw err;
-      }
-      Product.find((err, products) => {
-        if (err) {
-          throw err;
-        }
-        res.json(products);
-      })
-    })
-  });
-  app.post('/editproduct', isLoggedIn, isAdmin, upload.single('picture'), (req, res) => {
-    Product.findById(req.body.productId, (err, product) => {
-      let newName = req.body.name || product.name;
-      let newPrice = req.body.price || product.price;
-      let newDescription = req.body.description || product.description;
-      let newImage = req.file.path || product.image;
-      product.update({$set: {name: newName, price: newPrice, description: newDescription, image: newImage}}, (err, query) => {
-        if (err) {
-          throw err;
-        }
-      });
-    });
-  });
-  app.post('/submitproduct', isLoggedIn, isAdmin, upload.single('picture'), (req, res) => {
-    console.log(req.file);
-    let newProduct = new Product();
-    newProduct.name = req.body.name;
-    newProduct.price = req.body.price;
-    newProduct.description = req.body.description;
-    newProduct.category = 0;
-    newProduct.image.data = req.file.buffer;
-    newProduct.image.contentType = req.file.mimetype;
-    let initialRound = new Round();
-    initialRound.product_id = newProduct._id;
-    initialRound.description = '';
-    initialRound.publicId = String(initialRound._id).substr(0, 5);
-    initialRound.creationTime = Date.now();
-    initialRound.startTime = Date.now();
-    newProduct.save(err => {
-      if (err) {
-        throw err;
-      }
-      initialRound.save(err => {
-        if (err) {
-          throw err;
-        }
-      })
-    });
-    res.json(newProduct);
-  });
   app.post('/claimticket', (req, res) => {
     let newTicket = new Ticket();
     newTicket.save(err => {
@@ -231,35 +158,6 @@ module.exports = function(app, passport) {
       res.json(content);
       return undefined;
     });
-  });
-  app.post('/submitcontent', isLoggedIn, isAdmin, upload.single(), (req, res) => {
-      console.log(req.body);
-      let newContent = new Content();
-      newContent.name = 'introSection';
-      newContent.header = req.body.introHeader;
-      let text = req.body.introText.replace(/\r?\n/g, '<br />');
-      newContent.text = text;
-      let newContent2 = new Content();
-      newContent2.name = 'reliabilitySection';
-      newContent2.header = req.body.reliabilityHeader;
-      text = req.body.reliabilityText.replace(/\r?\n/g, '<br />');
-      newContent2.text = text;
-      Content.remove({}, err => {
-        if (err) {
-          throw err;
-        }
-        newContent.save(err => {
-          if (err) {
-            throw err;
-          }
-        });
-        newContent2.save(err => {
-          if (err) {
-            throw err;
-          }
-        });
-      });
-    res.sendStatus(200);
   });
   app.post('/alertread', isLoggedIn, (req, res) => {
     User.update({'messages._id': req.body.alertId}, {$set: {'messages.$.status': 'read'}}, (err, user) => {
@@ -284,15 +182,6 @@ module.exports = function(app, passport) {
       }
     });
     res.sendStatus(200);
-  });
-  app.get('/products', (req, res) => {
-    Product.find((err, product) => {
-      if (err) {
-        throw err;
-      }
-      res.json(product);
-      return undefined;
-    });
   });
   app.get('/rounds', (req, res) => {
     Round.findOne({product_id: req.query.prodId, startTime: {$ne: undefined}}, (err, round) => {
