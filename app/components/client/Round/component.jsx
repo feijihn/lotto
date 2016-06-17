@@ -17,7 +17,15 @@ class RoundPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: true
+      open: true,
+      waitingText: 0,
+      waitingTexts: [
+        "Выбираем победителя...",
+        "Анализируем bitcoin транзакции...",
+        "Ждем нужный блок в цепочке...",
+        "Крутим барабан...",
+        "Запрашиваем необходимые блоки..."
+      ]
     };
     window.scrollTo(0, 100);
   }
@@ -27,17 +35,29 @@ class RoundPage extends React.Component {
     });
   }
   componentWillMount = () => {
+      let waitingTextHandle = setInterval(() => {
+        this.setState({
+          waitingText: this.state.waitingText < 4 ? this.state.waitingText + 1 : 0 
+        })
+      }, 10000);
+      this.setState({
+        waitingTextHandle: waitingTextHandle
+      })
       this.props.params.productId ? this.props.fetchRounds(this.props.params.productId) : this.props.fetchRoundById(this.props.params.roundId);
       let handle = setInterval(() => {
         let id = this.props.state.round._id || this.props.params.roundId;
         this.props.fetchTickets(id, false, this.props.state.viewingTicketsCount);
-      }, 10000);
+        if(this.props.state.roundWaitingForWinner || this.props.state.roundFinished) {
+          clearInterval(this.state.fetchTicketsHandle);
+        }
+      }, 15000);
       this.setState({
         fetchTicketsHandle: handle
       });
   }
   componentWillUnmount = () => {
     clearInterval(this.state.fetchTicketsHandle);
+    clearInterval(this.state.waitingTextHandle);
     this.props.clearTickets();
   }
   render() {
@@ -130,7 +150,8 @@ class RoundPage extends React.Component {
           <RoundLegend />
           <div className={'ticket-container col-lg-6 col-md-6 col-sm-8'}>
             <div className={'ticket-container__overlay'}>
-              <h1>Выбираем победителя...</h1>
+              <img className={'roundSpinner'} src="public/images/roundSpinner.gif" />
+              <h1>{this.state.waitingTexts[this.state.waitingText]}</h1>
             </div>
             {tickets}
           </div>
