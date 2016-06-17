@@ -35,29 +35,15 @@ class PagesFooter extends React.Component {
               value={content ? content.introSection.header : ''}
             />
             <h3>Ссылки</h3>
-            <textarea
-              className={'form-control'}
-              rows="5"
-              cols="110"
-              name="introText"
-              value={content ? content.introSection.text : ''} 
-            />
             <h2 className={'text-center'}>Правый блок </h2>
-            <h3>Header</h3>
+            <h3>Заголовок</h3>
             <input
               type="text"
               className={'form-control'}
               name="reliablitityHeader"
               value={content ? content.reliabilitySection.header : ''}
             />
-            <h3>Text</h3>
-            <textarea
-              className={'form-control'}
-              rows="5"
-              cols="110"
-              name="reliabilityText"
-              value={content ? content.reliabilitySection.text : ''} 
-            />
+            <h3>Ссылки</h3>
             <hr/>
             <input
               type="submit"
