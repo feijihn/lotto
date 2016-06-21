@@ -5,24 +5,37 @@ import {connect} from 'react-redux';
 import * as Actions from '../../../actions/actions.js';
 
 class PagesIndex extends React.Component {
-  componentWillMount = () => {
-    this.props.fetchContent();
-  }
   componentDidMount = () => {
-    this.props.fetchContent();
+    this.props.fetchContent()
+    .then(
+      result => this.fillDefaultForms(),
+      error => console.error(error)
+    )
+  }
+  fillDefaultForms = () => {
+    let form = this.refs.contentForm;
+    let content = this.props.state.content;
+    form[0].value = content.introSection.header;
+    form[1].value = content.introSection.text;
+    form[2].value = content.reliabilitySection.header;
+    form[3].value = content.reliabilitySection.text;
   }
   handleSubmit = () => {
     let form = this.refs.contentForm;
     let formData = {
-      introHeader: form[0].value,
-      introText: form[1].value,
-      reliabilityHeader: form[2].value,
-      reliabilityText: form[3].value
+      introSection: {
+        header: form[0].value,
+        text: form[1].value
+      },
+      reliabilitySection: {
+        header: form[2].value,
+        text: form[3].value
+      }
+
     }
     this.props.submitContent(formData);
   }
   render() {
-    let content = this.props.state.content;
     return (
       <div className={'admin-panel__content'}>
         <form action="javascript:void(0)" onSubmit={this.handleSubmit} ref="contentForm">
@@ -32,7 +45,6 @@ class PagesIndex extends React.Component {
               type="text"
               className={'form-control'}
               name="introHeader"
-              value={content ? content.introSection.header : ''}
             />
             <h3>Text</h3>
             <textarea
@@ -40,7 +52,6 @@ class PagesIndex extends React.Component {
               rows="5"
               cols="110"
               name="introText"
-              value={content ? content.introSection.text : ''} 
             />
             <h2 className={'text-center'}>Нижний блок </h2>
             <h3>Header</h3>
@@ -48,7 +59,6 @@ class PagesIndex extends React.Component {
               type="text"
               className={'form-control'}
               name="reliablitityHeader"
-              value={content ? content.reliabilitySection.header : ''}
             />
             <h3>Text</h3>
             <textarea
@@ -56,7 +66,6 @@ class PagesIndex extends React.Component {
               rows="5"
               cols="110"
               name="reliabilityText"
-              value={content ? content.reliabilitySection.text : ''} 
             />
             <hr/>
             <input

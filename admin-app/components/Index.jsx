@@ -1,6 +1,13 @@
 import React from 'react';
 
-export default class Index extends React.Component {
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as Actions from '../actions/actions.js';
+
+class Index extends React.Component {
+  componentWillMount = () => {
+    this.props.fetchContent();
+  }
   render() {
     return (
       <div className={'admin-panel__content'}>
@@ -9,3 +16,18 @@ export default class Index extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    state: state
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Actions, dispatch);
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Index);

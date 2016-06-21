@@ -97,18 +97,20 @@ export function fetchRounds() {
 
 export function fetchContent() {
   return function(dispatch) {
-    return (
+    return new Promise((resolve, reject) => {
       $.ajax({
         url: '/content',
         dataType: 'json',
         success: data => {
+          resolve();
           dispatch(recieveContent(data));
         },
         error: (xhr, status, err) => {
+          reject(err);
           console.error(this.props.url, status, err.toString());
         }
-      })
-    );
+      });
+    });
   };
 }
 
