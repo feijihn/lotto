@@ -7,6 +7,7 @@ import RoundPage from './components/client/Round/component.jsx';
 import Notifications from './components/client/Notifications/component.jsx';
 import Profile from './components/client/Profile/component.jsx';
 import AboutMechanics from './components/client/AboutMechanics/component.jsx';
+import Document from './components/client/Document/component.jsx';
 
 export default (
   <Route path="/" component={Main}>
@@ -17,6 +18,7 @@ export default (
     <Route path={'/notifications'} component={Notifications} />
     <Route path={'/profile'} component={Profile} />
     <Route path={'/mechanics'} component={AboutMechanics} />
+    <Route path={'/document/:documentName'} component={Document} />
     <Redirect from="*" to="404" />
   </ Route>
 );
